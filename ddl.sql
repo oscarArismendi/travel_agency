@@ -2,195 +2,199 @@ DROP DATABASE IF EXISTS airport;
 CREATE DATABASE airport;
 USE airport;
 
--- Crear tablas sin dependencias primero
-CREATE TABLE documenttypes (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(40)
-);
+CREATE TABLE documenttype(
+    id INT AUTO_INCREMENT NOT NULL,
+    name VARCHAR(40) NOT NULL,
+    CONSTRAINT pk_documenttypes PRIMARY KEY(id)
+) ENGINE=InnoDB;
 
-CREATE TABLE countries (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(30)
-);
+CREATE TABLE customer (
+    id INT AUTO_INCREMENT NOT NULL,
+    name VARCHAR(30) NOT NULL,
+    lastName VARCHAR(20) NOT NULL,
+    age INT NOT NULL,
+    idDocumentc INT(11) NOT NULL,
+    CONSTRAINT pk_customers PRIMARY KEY(id),
+    CONSTRAINT fk_customers_documenttypes FOREIGN KEY (idDocumentc) REFERENCES documenttype(id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
+ALTER TABLE customer ADD COLUMN nroIdc INT(11) NOT NULL AFTER lastName;
+
+
+CREATE TABLE flightfare (
+    id INT AUTO_INCREMENT NOT NULL,
+    description VARCHAR(20) NOT NULL,
+    details TEXT NULL,
+    value DOUBLE(7,3) NOT NULL,
+    CONSTRAINT pk_flightfares PRIMARY KEY(id)
+) ENGINE=InnoDB;
+
+CREATE TABLE airline (
+    id INT AUTO_INCREMENT NOT NULL,
+    name VARCHAR(30) NOT NULL,
+    CONSTRAINT pk_airlines PRIMARY KEY(id)
+) ENGINE=InnoDB;
 
 CREATE TABLE tripulationroles (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(40)
-);
+    id INT AUTO_INCREMENT NOT NULL,
+    name VARCHAR(40) NOT NULL,
+    CONSTRAINT pk_tripulationroles PRIMARY KEY(id)
+) ENGINE=InnoDB;
 
-CREATE TABLE airlines (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(30)
-);
+CREATE TABLE country (
+    id INT AUTO_INCREMENT NOT NULL,
+    name VARCHAR(30) NOT NULL,
+    CONSTRAINT pk_countries PRIMARY KEY(id)
+) ENGINE=InnoDB;
 
-CREATE TABLE manufacturers (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(40)
-);
+CREATE TABLE city (
+    id INT AUTO_INCREMENT NOT NULL,
+    name VARCHAR(30) NOT NULL,
+    idCountry INT NOT NULL,
+    CONSTRAINT pk_cities PRIMARY KEY(id),
+    CONSTRAINT fk_cities_countries FOREIGN KEY (idCountry) REFERENCES country(id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
 
-CREATE TABLE statuses (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(30)
-);
+CREATE TABLE manufacturer (
+     id INT AUTO_INCREMENT NOT NULL,
+    name VARCHAR(40) NOT NULL,
+    CONSTRAINT pk_manufacturers PRIMARY KEY(id)
+) ENGINE=InnoDB;
 
-CREATE TABLE trips (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    trip_date DATE,
-    price_trip DOUBLE
-);
+CREATE TABLE statusA (
+     id INT AUTO_INCREMENT NOT NULL,
+    name VARCHAR(30) NOT NULL,
+    CONSTRAINT pk_statuses PRIMARY KEY(id)
+) ENGINE=InnoDB;
 
-CREATE TABLE flightfares (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    description VARCHAR(20),
-    details TEXT,
-    value DOUBLE(7,3)
-);
+CREATE TABLE model (
+    id INT AUTO_INCREMENT NOT NULL,
+    name VARCHAR(30) NOT NULL,
+    manufacturerId INT NOT NULL,
+    CONSTRAINT pk_models PRIMARY KEY(id),
+    CONSTRAINT fk_models_manufacturers FOREIGN KEY (manufacturerId) REFERENCES manufacturer(id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
 
-CREATE TABLE customers (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(30),
-    age INT,
-    iddocument INT
-);
+CREATE TABLE airport (
+    id INT AUTO_INCREMENT NOT NULL,
+    name VARCHAR(30) NOT NULL,
+    idCity INT NOT NULL,
+    CONSTRAINT pk_airports PRIMARY KEY(id),
+    CONSTRAINT fk_airports_cities FOREIGN KEY (idCity) REFERENCES city(id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
 
-CREATE TABLE cities (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(30),
-    idcountry INT
-);
+CREATE TABLE gate (
+    id INT AUTO_INCREMENT NOT NULL,
+    gateNumber VARCHAR(10) NOT NULL,
+    idAirport INT NOT NULL,
+    CONSTRAINT pk_gates PRIMARY KEY(id),
+    CONSTRAINT fk_gates_airports FOREIGN KEY (idAirport) REFERENCES airport(id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
 
-CREATE TABLE airports (
-    id VARCHAR(5) PRIMARY KEY,
-    name VARCHAR(50),
-    idcity INT
-);
-
-CREATE TABLE gates (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    gatenumber VARCHAR(10),
-    idairport VARCHAR(5)
-);
-
-CREATE TABLE models (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(30),
-    idmanufacturerid INT
-);
-
-CREATE TABLE planes (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    plates VARCHAR(30),
-    capacity INT,
-    fabrication_date DATE,
-    id_status INT,
-    id_model INT
-);
-
-CREATE TABLE employees (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(40),
-    idtripulationroles INT,
-    id_employee INT,
-    idairline INT,
-    idairport VARCHAR(5),
-    ingresdate DATE
-);
-
-CREATE TABLE revision_details (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    description TEXT,
-    id_employee INT
-);
-
-CREATE TABLE revisions (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    revision_date DATE,
-    id_plane INT
-);
-
-CREATE TABLE flight_connections (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    connection_number VARCHAR(20),
-    id_trip INT,
-    id_plane INT,
-    id_airport VARCHAR(5)
-);
-
-CREATE TABLE tripcrews (
-    idemployees INT,
-    idconnection INT,
-    PRIMARY KEY (idemployees, idconnection)
-);
-
-CREATE TABLE revemploye (
-    idemployee INT,
-    idrevision INT,
-    PRIMARY KEY (idemployee, idrevision)
-);
+CREATE TABLE trip (
+    id INT AUTO_INCREMENT NOT NULL,
+    tripDate DATE NOT NULL,
+    priceTrip DOUBLE NOT NULL,
+    idOrigin INT NOT NULL,
+    idDestination INT NOT NULL,
+    CONSTRAINT pk_trips PRIMARY KEY(id),
+    CONSTRAINT pk_origin_airport FOREIGN KEY (idOrigin) REFERENCES airport(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT pk_destination_airport FOREIGN KEY (idDestination) REFERENCES airport(id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
 
 CREATE TABLE tripbooking (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    date DATE,
-    idtrips INT
-);
+    id INT AUTO_INCREMENT NOT NULL,
+    date DATE NOT NULL,
+    idTrip INT NOT NULL,
+    CONSTRAINT pk_tripbooking PRIMARY KEY(id),
+    CONSTRAINT fk_tripbooking_trips FOREIGN KEY (idTrip) REFERENCES trip(id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
 
-CREATE TABLE tripbookingdetails (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    idtripbooking INT,
-    idcustomers INT,
-    idfares INT
-);
+CREATE TABLE tripbookingdetail (
+    id INT AUTO_INCREMENT NOT NULL,
+    idTripBooking INT NOT NULL,
+    idCustomers INT(11) NOT NULL,
+    idFares INT NOT NULL,
+    CONSTRAINT pk_tripbookingdetails PRIMARY KEY(id),
+    CONSTRAINT fk_tripbookingdetails_tripbooking FOREIGN KEY (idTripBooking) REFERENCES tripbooking(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_tripbookingdetails_customers FOREIGN KEY (idCustomers) REFERENCES customer(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_tripbookingdetails_fares FOREIGN KEY (idFares) REFERENCES flightfare(id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
+ALTER TABLE tripbookingdetail
+ADD COLUMN status ENUM('active', 'cancelled') NOT NULL DEFAULT 'active';
 
+CREATE TABLE passenger(
+    id INT AUTO_INCREMENT NOT NULL,
+    name VARCHAR(30) NOT NULL, 
+    lastName VARCHAR(20) NOT NULL,
+    nroId INT(11) NOT NULL,
+    age INT(11) NOT NULL,
+    seat INT(3) NOT NULL,
+    idDocument INT(11) NOT NULL,
+    idTripBookingDetails INT(11) NOT NULL,
+    CONSTRAINT pk_passenger  PRIMARY KEY(id),
+    CONSTRAINT fk_passenger_docu FOREIGN KEY (idDocument) REFERENCES documenttype(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_passenger_tripbookingdetail FOREIGN KEY(idTripBookingDetails) REFERENCES tripbookingdetail(id) ON DELETE CASCADE ON UPDATE CASCADE
+)ENGINE=InnoDB;
 
--- Agregar claves externas
-ALTER TABLE customers
-ADD FOREIGN KEY (iddocument) REFERENCES documenttypes(id);
+CREATE TABLE plane (
+    id INT AUTO_INCREMENT NOT NULL,
+    plates VARCHAR(30) NOT NULL,
+    capacity INT NOT NULL,
+    fabricationDate DATE NOT NULL,
+    idAirline INT NOT NULL,
+    idStatus INT NOT NULL,
+    idModel INT NOT NULL,
+    CONSTRAINT pk_planes PRIMARY KEY(id),
+    CONSTRAINT fk_planes_airline FOREIGN KEY (idAirline) REFERENCES airline(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_planes_status FOREIGN KEY (idStatus) REFERENCES statusA(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_planes_models FOREIGN KEY (idModel) REFERENCES model(id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
 
-ALTER TABLE cities
-ADD FOREIGN KEY (idcountry) REFERENCES countries(id);
+CREATE TABLE flightconnection (
+    id INT AUTO_INCREMENT NOT NULL,
+    connectionNumber VARCHAR(20) NOT NULL,
+    idTrip INT NOT NULL,
+    idPlane INT NOT NULL,
+    idAirport INT NOT NULL,
+    CONSTRAINT pk_flight_connections PRIMARY KEY(id),
+    CONSTRAINT fk_flight_connections_trips FOREIGN KEY (idTrip) REFERENCES trip(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_flight_connections_planes FOREIGN KEY (idPlane) REFERENCES plane(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_flight_connections_airports FOREIGN KEY (idAirport) REFERENCES airport(id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
 
-ALTER TABLE airports
-ADD FOREIGN KEY (idcity) REFERENCES cities(id);
+CREATE TABLE revision (
+    id INT AUTO_INCREMENT NOT NULL,
+    revisionDate DATE NOT NULL,
+    idPlane INT NOT NULL,
+    description TEXT NOT NULL,
+    CONSTRAINT pk_revisions PRIMARY KEY(id),
+    CONSTRAINT fk_revisions_planes FOREIGN KEY (idPlane) REFERENCES plane(id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
 
-ALTER TABLE gates
-ADD FOREIGN KEY (idairport) REFERENCES airports(id);
+CREATE TABLE employee (
+    id INT AUTO_INCREMENT NOT NULL,
+    name VARCHAR(40) NOT NULL,
+    ingressDate DATE NOT NULL,
+    idRol INT NOT NULL,
+    idAirline INT NOT NULL,
+    idAirport INT NOT NULL,
+    CONSTRAINT pk_employees PRIMARY KEY(id),
+    CONSTRAINT fk_employees_roles FOREIGN KEY (idRol) REFERENCES tripulationroles(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_employees_airlines FOREIGN KEY (idAirline) REFERENCES airline(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_employees_airports FOREIGN KEY (idAirport) REFERENCES airport(id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
 
-ALTER TABLE models
-ADD FOREIGN KEY (idmanufacturerid) REFERENCES manufacturers(id);
+CREATE TABLE revemployee (
+    idRevision INT NOT NULL,
+    idEmployee INT NOT NULL,
+    CONSTRAINT pk_revemployee PRIMARY KEY (idEmployee, idRevision),
+    CONSTRAINT fk_revemployee_employees FOREIGN KEY (idEmployee) REFERENCES employee(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_revemployee_revisions FOREIGN KEY (idRevision) REFERENCES revision(id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
 
-ALTER TABLE planes
-ADD FOREIGN KEY (id_status) REFERENCES statuses(id),
-ADD FOREIGN KEY (id_model) REFERENCES models(id);
-
-ALTER TABLE employees
-ADD FOREIGN KEY (idtripulationroles) REFERENCES tripulationroles(id),
-ADD FOREIGN KEY (id_employee) REFERENCES revision_details(id),
-ADD FOREIGN KEY (idairline) REFERENCES airlines(id),
-ADD FOREIGN KEY (idairport) REFERENCES airports(id);
-
-ALTER TABLE revision_details
-ADD FOREIGN KEY (id_employee) REFERENCES employees(id);
-
-ALTER TABLE revisions
-ADD FOREIGN KEY (id_plane) REFERENCES planes(id);
-
-ALTER TABLE flight_connections
-ADD FOREIGN KEY (id_trip) REFERENCES trips(id),
-ADD FOREIGN KEY (id_plane) REFERENCES planes(id),
-ADD FOREIGN KEY (id_airport) REFERENCES airports(id);
-
-ALTER TABLE tripcrews
-ADD FOREIGN KEY (idemployees) REFERENCES employees(id),
-ADD FOREIGN KEY (idconnection) REFERENCES flight_connections(id);
-
-ALTER TABLE revemploye
-ADD FOREIGN KEY (idemployee) REFERENCES employees(id),
-ADD FOREIGN KEY (idrevision) REFERENCES revisions(id);
-
-ALTER TABLE tripbooking
-ADD FOREIGN KEY (idtrips) REFERENCES trips(id);
-
-ALTER TABLE tripbookingdetails
-ADD FOREIGN KEY (idtripbooking) REFERENCES tripbooking(id),
-ADD FOREIGN KEY (idcustomers) REFERENCES customers(id),
-ADD FOREIGN KEY (idfares) REFERENCES flightfares(id);
+CREATE TABLE tripcrew (
+    idEmployees INT AUTO_INCREMENT NOT NULL,
+    idConection INT NOT NULL,
+    CONSTRAINT fk_tripcrews_employees FOREIGN KEY (idEmployees) REFERENCES employee(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_tripcrews_connections FOREIGN KEY (idConection) REFERENCES flightconnection(id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
