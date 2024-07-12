@@ -10,15 +10,14 @@ CREATE TABLE documenttype(
 
 CREATE TABLE customer (
     id INT AUTO_INCREMENT NOT NULL,
-    name VARCHAR(30) NOT NULL,
+    firstName VARCHAR(30) NOT NULL,
     lastName VARCHAR(20) NOT NULL,
     age INT NOT NULL,
-    idDocumentc INT(11) NOT NULL,
+    nroIdc INT(11) NOT NULL,
+    idDocument INT(11) NOT NULL,
     CONSTRAINT pk_customers PRIMARY KEY(id),
-    CONSTRAINT fk_customers_documenttypes FOREIGN KEY (idDocumentc) REFERENCES documenttype(id) ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT fk_customers_documenttypes FOREIGN KEY (idDocument) REFERENCES documenttype(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
-ALTER TABLE customer ADD COLUMN nroIdc INT(11) NOT NULL AFTER lastName;
-
 
 CREATE TABLE flightfare (
     id INT AUTO_INCREMENT NOT NULL,
@@ -60,7 +59,7 @@ CREATE TABLE manufacturer (
     CONSTRAINT pk_manufacturers PRIMARY KEY(id)
 ) ENGINE=InnoDB;
 
-CREATE TABLE statusA (
+CREATE TABLE statusA ( -- status airplane
      id INT AUTO_INCREMENT NOT NULL,
     name VARCHAR(30) NOT NULL,
     CONSTRAINT pk_statuses PRIMARY KEY(id)
@@ -114,13 +113,12 @@ CREATE TABLE tripbookingdetail (
     idTripBooking INT NOT NULL,
     idCustomers INT(11) NOT NULL,
     idFares INT NOT NULL,
+    s ENUM('active', 'cancelled') NOT NULL DEFAULT 'active',
     CONSTRAINT pk_tripbookingdetails PRIMARY KEY(id),
     CONSTRAINT fk_tripbookingdetails_tripbooking FOREIGN KEY (idTripBooking) REFERENCES tripbooking(id) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_tripbookingdetails_customers FOREIGN KEY (idCustomers) REFERENCES customer(id) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_tripbookingdetails_fares FOREIGN KEY (idFares) REFERENCES flightfare(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
-ALTER TABLE tripbookingdetail
-ADD COLUMN status ENUM('active', 'cancelled') NOT NULL DEFAULT 'active';
 
 CREATE TABLE passenger(
     id INT AUTO_INCREMENT NOT NULL,
@@ -146,7 +144,7 @@ CREATE TABLE plane (
     idModel INT NOT NULL,
     CONSTRAINT pk_planes PRIMARY KEY(id),
     CONSTRAINT fk_planes_airline FOREIGN KEY (idAirline) REFERENCES airline(id) ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT fk_planes_status FOREIGN KEY (idStatus) REFERENCES statusA(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_planes_s FOREIGN KEY (idStatus) REFERENCES statusA(id) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_planes_models FOREIGN KEY (idModel) REFERENCES model(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
