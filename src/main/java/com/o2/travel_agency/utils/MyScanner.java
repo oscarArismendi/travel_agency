@@ -22,6 +22,7 @@ public class MyScanner {
                 break;
             } catch (Exception e) {
                 System.out.print("Insert a valid number: ");
+                scan.nextLine();
             }
         }
         return rta;

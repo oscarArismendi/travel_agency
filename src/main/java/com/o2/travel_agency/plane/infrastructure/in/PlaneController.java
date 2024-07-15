@@ -1,11 +1,12 @@
 package com.o2.travel_agency.plane.infrastructure.in;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.o2.travel_agency.airline.application.ListAllAirlinesUseCase;
 import com.o2.travel_agency.airline.domain.entity.Airline;
+import com.o2.travel_agency.model.application.ListAllModelsUseCase;
+import com.o2.travel_agency.model.domain.entity.Model;
 import com.o2.travel_agency.plane.application.CreatePlaneUseCase;
 import com.o2.travel_agency.plane.domain.entity.Plane;
 import com.o2.travel_agency.status.application.ListAllStatusUseCase;
@@ -19,30 +20,36 @@ public class PlaneController {
     private CreatePlaneUseCase createPlaneUseCase;
     private ListAllAirlinesUseCase listAllAirlinesUseCase;
     private ListAllStatusUseCase listAllStatusUseCase;
+    private ListAllModelsUseCase listAllModelsUseCase;
+
 
 
 
     public PlaneController(CreatePlaneUseCase createPlaneUseCase, ListAllAirlinesUseCase listAllAirlinesUseCase,
-            ListAllStatusUseCase listAllStatusUseCase) {
+            ListAllStatusUseCase listAllStatusUseCase, ListAllModelsUseCase listAllModelsUseCase) {
         this.createPlaneUseCase = createPlaneUseCase;
         this.listAllAirlinesUseCase = listAllAirlinesUseCase;
         this.listAllStatusUseCase = listAllStatusUseCase;
+        this.listAllModelsUseCase = listAllModelsUseCase;
     }
 
     public void start() {
 
         while (true) {
-            ConsoleUtils.cleanScreen();
             displayMenu();
+            
             int option = ConsoleUtils.option_validation("Choose an option: ", 1, 6);
             switch (option) {
                 case 1:
                 // create plane
+                    ConsoleUtils.cleanScreen();
+                    System.out.println("----------------------------------------CREATE PLANE MENU----------------------------------------");
+
                     try {
-                        System.out.println("Type the plane plates: ");
+                        System.out.print("Type the plane plates: ");
                         String plates = MyScanner.scanLine();
             
-                        System.out.println("Type the plane capacity: ");
+                        System.out.print("Type the plane capacity: ");
                         int capacity = MyScanner.scanInt();
                         
                         Date  date  = ConsoleUtils.validateDate("Type the fabication date: ");
@@ -55,7 +62,7 @@ public class PlaneController {
                             break;
                         }
                         //  input a validad  airline
-                        int airlinePos =  Menus.listMenu(airlines);
+                        int airlinePos =  Menus.listMenu(airlines,"Choose an airline:");
                         int airlineId = airlines.get(airlinePos).getId();
 
                         // status show all status, return a list
@@ -66,25 +73,31 @@ public class PlaneController {
                             break;
                         }
                         // input a valid status
-                        int statusPos = Menus.listMenu(status);
+                        int statusPos = Menus.listMenu(status,"Choose a status:");
                         int statusId = status.get(statusPos).getId();
                         
 
                         // models show all models, return a list
+                        List<Model> models = listAllModelsUseCase.execute();
+                        if(models.size() == 0){
+                            System.out.println("There is not model in the database! contact service.");
+                            ConsoleUtils.pause();
+                            break;
+                        }
                         // input a valid model
+                        int modelPos = Menus.listMenu(models,"Choose a model:");
+                        int modelId = models.get(modelPos).getId();
 
 
-
-
-                        Plane plane = new Plane();
+                        Plane plane = new Plane(modelId, plates, capacity, date, airlineId, statusId, modelId);
             
                         createPlaneUseCase.execute(plane);
+                        System.out.println("Plane created successfully!");
+
                     }catch (Exception e) {
-                        System.out.println("Error at creating a player: " + e.getMessage());
-                        ConsoleUtils.pause();
+                        System.out.println("Error at creating a plane: " + e.getMessage());
                     }
             
-                    System.out.println("User created successfully!");
                     ConsoleUtils.pause();
 
                     break;
@@ -112,7 +125,7 @@ public class PlaneController {
 
     public void displayMenu() {
         ConsoleUtils.cleanScreen();
-        System.out.println("---------------------PLAYER MENU---------------------------------------");
+        System.out.println("----------------------------------------PLANE MENU----------------------------------------");
         System.out.println("1. Create Plane");
         System.out.println("2. Update Plane");
         System.out.println("3. Find Plane");

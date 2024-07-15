@@ -12,7 +12,7 @@ public class PlaneRepository implements PlaneService {
 
     @Override
     public Plane createPlane(Plane plane) {
-        String sql = "INSERT INTO plane (plates,capacity,fabicationDate,idAirline,idStatus,idModel) VALUES (?,?,?,?,?,?)";
+        String sql = "INSERT INTO plane (plates,capacity,fabricationDate,idAirline,idStatus,idModel) VALUES (?,?,?,?,?,?)";
 
         try (Connection connection = DatabaseConfig.getConnection();
                 PreparedStatement statement = connection.prepareStatement(sql,

@@ -28,8 +28,9 @@ public class Airline {
         this.name = name;
     }
 
-    public String toString(){
-        return "id : "+ this.id + " | name : " + this.name;
+    @Override
+    public String toString() {
+        return " id: " + id + " | name: " + name;
     }
 
 }
