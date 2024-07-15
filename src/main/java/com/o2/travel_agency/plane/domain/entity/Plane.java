@@ -2,19 +2,26 @@ package com.o2.travel_agency.plane.domain.entity;
 
 import java.sql.Date;
 
-import com.o2.travel_agency.airline.domain.entity.Airline;
-import com.o2.travel_agency.model.domain.entity.Model;
-import com.o2.travel_agency.status.domain.entity.Status;
-
 public class Plane {
     private int id;
     private String plates;
-    private Date fabrication_date;
-    private Status status;
-    private Model model;
-    private Airline airline;
+    private int capacity;
+    private Date fabricationDate;
+    private int idAirline;
+    private int idStatus;
+    private int idModel;
 
     public Plane() {
+    }
+
+    public Plane(int id, String plates, int capacity, Date fabricationDate, int idAirline, int idStatus, int idModel) {
+        this.id = id;
+        this.plates = plates;
+        this.capacity = capacity;
+        this.fabricationDate = fabricationDate;
+        this.idAirline = idAirline;
+        this.idStatus = idStatus;
+        this.idModel = idModel;
     }
 
     public int getId() {
@@ -33,36 +40,44 @@ public class Plane {
         this.plates = plates;
     }
 
-    public Date getFabrication_date() {
-        return fabrication_date;
+    public int getCapacity() {
+        return capacity;
     }
 
-    public void setFabrication_date(Date fabrication_date) {
-        this.fabrication_date = fabrication_date;
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
     }
 
-    public Status getStatus() {
-        return status;
+    public Date getFabricationDate() {
+        return fabricationDate;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setFabricationDate(Date fabricationDate) {
+        this.fabricationDate = fabricationDate;
     }
 
-    public Model getModel() {
-        return model;
+    public int getIdAirline() {
+        return idAirline;
     }
 
-    public void setModel(Model model) {
-        this.model = model;
+    public void setIdAirline(int idAirline) {
+        this.idAirline = idAirline;
     }
 
-    public Airline getAirline() {
-        return airline;
+    public int getIdStatus() {
+        return idStatus;
     }
 
-    public void setAirline(Airline airline) {
-        this.airline = airline;
+    public void setIdStatus(int idStatus) {
+        this.idStatus = idStatus;
+    }
+
+    public int getIdModel() {
+        return idModel;
+    }
+
+    public void setIdModel(int idModel) {
+        this.idModel = idModel;
     }
 
 }
