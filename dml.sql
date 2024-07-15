@@ -1,9 +1,9 @@
 -- Tabla documenttype
-INSERT INTO documenttype (name) VALUES ('Cédula');
-INSERT INTO documenttype (name) VALUES ('Tarjeta de identidad');
-INSERT INTO documenttype (name) VALUES ('Pasaporte');
-INSERT INTO documenttype (name) VALUES ('Cédula extranjera');
-INSERT INTO documenttype (name) VALUES ('Licencia de Conducir');
+INSERT INTO documenttype (name) VALUES ('Identification Card');
+INSERT INTO documenttype (name) VALUES ('identity Card');
+INSERT INTO documenttype (name) VALUES ('Passport');
+INSERT INTO documenttype (name) VALUES ('Foreign ID');
+INSERT INTO documenttype (name) VALUES ('Drivers License');
 
 -- Tabla country
 INSERT INTO country (name) VALUES ('Colombia');
@@ -11,7 +11,6 @@ INSERT INTO country (name) VALUES ('Estados Unidos');
 INSERT INTO country (name) VALUES ('Brasil');
 INSERT INTO country (name) VALUES ('Argentina');
 INSERT INTO country (name) VALUES ('México');
-
 -- Tabla city
 INSERT INTO city (name, idCountry) VALUES ('Bogotá', 1);
 INSERT INTO city (name, idCountry) VALUES ('Medellín', 1);
@@ -27,11 +26,11 @@ INSERT INTO airline (name) VALUES ('Copa Airlines');
 INSERT INTO airline (name) VALUES ('Viva Air');
 
 -- Tabla tripulationroles
-INSERT INTO tripulationroles (name) VALUES ('Piloto');
-INSERT INTO tripulationroles (name) VALUES ('Copiloto');
-INSERT INTO tripulationroles (name) VALUES ('Auxiliar de vuelo');
-INSERT INTO tripulationroles (name) VALUES ('Mantenimiento');
-INSERT INTO tripulationroles (name) VALUES ('Seguridad');
+INSERT INTO tripulationroles (name) VALUES ('Pilot');
+INSERT INTO tripulationroles (name) VALUES ('Co-pilot');
+INSERT INTO tripulationroles (name) VALUES ('Flight attendant');
+INSERT INTO tripulationroles (name) VALUES ('Maintenance');
+INSERT INTO tripulationroles (name) VALUES ('Security');
 
 -- Tabla manufacturer
 INSERT INTO manufacturer (name) VALUES ('Airbus');
@@ -48,11 +47,11 @@ INSERT INTO model (name, manufacturerId) VALUES ('CRJ700', 4);
 INSERT INTO model (name, manufacturerId) VALUES ('Citation X', 5);
 
 -- Tabla statusA
-INSERT INTO statusA (name) VALUES ('En vuelo');
-INSERT INTO statusA (name) VALUES ('Disponible');
-INSERT INTO statusA (name) VALUES ('En reparación');
-INSERT INTO statusA (name) VALUES ('Mantenimiento programado');
-INSERT INTO statusA (name) VALUES ('Fuera de servicio');
+INSERT INTO statusA (name) VALUES ('On Flight');
+INSERT INTO statusA (name) VALUES ('Avalaible');
+INSERT INTO statusA (name) VALUES ('On Repair');
+INSERT INTO statusA (name) VALUES ('Scheduled Maintenance');
+INSERT INTO statusA (name) VALUES ('Out of Service');
 
 -- Tabla airport
 INSERT INTO airport (name, idCity) VALUES ('El Dorado', 1);
@@ -125,11 +124,11 @@ INSERT INTO flightconnection (connectionNumber, idTrip, idPlane, idAirport) VALU
 INSERT INTO flightconnection (connectionNumber, idTrip, idPlane, idAirport) VALUES ('FC-005', 5, 5, 5);
 
 -- Tabla revision
-INSERT INTO revision (revisionDate, idPlane, description) VALUES ('2024-06-01', 1, 'Revisión general de mantenimiento');
-INSERT INTO revision (revisionDate, idPlane, description) VALUES ('2024-06-15', 2, 'Revisión de sistemas eléctricos');
-INSERT INTO revision (revisionDate, idPlane, description) VALUES ('2024-06-20', 3, 'Revisión de motores');
-INSERT INTO revision (revisionDate, idPlane, description) VALUES ('2024-06-25', 4, 'Revisión de estructura y fuselaje');
-INSERT INTO revision (revisionDate, idPlane, description) VALUES ('2024-06-30', 5, 'Revisión de sistemas hidráulicos');
+INSERT INTO revision (revisionDate, idPlane, description) VALUES ('2024-06-01', 1, 'General maintenance check');
+INSERT INTO revision (revisionDate, idPlane, description) VALUES ('2024-06-15', 2, 'Review of electrical systems');
+INSERT INTO revision (revisionDate, idPlane, description) VALUES ('2024-06-20', 3, 'Engine overhaul');
+INSERT INTO revision (revisionDate, idPlane, description) VALUES ('2024-06-25', 4, 'Structure and fuselage review');
+INSERT INTO revision (revisionDate, idPlane, description) VALUES ('2024-06-30', 5, 'Hydraulic systems review');
 
 -- Tabla employee
 INSERT INTO employee (name, ingressDate, idRol, idAirline, idAirport) VALUES ('Jorge', '2020-01-15', 1, 1, 1);

@@ -196,3 +196,30 @@ CREATE TABLE tripcrew (
     CONSTRAINT fk_tripcrews_employees FOREIGN KEY (idEmployees) REFERENCES employee(id) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_tripcrews_connections FOREIGN KEY (idConection) REFERENCES flightconnection(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usar_name VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role_id INT,FOREIGN KEY (role_id) REFERENCES roles(id)
+);
+
+CREATE TABLE roles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name_role VARCHAR(50) UNIQUE NOT NULL
+);
+
+CREATE TABLE permissions(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    permissions_name VARCHAR(50) UNIQUE NOT NULL
+);
+
+
+CREATE TABLE role_permissions (
+    role_id INT,
+    permissions_id INT,
+    PRIMARY KEY (role_id, permissions_id),
+    FOREIGN KEY (role_id) REFERENCES roles(id),
+    FOREIGN KEY (permissions_id) REFERENCES permissions(id)
+);
+
