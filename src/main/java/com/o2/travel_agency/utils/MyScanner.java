@@ -13,11 +13,21 @@ public class MyScanner {
         return scan.nextLine();
     }
 
-    public static int ScanInt() {
-        return scan.nextInt();
+    public static int scanInt() {
+        int rta = 0;
+        while(true){
+            try {
+                rta = scan.nextInt();
+                scan.nextLine();
+                break;
+            } catch (Exception e) {
+                System.out.print("Insert a valid number: ");
+            }
+        }
+        return rta;
     }
 
-    public static Long ScanLong(){
+    public static Long scanLong(){
         return scan.nextLong();
     }
 }
