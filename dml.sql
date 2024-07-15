@@ -5,12 +5,14 @@ INSERT INTO documenttype (name) VALUES ('Passport');
 INSERT INTO documenttype (name) VALUES ('Foreign ID');
 INSERT INTO documenttype (name) VALUES ('Drivers License');
 
+
 -- Tabla country
 INSERT INTO country (name) VALUES ('Colombia');
-INSERT INTO country (name) VALUES ('Estados Unidos');
-INSERT INTO country (name) VALUES ('Brasil');
+INSERT INTO country (name) VALUES ('United States');
+INSERT INTO country (name) VALUES ('Brazil');
 INSERT INTO country (name) VALUES ('Argentina');
 INSERT INTO country (name) VALUES ('México');
+
 -- Tabla city
 INSERT INTO city (name, idCountry) VALUES ('Bogotá', 1);
 INSERT INTO city (name, idCountry) VALUES ('Medellín', 1);
@@ -31,6 +33,7 @@ INSERT INTO tripulationroles (name) VALUES ('Co-pilot');
 INSERT INTO tripulationroles (name) VALUES ('Flight attendant');
 INSERT INTO tripulationroles (name) VALUES ('Maintenance');
 INSERT INTO tripulationroles (name) VALUES ('Security');
+
 
 -- Tabla manufacturer
 INSERT INTO manufacturer (name) VALUES ('Airbus');
@@ -124,6 +127,7 @@ INSERT INTO flightconnection (connectionNumber, idTrip, idPlane, idAirport) VALU
 INSERT INTO flightconnection (connectionNumber, idTrip, idPlane, idAirport) VALUES ('FC-005', 5, 5, 5);
 
 -- Tabla revision
+
 INSERT INTO revision (revisionDate, idPlane, description) VALUES ('2024-06-01', 1, 'General maintenance check');
 INSERT INTO revision (revisionDate, idPlane, description) VALUES ('2024-06-15', 2, 'Review of electrical systems');
 INSERT INTO revision (revisionDate, idPlane, description) VALUES ('2024-06-20', 3, 'Engine overhaul');

@@ -197,6 +197,7 @@ CREATE TABLE tripcrew (
     CONSTRAINT fk_tripcrews_connections FOREIGN KEY (idConection) REFERENCES flightconnection(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
+
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usar_name VARCHAR(50) UNIQUE NOT NULL,
@@ -222,4 +223,5 @@ CREATE TABLE role_permissions (
     FOREIGN KEY (role_id) REFERENCES roles(id),
     FOREIGN KEY (permissions_id) REFERENCES permissions(id)
 );
+
 
