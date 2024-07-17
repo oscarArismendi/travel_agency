@@ -1,6 +1,4 @@
-DROP DATABASE IF EXISTS airport;
-CREATE DATABASE airport;
-USE airport;
+
 
 CREATE TABLE documenttype(
     id INT AUTO_INCREMENT NOT NULL,
@@ -174,12 +172,16 @@ CREATE TABLE employee (
     name VARCHAR(40) NOT NULL,
     ingressDate DATE NOT NULL,
     idRol INT NOT NULL,
+    idUserRole INT NOT NULL,
     idAirline INT NOT NULL,
     idAirport INT NOT NULL,
+    email VARCHAR (100) NOT NULL,
+    password VARCHAR (40) NOT NULL,
     CONSTRAINT pk_employees PRIMARY KEY(id),
     CONSTRAINT fk_employees_roles FOREIGN KEY (idRol) REFERENCES tripulationroles(id) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_employees_airlines FOREIGN KEY (idAirline) REFERENCES airline(id) ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT fk_employees_airports FOREIGN KEY (idAirport) REFERENCES airport(id) ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT fk_employees_airports FOREIGN KEY (idAirport) REFERENCES airport(id) ON DELETE CASCADE ON UPDATE CASCADE,
+     CONSTRAINT fk_employees_roles_users FOREIGN KEY (idUserRole) REFERENCES roles(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
 CREATE TABLE revemployee (
@@ -198,12 +200,7 @@ CREATE TABLE tripcrew (
 ) ENGINE=InnoDB;
 
 
-CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    usar_name VARCHAR(50) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    role_id INT,FOREIGN KEY (role_id) REFERENCES roles(id)
-);
+
 
 CREATE TABLE roles (
     id INT AUTO_INCREMENT PRIMARY KEY,

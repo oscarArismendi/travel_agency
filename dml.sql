@@ -77,12 +77,16 @@ INSERT INTO trip (tripDate, priceTrip, idOrigin, idDestination) VALUES ('2024-07
 INSERT INTO trip (tripDate, priceTrip, idOrigin, idDestination) VALUES ('2024-07-18', 350000, 2, 3);
 INSERT INTO trip (tripDate, priceTrip, idOrigin, idDestination) VALUES ('2024-07-19', 400000, 5, 4);
 
+-- ALTER TABLE trip AUTO_INCREMENT = 6;
+-- UPDATE trip SET id = 5 where id = 12;
+
 -- Tabla tripbooking
 INSERT INTO tripbooking (date, idTrip) VALUES ('2024-07-01', 1);
 INSERT INTO tripbooking (date, idTrip) VALUES ('2024-07-02', 2);
 INSERT INTO tripbooking (date, idTrip) VALUES ('2024-07-03', 3);
 INSERT INTO tripbooking (date, idTrip) VALUES ('2024-07-04', 4);
 INSERT INTO tripbooking (date, idTrip) VALUES ('2024-07-05', 5);
+-- ALTER TABLE tripbooking AUTO_INCREMENT = 1;
 
 -- Tabla flightfare
 INSERT INTO flightfare (description, details, value) VALUES ('Economy', 'Economy class fare', 100.000);
@@ -97,6 +101,7 @@ INSERT INTO customer (firstName, lastName, age, nroIdc, idDocument) VALUES ('Mar
 INSERT INTO customer (firstName, lastName, age, nroIdc, idDocument) VALUES ('Carlos', 'Ramírez', 40, 345678, 3);
 INSERT INTO customer (firstName, lastName, age, nroIdc, idDocument) VALUES ('Ana', 'Torres', 35, 456789, 4);
 INSERT INTO customer (firstName, lastName, age, nroIdc, idDocument) VALUES ('Luis', 'Martínez', 28, 567890, 1);
+-- ALTER TABLE customer  AUTO_INCREMENT = 2;
 
 -- Tabla tripbookingdetail
 INSERT INTO tripbookingdetail (idTripBooking, idCustomers, idFares, s) VALUES (1, 1, 1, 'active');
@@ -104,8 +109,12 @@ INSERT INTO tripbookingdetail (idTripBooking, idCustomers, idFares, s) VALUES (2
 INSERT INTO tripbookingdetail (idTripBooking, idCustomers, idFares, s) VALUES (3, 3, 3, 'active');
 INSERT INTO tripbookingdetail (idTripBooking, idCustomers, idFares, s) VALUES (4, 4, 4, 'active');
 INSERT INTO tripbookingdetail (idTripBooking, idCustomers, idFares, s) VALUES (5, 5, 5, 'active');
+-- ALTER TABLE tripbookingdetail  AUTO_INCREMENT = 1;
+
+
 
 -- Tabla passenger
+-- ALTER TABLE passenger  AUTO_INCREMENT = 1;
 INSERT INTO passenger (name, lastName, nroId, age, seat, idDocument, idTripBookingDetails) VALUES ('Andrés', 'López', 678901, 31, 5, 1, 1);
 INSERT INTO passenger (name, lastName, nroId, age, seat, idDocument, idTripBookingDetails) VALUES ('Gabriela', 'Moreno', 789012, 29, 6, 2, 2);
 INSERT INTO passenger (name, lastName, nroId, age, seat, idDocument, idTripBookingDetails) VALUES ('Felipe', 'Méndez', 890123, 45, 7, 3, 3);
@@ -113,6 +122,7 @@ INSERT INTO passenger (name, lastName, nroId, age, seat, idDocument, idTripBooki
 INSERT INTO passenger (name, lastName, nroId, age, seat, idDocument, idTripBookingDetails) VALUES ('Ricardo', 'Vargas', 123456, 34, 9, 5, 5);
 
 -- Tabla plane
+-- ALTER TABLE plane  AUTO_INCREMENT = 1;
 INSERT INTO plane (plates, capacity, fabricationDate, idAirline, idStatus, idModel) VALUES ('HK-4546', 150, '2001-11-05', 1, 2, 1);
 INSERT INTO plane (plates, capacity, fabricationDate, idAirline, idStatus, idModel) VALUES ('HK-7890', 200, '2010-05-15', 2, 1, 2);
 INSERT INTO plane (plates, capacity, fabricationDate, idAirline, idStatus, idModel) VALUES ('HK-1234', 180, '2015-03-20', 3, 3, 3);
@@ -120,28 +130,49 @@ INSERT INTO plane (plates, capacity, fabricationDate, idAirline, idStatus, idMod
 INSERT INTO plane (plates, capacity, fabricationDate, idAirline, idStatus, idModel) VALUES ('HK-9876', 160, '2020-02-10', 5, 1, 5);
 
 -- Tabla flightconnection
+-- ALTER TABLE flightconnection  AUTO_INCREMENT = 6;
 INSERT INTO flightconnection (connectionNumber, idTrip, idPlane, idAirport) VALUES ('FC-001', 1, 1, 1);
 INSERT INTO flightconnection (connectionNumber, idTrip, idPlane, idAirport) VALUES ('FC-002', 2, 2, 2);
 INSERT INTO flightconnection (connectionNumber, idTrip, idPlane, idAirport) VALUES ('FC-003', 3, 3, 3);
 INSERT INTO flightconnection (connectionNumber, idTrip, idPlane, idAirport) VALUES ('FC-004', 4, 4, 4);
 INSERT INTO flightconnection (connectionNumber, idTrip, idPlane, idAirport) VALUES ('FC-005', 5, 5, 5);
 
--- Tabla revision
 
+-- Tabla revision
+-- ALTER TABLE revision  AUTO_INCREMENT = 1;
 INSERT INTO revision (revisionDate, idPlane, description) VALUES ('2024-06-01', 1, 'General maintenance check');
 INSERT INTO revision (revisionDate, idPlane, description) VALUES ('2024-06-15', 2, 'Review of electrical systems');
 INSERT INTO revision (revisionDate, idPlane, description) VALUES ('2024-06-20', 3, 'Engine overhaul');
 INSERT INTO revision (revisionDate, idPlane, description) VALUES ('2024-06-25', 4, 'Structure and fuselage review');
 INSERT INTO revision (revisionDate, idPlane, description) VALUES ('2024-06-30', 5, 'Hydraulic systems review');
 
+-- Tabla roles
+ -- ALTER TABLE roles  AUTO_INCREMENT = 1;
+INSERT INTO roles (name_role) VALUES ('Systems administrator');
+INSERT INTO roles (name_role) VALUES ('Maintenance technician');
+INSERT INTO roles (name_role) VALUES ('sales agent');
+INSERT INTO roles (name_role) VALUES ('Customer');
+
 -- Tabla employee
-INSERT INTO employee (name, ingressDate, idRol, idAirline, idAirport) VALUES ('Jorge', '2020-01-15', 1, 1, 1);
-INSERT INTO employee (name, ingressDate, idRol, idAirline, idAirport) VALUES ('Lucía', '2018-03-10', 2, 2, 2);
-INSERT INTO employee (name, ingressDate, idRol, idAirline, idAirport) VALUES ('Marcos', '2019-05-20', 3, 3, 3);
-INSERT INTO employee (name, ingressDate, idRol, idAirline, idAirport) VALUES ('Elena', '2021-07-25', 4, 4, 4);
-INSERT INTO employee (name, ingressDate, idRol, idAirline, idAirport) VALUES ('Fernando', '2017-09-30', 5, 5, 5);
+ -- ALTER TABLE employee  AUTO_INCREMENT = 1;
+INSERT INTO employee (name, ingressDate, idRol, idUserRole, idAirline, idAirport, email, password) 
+VALUES ('Jorge', '2020-01-15', 1, 1, 1, 1, 'jorge@example.com', 'password123');
+
+INSERT INTO employee (name, ingressDate, idRol, idUserRole, idAirline, idAirport, email, password) 
+VALUES ('Lucía', '2018-03-10', 2, 2, 2, 2, 'lucia@example.com', 'password123');
+
+INSERT INTO employee (name, ingressDate, idRol, idUserRole, idAirline, idAirport, email, password) 
+VALUES ('Marcos', '2019-05-20', 3, 3, 3, 3, 'marcos@example.com', 'password123');
+
+INSERT INTO employee (name, ingressDate, idRol, idUserRole, idAirline, idAirport, email, password) 
+VALUES ('Elena', '2021-07-25', 4, 4, 4, 4, 'elena@example.com', 'password123');
+
+INSERT INTO employee (name, ingressDate, idRol, idUserRole, idAirline, idAirport, email, password) 
+VALUES ('Fernando', '2017-09-30', 5, 1, 5, 5, 'fernando@example.com', 'password123');
+
 
 -- Tabla revemployee
+ -- ALTER TABLE revemployee  AUTO_INCREMENT = 1;
 INSERT INTO revemployee (idRevision, idEmployee) VALUES (1, 1);
 INSERT INTO revemployee (idRevision, idEmployee) VALUES (2, 2);
 INSERT INTO revemployee (idRevision, idEmployee) VALUES (3, 3);
@@ -149,8 +180,10 @@ INSERT INTO revemployee (idRevision, idEmployee) VALUES (4, 4);
 INSERT INTO revemployee (idRevision, idEmployee) VALUES (5, 5);
 
 -- Tabla tripcrew
+ -- ALTER TABLE tripcrew  AUTO_INCREMENT = 1;
 INSERT INTO tripcrew (idEmployees, idConection) VALUES (1, 1);
 INSERT INTO tripcrew (idEmployees, idConection) VALUES (2, 2);
 INSERT INTO tripcrew (idEmployees, idConection) VALUES (3, 3);
 INSERT INTO tripcrew (idEmployees, idConection) VALUES (4, 4);
 INSERT INTO tripcrew (idEmployees, idConection) VALUES (5, 5);
+
