@@ -8,6 +8,7 @@ import com.o2.travel_agency.airline.domain.entity.Airline;
 import com.o2.travel_agency.model.application.ListAllModelsUseCase;
 import com.o2.travel_agency.model.domain.entity.Model;
 import com.o2.travel_agency.plane.application.CreatePlaneUseCase;
+import com.o2.travel_agency.plane.application.FindPlaneByPlateUseCase;
 import com.o2.travel_agency.plane.domain.entity.Plane;
 import com.o2.travel_agency.status.application.ListAllStatusUseCase;
 import com.o2.travel_agency.status.domain.entity.Status;
@@ -21,16 +22,20 @@ public class PlaneController {
     private ListAllAirlinesUseCase listAllAirlinesUseCase;
     private ListAllStatusUseCase listAllStatusUseCase;
     private ListAllModelsUseCase listAllModelsUseCase;
+    private FindPlaneByPlateUseCase findPlaneByPlateUseCase;
+
 
 
 
 
     public PlaneController(CreatePlaneUseCase createPlaneUseCase, ListAllAirlinesUseCase listAllAirlinesUseCase,
-            ListAllStatusUseCase listAllStatusUseCase, ListAllModelsUseCase listAllModelsUseCase) {
+            ListAllStatusUseCase listAllStatusUseCase, ListAllModelsUseCase listAllModelsUseCase,
+            FindPlaneByPlateUseCase findPlaneByPlateUseCase) {
         this.createPlaneUseCase = createPlaneUseCase;
         this.listAllAirlinesUseCase = listAllAirlinesUseCase;
         this.listAllStatusUseCase = listAllStatusUseCase;
         this.listAllModelsUseCase = listAllModelsUseCase;
+        this.findPlaneByPlateUseCase = findPlaneByPlateUseCase;
     }
 
     public void start() {
@@ -104,15 +109,18 @@ public class PlaneController {
                 case 2:
 
                 case 3:
-                    // try {
-                    //     System.out.println("Enter user id: ");
-                    //     Long id = MyScanner.ScanLong();
-                    //     User user = findUserUseCase.execute(id);
-                    //     displayUserDetails(user);
-                    // } catch (Exception e) {
-                    //     System.out.println("Invalid id.");
-                    // }
-                    // ConsoleUtils.pause();
+                // find plane by plate
+                    ConsoleUtils.cleanScreen();
+                    System.out.println("-------------------------------------------FIND PLANE MENU----------------------------------------");
+                    try {
+                        System.out.println("Enter plate: ");
+                        String plate = MyScanner.scanLine();
+                        Plane plane = findPlaneByPlateUseCase.execute(plate);
+                        displayPlaneDetails(plane);
+                    } catch (Exception e) {
+                        System.out.println("Invalid plate.");
+                    }
+                    ConsoleUtils.pause();
                     break;
                 case 6:
                     return;

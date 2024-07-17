@@ -1,6 +1,7 @@
 package com.o2.travel_agency.plane.infrastructure.out;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -31,6 +32,39 @@ public class PlaneRepository implements PlaneService {
                 }
                 return plane;
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Plane findPlaneByPlate(String plate){
+        String sql = "CALL GetRowByColumnValue(?,?,?,?)";
+
+        try (Connection connection = DatabaseConfig.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sql,
+                        PreparedStatement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, "id,plates,capacity,fabricationDate,idAirline,idStatus,idModel");
+            statement.setString(2, "plane");
+            statement.setString(3, "plates");
+            statement.setString(4, "'"+plate+"'");
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                // Retrieve values from result set
+                int id = resultSet.getInt("id");
+                String plates = resultSet.getString("plates");
+                int capacity = resultSet.getInt("capacity");
+                Date fabricationDate = resultSet.getDate("fabricationDate");
+                int idAirline = resultSet.getInt("idAirline");
+                int idStatus = resultSet.getInt("idStatus");
+                int idModel = resultSet.getInt("idModel");
+    
+                // Create Plane object
+                Plane plane = new Plane(id, plates, capacity, fabricationDate, idAirline, idStatus, idModel);
+                return plane;
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

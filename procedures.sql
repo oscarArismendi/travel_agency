@@ -1,18 +1,19 @@
 -- Search in a specific table the column that you want the value of a string
 DELIMITER $$
 
-DROP PROCEDURE IF EXISTS GetRowByColumnValueString;
-CREATE PROCEDURE GetRowByColumnValueString
-    @TableName VARCHAR(128),
-    @ColumnName VARCHAR(128),
-    @SearchValue VARCHAR(255)
-AS
+DROP PROCEDURE IF EXISTS GetRowByColumnValue;
+CREATE PROCEDURE GetRowByColumnValue(
+    IN SelectColumns VARCHAR(255),
+    IN TableName VARCHAR(128),
+    IN ColumnName VARCHAR(128),
+    IN SearchValue VARCHAR(255)
+     -- Comma-separated list of columns to select
+)
 BEGIN
-    DECLARE @SQL VARCHAR(MAX);
-    SET @SQL = 'SELECT * FROM ' + QUOTENAME(@TableName) + ' WHERE ' + QUOTENAME(@ColumnName) + ' = @SearchValue';
+    SET @query = CONCAT('SELECT ', SelectColumns,' FROM ', TableName , ' WHERE ', ColumnName , ' = ' , SearchValue);
     
-    EXEC sp_executesql @SQL, N'@SearchValue VARCHAR(255)', @SearchValue;
+    PREPARE stmt FROM @query;
+    EXECUTE stmt;
     DEALLOCATE PREPARE stmt;
-    SELECT 1;
 END $$
 DELIMITER ;
