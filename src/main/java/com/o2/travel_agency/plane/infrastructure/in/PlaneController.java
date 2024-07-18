@@ -9,6 +9,7 @@ import com.o2.travel_agency.model.application.ListAllModelsUseCase;
 import com.o2.travel_agency.model.domain.entity.Model;
 import com.o2.travel_agency.plane.application.CreatePlaneUseCase;
 import com.o2.travel_agency.plane.application.FindPlaneByPlateUseCase;
+
 import com.o2.travel_agency.plane.domain.entity.Plane;
 import com.o2.travel_agency.status.application.ListAllStatusUseCase;
 import com.o2.travel_agency.status.domain.entity.Status;
@@ -23,6 +24,9 @@ public class PlaneController {
     private ListAllStatusUseCase listAllStatusUseCase;
     private ListAllModelsUseCase listAllModelsUseCase;
     private FindPlaneByPlateUseCase findPlaneByPlateUseCase;
+
+
+
 
 
 
@@ -50,58 +54,7 @@ public class PlaneController {
                     ConsoleUtils.cleanScreen();
                     System.out.println("----------------------------------------CREATE PLANE MENU----------------------------------------");
 
-                    try {
-                        System.out.print("Type the plane plates: ");
-                        String plates = MyScanner.scanLine();
-            
-                        System.out.print("Type the plane capacity: ");
-                        int capacity = MyScanner.scanInt();
-                        
-                        Date  date  = ConsoleUtils.validateDate("Type the fabication date: ");
-
-                        // airline show all airlines, return a list
-                        List<Airline> airlines =  listAllAirlinesUseCase.execute();
-                        if(airlines.size() ==  0){
-                            System.out.println("There is not airlines in the database! contact service.");
-                            ConsoleUtils.pause();
-                            break;
-                        }
-                        //  input a validad  airline
-                        int airlinePos =  Menus.listMenu(airlines,"Choose an airline:");
-                        int airlineId = airlines.get(airlinePos).getId();
-
-                        // status show all status, return a list
-                        List<Status> status =  listAllStatusUseCase.execute();
-                        if(status.size() ==  0){
-                            System.out.println("There is not status in the database! contact service.");
-                            ConsoleUtils.pause();
-                            break;
-                        }
-                        // input a valid status
-                        int statusPos = Menus.listMenu(status,"Choose a status:");
-                        int statusId = status.get(statusPos).getId();
-                        
-
-                        // models show all models, return a list
-                        List<Model> models = listAllModelsUseCase.execute();
-                        if(models.size() == 0){
-                            System.out.println("There is not model in the database! contact service.");
-                            ConsoleUtils.pause();
-                            break;
-                        }
-                        // input a valid model
-                        int modelPos = Menus.listMenu(models,"Choose a model:");
-                        int modelId = models.get(modelPos).getId();
-
-
-                        Plane plane = new Plane(modelId, plates, capacity, date, airlineId, statusId, modelId);
-            
-                        createPlaneUseCase.execute(plane);
-                        System.out.println("Plane created successfully!");
-
-                    }catch (Exception e) {
-                        System.out.println("Error at creating a plane: " + e.getMessage());
-                    }
+                    createPlaneLogic();
             
                     ConsoleUtils.pause();
 
@@ -112,14 +65,7 @@ public class PlaneController {
                 // find plane by plate
                     ConsoleUtils.cleanScreen();
                     System.out.println("-------------------------------------------FIND PLANE MENU----------------------------------------");
-                    try {
-                        System.out.println("Enter plate: ");
-                        String plate = MyScanner.scanLine();
-                        Plane plane = findPlaneByPlateUseCase.execute(plate);
-                        displayPlaneDetails(plane);
-                    } catch (Exception e) {
-                        System.out.println("Invalid plate.");
-                    }
+                    findPlaneLogic();
                     ConsoleUtils.pause();
                     break;
                 case 6:
@@ -129,6 +75,73 @@ public class PlaneController {
             }            
         }
         
+    }
+
+    public void createPlaneLogic(){
+        try {
+            System.out.print("Type the plane plates: ");
+            String plates = MyScanner.scanLine();
+            if(findPlaneByPlateUseCase.execute(plates) != null){
+                throw new Exception("There is already a plane with this plates");
+            }
+            if(plates.length() == 0){
+                throw new Exception("You didn't put plates");
+            }
+            System.out.print("Type the plane capacity: ");
+            int capacity = MyScanner.scanInt();
+            if(capacity <= 0){
+                throw new Exception("There can't be a plane without capacity");
+            }
+            Date  date  = ConsoleUtils.validateDate("Type the fabication date: ");
+
+            // airline show all airlines, return a list
+            List<Airline> airlines =  listAllAirlinesUseCase.execute();
+            if(airlines.size() ==  0){
+                throw new Exception("There is not airlines in the database! contact service.");
+            }
+            //  input a validad  airline
+            int airlinePos =  Menus.listMenu(airlines,"Choose an airline:");
+            int airlineId = airlines.get(airlinePos).getId();
+
+            // status show all status, return a list
+            List<Status> status =  listAllStatusUseCase.execute();
+            if(status.size() ==  0){
+                throw new Exception("There is not status in the database! contact service.");
+            }
+            // input a valid status
+            int statusPos = Menus.listMenu(status,"Choose a status:");
+            int statusId = status.get(statusPos).getId();
+            
+
+            // models show all models, return a list
+            List<Model> models = listAllModelsUseCase.execute();
+            if(models.size() == 0){
+                throw new Exception("There is not model in the database! contact service.");
+            }
+            // input a valid model
+            int modelPos = Menus.listMenu(models,"Choose a model:");
+            int modelId = models.get(modelPos).getId();
+
+
+            Plane plane = new Plane(modelId, plates, capacity, date, airlineId, statusId, modelId);
+
+            createPlaneUseCase.execute(plane);
+            System.out.println("Plane created successfully!");
+
+        }catch (Exception e) {
+            System.out.println("Error at creating a plane: " + e.getMessage());
+        }
+    }
+
+    public void findPlaneLogic(){
+        try {
+            System.out.println("Enter plate: ");
+            String plate = MyScanner.scanLine();
+            Plane plane = findPlaneByPlateUseCase.execute(plate);
+            displayPlaneDetails(plane);
+        } catch (Exception e) {
+            System.out.println("Invalid plate.");
+        }
     }
 
     public void displayMenu() {

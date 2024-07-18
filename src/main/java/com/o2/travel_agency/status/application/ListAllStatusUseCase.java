@@ -3,7 +3,7 @@ package com.o2.travel_agency.status.application;
 import java.util.List;
 
 import com.o2.travel_agency.status.domain.entity.Status;
-import com.o2.travel_agency.status.service.StatusService;
+import com.o2.travel_agency.status.domain.service.StatusService;
 
 public class ListAllStatusUseCase {
     private final StatusService statusService;

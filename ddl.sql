@@ -1,4 +1,6 @@
-
+DROP DATABASE IF EXISTS airport;
+CREATE DATABASE airport;
+USE airport;
 
 CREATE TABLE documenttype(
     id INT AUTO_INCREMENT NOT NULL,
@@ -167,6 +169,11 @@ CREATE TABLE revision (
     CONSTRAINT fk_revisions_planes FOREIGN KEY (idPlane) REFERENCES plane(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
+CREATE TABLE roles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name_role VARCHAR(50) UNIQUE NOT NULL
+)ENGINE=InnoDB;
+
 CREATE TABLE employee (
     id INT AUTO_INCREMENT NOT NULL,
     name VARCHAR(40) NOT NULL,
@@ -199,18 +206,10 @@ CREATE TABLE tripcrew (
     CONSTRAINT fk_tripcrews_connections FOREIGN KEY (idConection) REFERENCES flightconnection(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
-
-
-
-CREATE TABLE roles (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name_role VARCHAR(50) UNIQUE NOT NULL
-);
-
 CREATE TABLE permissions(
     id INT AUTO_INCREMENT PRIMARY KEY,
     permissions_name VARCHAR(50) UNIQUE NOT NULL
-);
+)ENGINE=InnoDB;
 
 
 CREATE TABLE role_permissions (
@@ -219,6 +218,6 @@ CREATE TABLE role_permissions (
     PRIMARY KEY (role_id, permissions_id),
     FOREIGN KEY (role_id) REFERENCES roles(id),
     FOREIGN KEY (permissions_id) REFERENCES permissions(id)
-);
+)ENGINE=InnoDB;
 
 

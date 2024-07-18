@@ -9,7 +9,7 @@ import java.util.List;
 
 import com.o2.travel_agency.resources.DatabaseConfig;
 import com.o2.travel_agency.status.domain.entity.Status;
-import com.o2.travel_agency.status.service.StatusService;
+import com.o2.travel_agency.status.domain.service.StatusService;
 
 public class StatusRepository implements StatusService {
 
