@@ -12,7 +12,7 @@ public class DatabaseConfig {
     // local test
     private static final String URL = "jdbc:mysql://localhost:3306/airport";
     private static final String USER = "campus2023";
-    private static final String PASSWORD = "";
+    private static final String PASSWORD = "campus2023";
 
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASSWORD);

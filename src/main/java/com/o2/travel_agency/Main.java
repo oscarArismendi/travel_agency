@@ -12,8 +12,8 @@ import com.o2.travel_agency.plane.domain.service.PlaneService;
 import com.o2.travel_agency.plane.infrastructure.in.PlaneController;
 import com.o2.travel_agency.plane.infrastructure.out.PlaneRepository;
 import com.o2.travel_agency.status.application.ListAllStatusUseCase;
+import com.o2.travel_agency.status.domain.service.StatusService;
 import com.o2.travel_agency.status.infrastructure.out.StatusRepository;
-import com.o2.travel_agency.status.service.StatusService;
 
 public class Main {
     public static void main(String[] args) {

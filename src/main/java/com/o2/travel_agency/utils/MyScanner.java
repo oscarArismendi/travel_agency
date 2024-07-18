@@ -21,7 +21,7 @@ public class MyScanner {
                 scan.nextLine();
                 break;
             } catch (Exception e) {
-                System.out.print("Insert a valid number: ");
+                System.out.print("Error! Insert a valid number: ");
                 scan.nextLine();
             }
         }

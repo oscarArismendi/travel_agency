@@ -26,7 +26,7 @@ public class ConsoleUtils {
                 if (option >= lower && option <= upper) {
                     return option;
                 } else {
-                    System.out.println(String.format("You didn't choose a inverval in this boundaries: %1$d-%2$d",
+                    System.out.println(String.format("You didn't choose a number within these boundaries: %1$d-%2$d",
                             lower, upper));
                 }
 

@@ -1,4 +1,4 @@
-package com.o2.travel_agency.status.service;
+package com.o2.travel_agency.status.domain.service;
 
 import java.util.List;
 
