@@ -9,6 +9,7 @@ import com.o2.travel_agency.model.application.ListAllModelsUseCase;
 import com.o2.travel_agency.model.domain.entity.Model;
 import com.o2.travel_agency.plane.application.CreatePlaneUseCase;
 import com.o2.travel_agency.plane.application.FindPlaneByPlateUseCase;
+
 import com.o2.travel_agency.plane.domain.entity.Plane;
 import com.o2.travel_agency.status.application.ListAllStatusUseCase;
 import com.o2.travel_agency.status.domain.entity.Status;
@@ -23,6 +24,9 @@ public class PlaneController {
     private ListAllStatusUseCase listAllStatusUseCase;
     private ListAllModelsUseCase listAllModelsUseCase;
     private FindPlaneByPlateUseCase findPlaneByPlateUseCase;
+
+
+
 
 
 
