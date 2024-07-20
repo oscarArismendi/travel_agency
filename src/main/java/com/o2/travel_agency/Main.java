@@ -17,6 +17,9 @@ import com.o2.travel_agency.plane.application.UpdatePlaneByPlateUseCase;
 import com.o2.travel_agency.plane.domain.service.PlaneService;
 import com.o2.travel_agency.plane.infrastructure.in.PlaneController;
 import com.o2.travel_agency.plane.infrastructure.out.PlaneRepository;
+import com.o2.travel_agency.revision.application.ListAllRevisionsUseCase;
+import com.o2.travel_agency.revision.domain.service.RevisionService;
+import com.o2.travel_agency.revision.infrastructure.out.RevisionRepository;
 import com.o2.travel_agency.status.application.ListAllStatusUseCase;
 import com.o2.travel_agency.status.domain.service.StatusService;
 import com.o2.travel_agency.status.infrastructure.out.StatusRepository;
@@ -37,13 +40,16 @@ public class Main {
         ModelService modelService = new ModelRepository();
         ListAllModelsUseCase listAllModelsUseCase = new ListAllModelsUseCase(modelService);
         
+        // revision section
+        RevisionService revisionService = new RevisionRepository();
+        ListAllRevisionsUseCase listAllRevisionsUseCase = new ListAllRevisionsUseCase(revisionService);
         // plane section
         PlaneService planeService = new PlaneRepository();
         CreatePlaneUseCase createPlaneUseCase = new  CreatePlaneUseCase(planeService);
         FindPlaneByPlateUseCase findPlaneByPlateUseCase = new FindPlaneByPlateUseCase(planeService);
         UpdatePlaneByPlateUseCase updatePlaneByPlateUseCase = new UpdatePlaneByPlateUseCase(planeService);
         DeletePlaneByIdUseCase  deletePlaneByIdUseCase = new DeletePlaneByIdUseCase(planeService);
-        PlaneController planeController  = new PlaneController(createPlaneUseCase,listAllAirlinesUseCase,listAllStatusUseCase,listAllModelsUseCase,findPlaneByPlateUseCase,updatePlaneByPlateUseCase,deletePlaneByIdUseCase);
+        PlaneController planeController  = new PlaneController(createPlaneUseCase,listAllAirlinesUseCase,listAllStatusUseCase,listAllModelsUseCase,findPlaneByPlateUseCase,updatePlaneByPlateUseCase,deletePlaneByIdUseCase,listAllRevisionsUseCase);
 
         String userRol = "ADMIN";
         int[] holderAccess = {1,8,10,11,12,15,16,20,21};
@@ -127,11 +133,13 @@ public class Main {
                     ConsoleUtils.cleanScreen();
                     System.out.println("-------------------------------------------FIND AIRPORT MENU----------------------------------------");
                     ConsoleUtils.pause();
-                break;
+                    break;
                 case "Consult Plane Maintenance History"://12
                     ConsoleUtils.cleanScreen();
                     System.out.println("---------------------------------------PLANE MAINTENANCE HISTORY MENU-------------------------------");
+                    planeController.maintenanceHistoryLogic();
                     ConsoleUtils.pause();
+                    break;
                 case "Update Plane Information"://15
                     ConsoleUtils.cleanScreen();
                     System.out.println("----------------------------------------UPDATE PLANE MENU----------------------------------------");

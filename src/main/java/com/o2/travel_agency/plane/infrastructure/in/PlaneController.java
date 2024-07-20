@@ -12,6 +12,8 @@ import com.o2.travel_agency.plane.application.DeletePlaneByIdUseCase;
 import com.o2.travel_agency.plane.application.FindPlaneByPlateUseCase;
 import com.o2.travel_agency.plane.application.UpdatePlaneByPlateUseCase;
 import com.o2.travel_agency.plane.domain.entity.Plane;
+import com.o2.travel_agency.revision.application.ListAllRevisionsUseCase;
+import com.o2.travel_agency.revision.domain.entity.Revision;
 import com.o2.travel_agency.status.application.ListAllStatusUseCase;
 import com.o2.travel_agency.status.domain.entity.Status;
 import com.o2.travel_agency.utils.ConsoleUtils;
@@ -27,12 +29,14 @@ public class PlaneController {
     private FindPlaneByPlateUseCase findPlaneByPlateUseCase;
     private UpdatePlaneByPlateUseCase updatePlaneByPlate;
     private DeletePlaneByIdUseCase deletePlaneByIdUseCase;
+    private ListAllRevisionsUseCase  listAllRevisionsUseCase;
+
 
 
     public PlaneController(CreatePlaneUseCase createPlaneUseCase, ListAllAirlinesUseCase listAllAirlinesUseCase,
             ListAllStatusUseCase listAllStatusUseCase, ListAllModelsUseCase listAllModelsUseCase,
             FindPlaneByPlateUseCase findPlaneByPlateUseCase, UpdatePlaneByPlateUseCase updatePlaneByPlate,
-            DeletePlaneByIdUseCase deletePlaneByIdUseCase) {
+            DeletePlaneByIdUseCase deletePlaneByIdUseCase, ListAllRevisionsUseCase listAllRevisionsUseCase) {
         this.createPlaneUseCase = createPlaneUseCase;
         this.listAllAirlinesUseCase = listAllAirlinesUseCase;
         this.listAllStatusUseCase = listAllStatusUseCase;
@@ -40,6 +44,7 @@ public class PlaneController {
         this.findPlaneByPlateUseCase = findPlaneByPlateUseCase;
         this.updatePlaneByPlate = updatePlaneByPlate;
         this.deletePlaneByIdUseCase = deletePlaneByIdUseCase;
+        this.listAllRevisionsUseCase = listAllRevisionsUseCase;
     }
 
     public void start() {
@@ -138,6 +143,33 @@ public class PlaneController {
 
         }catch (Exception e) {
             System.out.println("Error at creating a plane: " + e.getMessage());
+        }
+    }
+
+    public void maintenanceHistoryLogic(){
+        try {
+            System.out.print("Type the plane plates: ");
+            String plates = MyScanner.scanLine();
+            if(plates.length() == 0){
+                throw new Exception("You didn't put plates");
+            }
+            Plane plane = findPlaneByPlateUseCase.execute(plates);
+            if(plane == null){
+                throw new Exception("There is no plane with this plates");
+            }
+            List<Revision> revisions =  listAllRevisionsUseCase.execute();
+            int cntRevision = 0;
+            for(Revision revision :  revisions){
+                if(revision.getIdPlane() == plane.getId()){
+                    System.out.println("- "+revision.toString());
+                    cntRevision++;
+                }
+            }
+            if(cntRevision == 0){
+                System.out.println("This plane hasn't revision,contact someone from maintenance department");
+            }
+        } catch (Exception e) {
+            System.out.println("Error at Consult Plane Maintenance History: " + e.getMessage());
         }
     }
 
