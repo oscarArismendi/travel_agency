@@ -29,4 +29,17 @@ public class Menus {
         System.out.println("You selected: " + fields[rta].getName());
         return rta - 1;
     }
+
+    public static String mainMenu(List<String> textOptions, String text){
+        String rta = "";
+        System.out.println(text);
+        int i = 0;
+        for (; i < textOptions.size(); i++) {
+            System.out.println((i + 1) + ". " + textOptions.get(i));
+        }
+        int op = ConsoleUtils.option_validation("Please choose an option: ", 1, textOptions.size());
+        rta = textOptions.get(op-1);
+        System.out.println("You selected: " + rta);
+        return rta;
+    }
 }
