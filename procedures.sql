@@ -41,3 +41,23 @@ BEGIN
 END $$
 -- EX:  CALL UpdateRowByColumnValue("plane","capacity = 200","id","1");
 DELIMITER ;
+
+
+-- delete a specific element for id
+DELIMITER $$
+-- ex: CALL  DeleteFromTableById("plane","6");
+DROP PROCEDURE IF EXISTS DeleteFromTableById;
+CREATE PROCEDURE DeleteFromTableById(
+    IN TableName VARCHAR(128),
+    IN SearchValue VARCHAR(255)
+)
+BEGIN
+    SET @query = CONCAT('DELETE FROM ', TableName , ' WHERE ID = ', SearchValue);
+    
+    PREPARE stmt FROM @query;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
+END $$
+DELIMITER ;
+
+

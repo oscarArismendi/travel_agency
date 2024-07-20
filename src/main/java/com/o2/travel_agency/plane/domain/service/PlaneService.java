@@ -6,4 +6,5 @@ public interface PlaneService {
     Plane createPlane(Plane plane);
     Plane findPlaneByPlate(String plate);
     Boolean updatePlaneByPlate(String updateColumns,String plate);
+    Boolean deletePlaneById(Integer id);
 }
