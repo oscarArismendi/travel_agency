@@ -8,6 +8,7 @@ import com.o2.travel_agency.model.domain.service.ModelService;
 import com.o2.travel_agency.model.infrastructure.out.ModelRepository;
 import com.o2.travel_agency.plane.application.CreatePlaneUseCase;
 import com.o2.travel_agency.plane.application.FindPlaneByPlateUseCase;
+import com.o2.travel_agency.plane.application.UpdatePlaneByPlateUseCase;
 import com.o2.travel_agency.plane.domain.service.PlaneService;
 import com.o2.travel_agency.plane.infrastructure.in.PlaneController;
 import com.o2.travel_agency.plane.infrastructure.out.PlaneRepository;
@@ -33,7 +34,8 @@ public class Main {
         PlaneService planeService = new PlaneRepository();
         CreatePlaneUseCase createPlaneUseCase = new  CreatePlaneUseCase(planeService);
         FindPlaneByPlateUseCase findPlaneByPlateUseCase = new FindPlaneByPlateUseCase(planeService);
-        PlaneController planeController  = new PlaneController(createPlaneUseCase,listAllAirlinesUseCase,listAllStatusUseCase,listAllModelsUseCase,findPlaneByPlateUseCase);
+        UpdatePlaneByPlateUseCase updatePlaneByPlateUseCase = new UpdatePlaneByPlateUseCase(planeService);
+        PlaneController planeController  = new PlaneController(createPlaneUseCase,listAllAirlinesUseCase,listAllStatusUseCase,listAllModelsUseCase,findPlaneByPlateUseCase,updatePlaneByPlateUseCase);
 
         planeController.start();
     }

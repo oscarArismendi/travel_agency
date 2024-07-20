@@ -70,4 +70,30 @@ public class PlaneRepository implements PlaneService {
         }
         return null;
     }
+
+    @Override
+    public Boolean updatePlaneByPlate(String updateColumns,String plate){
+        String sql = "CALL UpdateRowByColumnValue(?,?,?,?)";
+
+        try (Connection connection = DatabaseConfig.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sql,
+                PreparedStatement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, "plane");//table name
+            statement.setString(2, updateColumns);//UpdateColumns
+            statement.setString(3, "plates");// ColumnName
+            statement.setString(4, "'"+plate+"'");// SearchValue
+            // uncomment if you need debugin
+            // System.out.println("Executing SQL: " + sql);
+            // System.out.println("Table: plane");
+            // System.out.println("UpdateColumns: " + updateColumns);
+            // System.out.println("ColumnName: plates");
+            // System.out.println("SearchValue: " + plate);
+            statement.executeUpdate();
+            System.out.println("Plane updated successfully!");            
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

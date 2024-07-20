@@ -9,7 +9,7 @@ import com.o2.travel_agency.model.application.ListAllModelsUseCase;
 import com.o2.travel_agency.model.domain.entity.Model;
 import com.o2.travel_agency.plane.application.CreatePlaneUseCase;
 import com.o2.travel_agency.plane.application.FindPlaneByPlateUseCase;
-
+import com.o2.travel_agency.plane.application.UpdatePlaneByPlateUseCase;
 import com.o2.travel_agency.plane.domain.entity.Plane;
 import com.o2.travel_agency.status.application.ListAllStatusUseCase;
 import com.o2.travel_agency.status.domain.entity.Status;
@@ -24,22 +24,20 @@ public class PlaneController {
     private ListAllStatusUseCase listAllStatusUseCase;
     private ListAllModelsUseCase listAllModelsUseCase;
     private FindPlaneByPlateUseCase findPlaneByPlateUseCase;
-
-
-
-
+    private UpdatePlaneByPlateUseCase updatePlaneByPlate;
 
 
 
 
     public PlaneController(CreatePlaneUseCase createPlaneUseCase, ListAllAirlinesUseCase listAllAirlinesUseCase,
             ListAllStatusUseCase listAllStatusUseCase, ListAllModelsUseCase listAllModelsUseCase,
-            FindPlaneByPlateUseCase findPlaneByPlateUseCase) {
+            FindPlaneByPlateUseCase findPlaneByPlateUseCase, UpdatePlaneByPlateUseCase updatePlaneByPlate) {
         this.createPlaneUseCase = createPlaneUseCase;
         this.listAllAirlinesUseCase = listAllAirlinesUseCase;
         this.listAllStatusUseCase = listAllStatusUseCase;
         this.listAllModelsUseCase = listAllModelsUseCase;
         this.findPlaneByPlateUseCase = findPlaneByPlateUseCase;
+        this.updatePlaneByPlate = updatePlaneByPlate;
     }
 
     public void start() {
@@ -60,7 +58,15 @@ public class PlaneController {
 
                     break;
                 case 2:
+                // update plane
+                ConsoleUtils.cleanScreen();
+                    System.out.println("----------------------------------------UPDATE PLANE MENU----------------------------------------");
+                    
+                    updatePlaneLogic();
 
+                    ConsoleUtils.pause();
+
+                    break;
                 case 3:
                 // find plane by plate
                     ConsoleUtils.cleanScreen();
@@ -144,6 +150,99 @@ public class PlaneController {
         }
     }
 
+    public void updatePlaneLogic(){
+        try {
+            System.out.print("Type the plane plates: ");
+            String plates = MyScanner.scanLine();
+            if(plates.length() == 0){
+                throw new Exception("You didn't put plates");
+            }
+            Plane plane = findPlaneByPlateUseCase.execute(plates);
+            if( plane == null){
+                throw new Exception("There no plane with this plates");
+            }
+            System.out.println("Plane info: ");
+            displayPlaneDetails(plane);
+            int op = Menus.classAttributeMenu(plane.getClass(),"Choose a attribute to update: ");
+            String updateColumns = "plates = " ;
+            switch(op){
+                case 0:// plates
+                    System.out.print("Type the new plane plates (actual: "+ plane.getPlates()  + " ): ");
+                    String newPlates = MyScanner.scanLine();
+                    if(findPlaneByPlateUseCase.execute(newPlates) != null){
+                        throw new Exception("There is already a plane with this plates");
+                    }
+                    if(newPlates.length() == 0){
+                        throw new Exception("You didn't put plates");
+                    }
+                    updateColumns = "plates = " ;
+                    updateColumns += ("'"+ newPlates +"'");
+                    
+                    updatePlaneByPlate.execute(updateColumns,plane.getPlates());
+                    break;
+                case 1:// capacity
+                    System.out.print("Type the new plane capacity (actual: "+ plane.getCapacity()+ " ): ");
+                    int newCapacity = MyScanner.scanInt();
+                    if(newCapacity <= 0){
+                        throw new Exception("There can't be a plane without capacity");
+                    }
+                    updateColumns = "capacity = " ;
+                    updateColumns += newCapacity;
+                    updatePlaneByPlate.execute(updateColumns,plane.getPlates());
+                    break;
+                case 2:// fabricationDate
+                    Date  newDate  = ConsoleUtils.validateDate("Type the fabication date (actual:" + plane.getFabricationDate() + " ): ");
+                    updateColumns = "fabricationDate = " ;
+                    updateColumns += ("'"+newDate.toString()+"'") ;
+                    updatePlaneByPlate.execute(updateColumns,plates);
+                    break;
+                case 3:// idAirline
+                    List<Airline> airlines =  listAllAirlinesUseCase.execute();
+                    if(airlines.size() ==  0){
+                        throw new Exception("There is not airlines in the database! contact service.");
+                    }
+                    //  input a validad  airline
+                    int airlinePos =  Menus.listMenu(airlines,"Choose an airline:");
+                    int airlineId = airlines.get(airlinePos).getId();
+
+                    updateColumns = "idAirline = " ;
+                    updateColumns += airlineId ;
+                    updatePlaneByPlate.execute(updateColumns,plates);
+                    break;
+                case 4:// idStatus
+                    List<Status> status =  listAllStatusUseCase.execute();
+                    if(status.size() ==  0){
+                        throw new Exception("There is not status in the database! contact service.");
+                    }
+                    // input a valid status
+                    int statusPos = Menus.listMenu(status,"Choose a status:");
+                    int statusId = status.get(statusPos).getId();
+
+                    updateColumns = "idStatus = " ;
+                    updateColumns += statusId ;
+                    updatePlaneByPlate.execute(updateColumns,plates);
+                    break;
+                case 5:// idModel
+                    List<Model> models = listAllModelsUseCase.execute();
+                    if(models.size() == 0){
+                        throw new Exception("There is not model in the database! contact service.");
+                    }
+                    // input a valid model
+                    int modelPos = Menus.listMenu(models,"Choose a model:");
+                    int modelId = models.get(modelPos).getId();
+
+                    updateColumns = "idModel = " ;
+                    updateColumns += modelId ;
+                    updatePlaneByPlate.execute(updateColumns,plates);
+                    break;
+                default:
+                    break;
+            }
+        } catch (Exception e) {
+            System.out.println("Error at updating the plane: " + e.getMessage());
+        }
+    }
+
     public void displayMenu() {
         ConsoleUtils.cleanScreen();
         System.out.println("----------------------------------------PLANE MENU----------------------------------------");
@@ -163,6 +262,7 @@ public class PlaneController {
         System.out.println("Plane id airline: "+ plane.getIdAirline() );
         System.out.println("Plane id status: "+ plane.getIdStatus());
         System.out.println("Plane id model: "+ plane.getIdModel());
+        System.out.println("------------------------------------------------------------------------------------------------");
     }
 
 }

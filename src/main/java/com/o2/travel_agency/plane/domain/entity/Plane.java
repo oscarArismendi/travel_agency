@@ -3,18 +3,18 @@ package com.o2.travel_agency.plane.domain.entity;
 import java.sql.Date;
 
 public class Plane {
-    private int id;
+    private Integer id;
     private String plates;
-    private int capacity;
+    private Integer capacity;
     private Date fabricationDate;
-    private int idAirline;
-    private int idStatus;
-    private int idModel;
+    private Integer idAirline;
+    private Integer idStatus;
+    private Integer idModel;
 
     public Plane() {
     }
 
-    public Plane(int id, String plates, int capacity, Date fabricationDate, int idAirline, int idStatus, int idModel) {
+    public Plane(Integer id, String plates, Integer capacity, Date fabricationDate, Integer idAirline, Integer idStatus, Integer idModel) {
         this.id = id;
         this.plates = plates;
         this.capacity = capacity;
@@ -24,11 +24,11 @@ public class Plane {
         this.idModel = idModel;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -40,11 +40,11 @@ public class Plane {
         this.plates = plates;
     }
 
-    public int getCapacity() {
+    public Integer getCapacity() {
         return capacity;
     }
 
-    public void setCapacity(int capacity) {
+    public void setCapacity(Integer capacity) {
         this.capacity = capacity;
     }
 
@@ -56,27 +56,27 @@ public class Plane {
         this.fabricationDate = fabricationDate;
     }
 
-    public int getIdAirline() {
+    public Integer getIdAirline() {
         return idAirline;
     }
 
-    public void setIdAirline(int idAirline) {
+    public void setIdAirline(Integer idAirline) {
         this.idAirline = idAirline;
     }
 
-    public int getIdStatus() {
+    public Integer getIdStatus() {
         return idStatus;
     }
 
-    public void setIdStatus(int idStatus) {
+    public void setIdStatus(Integer idStatus) {
         this.idStatus = idStatus;
     }
 
-    public int getIdModel() {
+    public Integer getIdModel() {
         return idModel;
     }
 
-    public void setIdModel(int idModel) {
+    public void setIdModel(Integer idModel) {
         this.idModel = idModel;
     }
 
