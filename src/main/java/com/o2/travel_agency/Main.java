@@ -11,6 +11,7 @@ import com.o2.travel_agency.model.application.ListAllModelsUseCase;
 import com.o2.travel_agency.model.domain.service.ModelService;
 import com.o2.travel_agency.model.infrastructure.out.ModelRepository;
 import com.o2.travel_agency.plane.application.CreatePlaneUseCase;
+import com.o2.travel_agency.plane.application.DeletePlaneByIdUseCase;
 import com.o2.travel_agency.plane.application.FindPlaneByPlateUseCase;
 import com.o2.travel_agency.plane.application.UpdatePlaneByPlateUseCase;
 import com.o2.travel_agency.plane.domain.service.PlaneService;
@@ -41,7 +42,8 @@ public class Main {
         CreatePlaneUseCase createPlaneUseCase = new  CreatePlaneUseCase(planeService);
         FindPlaneByPlateUseCase findPlaneByPlateUseCase = new FindPlaneByPlateUseCase(planeService);
         UpdatePlaneByPlateUseCase updatePlaneByPlateUseCase = new UpdatePlaneByPlateUseCase(planeService);
-        PlaneController planeController  = new PlaneController(createPlaneUseCase,listAllAirlinesUseCase,listAllStatusUseCase,listAllModelsUseCase,findPlaneByPlateUseCase,updatePlaneByPlateUseCase);
+        DeletePlaneByIdUseCase  deletePlaneByIdUseCase = new DeletePlaneByIdUseCase(planeService);
+        PlaneController planeController  = new PlaneController(createPlaneUseCase,listAllAirlinesUseCase,listAllStatusUseCase,listAllModelsUseCase,findPlaneByPlateUseCase,updatePlaneByPlateUseCase,deletePlaneByIdUseCase);
 
         String userRol = "ADMIN";
         int[] holderAccess = {1,8,10,11,12,15,16,20,21};
@@ -100,6 +102,7 @@ public class Main {
         
         
         while (true) {
+            ConsoleUtils.cleanScreen();
             System.out.println("------------------------"+ userRol+ " MENU--------------------------------------");
             String menuChoose = Menus.mainMenu(userPermisions,"User menus: ");
             switch (menuChoose) {
@@ -138,6 +141,7 @@ public class Main {
                 case "Delete Plane"://16
                     ConsoleUtils.cleanScreen();
                     System.out.println("----------------------------------------DELETE PLANE MENU----------------------------------------");
+                    planeController.deletePlaneLogic();
                     ConsoleUtils.pause();
                     break;
                 case "Update Airport Information"://20

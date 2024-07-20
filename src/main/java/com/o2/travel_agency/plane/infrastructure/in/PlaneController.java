@@ -8,6 +8,7 @@ import com.o2.travel_agency.airline.domain.entity.Airline;
 import com.o2.travel_agency.model.application.ListAllModelsUseCase;
 import com.o2.travel_agency.model.domain.entity.Model;
 import com.o2.travel_agency.plane.application.CreatePlaneUseCase;
+import com.o2.travel_agency.plane.application.DeletePlaneByIdUseCase;
 import com.o2.travel_agency.plane.application.FindPlaneByPlateUseCase;
 import com.o2.travel_agency.plane.application.UpdatePlaneByPlateUseCase;
 import com.o2.travel_agency.plane.domain.entity.Plane;
@@ -25,19 +26,20 @@ public class PlaneController {
     private ListAllModelsUseCase listAllModelsUseCase;
     private FindPlaneByPlateUseCase findPlaneByPlateUseCase;
     private UpdatePlaneByPlateUseCase updatePlaneByPlate;
-
-
+    private DeletePlaneByIdUseCase deletePlaneByIdUseCase;
 
 
     public PlaneController(CreatePlaneUseCase createPlaneUseCase, ListAllAirlinesUseCase listAllAirlinesUseCase,
             ListAllStatusUseCase listAllStatusUseCase, ListAllModelsUseCase listAllModelsUseCase,
-            FindPlaneByPlateUseCase findPlaneByPlateUseCase, UpdatePlaneByPlateUseCase updatePlaneByPlate) {
+            FindPlaneByPlateUseCase findPlaneByPlateUseCase, UpdatePlaneByPlateUseCase updatePlaneByPlate,
+            DeletePlaneByIdUseCase deletePlaneByIdUseCase) {
         this.createPlaneUseCase = createPlaneUseCase;
         this.listAllAirlinesUseCase = listAllAirlinesUseCase;
         this.listAllStatusUseCase = listAllStatusUseCase;
         this.listAllModelsUseCase = listAllModelsUseCase;
         this.findPlaneByPlateUseCase = findPlaneByPlateUseCase;
         this.updatePlaneByPlate = updatePlaneByPlate;
+        this.deletePlaneByIdUseCase = deletePlaneByIdUseCase;
     }
 
     public void start() {
@@ -145,6 +147,17 @@ public class PlaneController {
             String plate = MyScanner.scanLine();
             Plane plane = findPlaneByPlateUseCase.execute(plate);
             displayPlaneDetails(plane);
+        } catch (Exception e) {
+            System.out.println("Invalid plate.");
+        }
+    }
+
+    public void deletePlaneLogic(){
+        try {
+            System.out.println("Enter plate: ");
+            String plate = MyScanner.scanLine();
+            Plane plane = findPlaneByPlateUseCase.execute(plate);
+            deletePlaneByIdUseCase.execute(plane.getId());
         } catch (Exception e) {
             System.out.println("Invalid plate.");
         }

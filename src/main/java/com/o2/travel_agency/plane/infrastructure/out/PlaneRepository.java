@@ -90,7 +90,24 @@ public class PlaneRepository implements PlaneService {
             // System.out.println("SearchValue: " + plate);
             statement.executeUpdate();
             System.out.println("Plane updated successfully!");            
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
+    @Override
+    public Boolean deletePlaneById(Integer id){
+        String sql = "CALL DeleteFromTableById(?,?)";
+        try(Connection connection = DatabaseConfig.getConnection();
+        PreparedStatement statement = connection.prepareStatement(sql,
+        PreparedStatement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, "plane");//table name
+            statement.setInt(2, id);//searchValue
+            statement.executeUpdate();
+            System.out.println("Plane deleted successfully!");   
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
         }
