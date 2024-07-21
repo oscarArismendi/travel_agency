@@ -33,4 +33,28 @@ public class RevisionRepository implements RevisionService {
         }
         return objects;
     }
+
+    @Override
+    public Revision createRevision(Revision revision){
+        String sql = "INSERT INTO revision (revisionDate,idPlane,description) VALUES (?,?,?)";
+
+        try (Connection connection = DatabaseConfig.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sql,
+                        PreparedStatement.RETURN_GENERATED_KEYS)) {
+            statement.setDate(1, revision.getRevisionDate());
+            statement.setInt(2, revision.getIdPlane());
+            statement.setString(3, revision.getDescription());
+            statement.executeUpdate();
+
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    revision.setId(generatedKeys.getInt(1));
+                }
+                return revision;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

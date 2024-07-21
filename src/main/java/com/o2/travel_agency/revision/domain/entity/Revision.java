@@ -18,6 +18,14 @@ public class Revision {
         this.description = description;
     }
 
+    
+
+    public Revision(Date revisionDate, Integer idPlane, String description) {
+        this.revisionDate = revisionDate;
+        this.idPlane = idPlane;
+        this.description = description;
+    }
+
     public Integer getId() {
         return id;
     }

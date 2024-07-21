@@ -7,6 +7,9 @@ import java.util.List;
 import com.o2.travel_agency.airline.application.ListAllAirlinesUseCase;
 import com.o2.travel_agency.airline.domain.service.AirlineService;
 import com.o2.travel_agency.airline.infrastructure.out.AirlineRepository;
+import com.o2.travel_agency.employee.application.ListAllEmployeesUseCase;
+import com.o2.travel_agency.employee.domain.service.EmployeeService;
+import com.o2.travel_agency.employee.infrastructure.out.EmployeeRepository;
 import com.o2.travel_agency.model.application.ListAllModelsUseCase;
 import com.o2.travel_agency.model.domain.service.ModelService;
 import com.o2.travel_agency.model.infrastructure.out.ModelRepository;
@@ -17,9 +20,14 @@ import com.o2.travel_agency.plane.application.UpdatePlaneByPlateUseCase;
 import com.o2.travel_agency.plane.domain.service.PlaneService;
 import com.o2.travel_agency.plane.infrastructure.in.PlaneController;
 import com.o2.travel_agency.plane.infrastructure.out.PlaneRepository;
+import com.o2.travel_agency.revision.application.CreateRevisionUseCase;
 import com.o2.travel_agency.revision.application.ListAllRevisionsUseCase;
 import com.o2.travel_agency.revision.domain.service.RevisionService;
+import com.o2.travel_agency.revision.infrastructure.in.RevisionController;
 import com.o2.travel_agency.revision.infrastructure.out.RevisionRepository;
+import com.o2.travel_agency.revisionEmployee.application.CreateRevisionEmployeeUseCase;
+import com.o2.travel_agency.revisionEmployee.domain.service.RevisionEmployeeService;
+import com.o2.travel_agency.revisionEmployee.infrastructure.out.RevisionEmployeeRepository;
 import com.o2.travel_agency.status.application.ListAllStatusUseCase;
 import com.o2.travel_agency.status.domain.service.StatusService;
 import com.o2.travel_agency.status.infrastructure.out.StatusRepository;
@@ -28,31 +36,50 @@ import com.o2.travel_agency.utils.Menus;
 
 public class Main {
     public static void main(String[] args) {
-        //airline setion
+        //Service declaration
         AirlineService airlineService = new AirlineRepository();
+        StatusService statusService = new StatusRepository();
+        ModelService modelService = new ModelRepository();
+        EmployeeService  employeeService = new  EmployeeRepository();
+        RevisionEmployeeService revisionEmployeeService = new RevisionEmployeeRepository();
+        RevisionService revisionService = new RevisionRepository();
+        PlaneService planeService = new PlaneRepository();
+        //airline use case setion
         ListAllAirlinesUseCase listAllAirlinesUseCase = new ListAllAirlinesUseCase(airlineService);
 
-        // status section
-        StatusService statusService = new StatusRepository();
+        // status use case section
         ListAllStatusUseCase listAllStatusUseCase = new ListAllStatusUseCase(statusService);
 
-        // model section
-        ModelService modelService = new ModelRepository();
+        // model use case section
         ListAllModelsUseCase listAllModelsUseCase = new ListAllModelsUseCase(modelService);
         
-        // revision section
-        RevisionService revisionService = new RevisionRepository();
+        //Employee use case section
+
+        ListAllEmployeesUseCase listAllEmployeesUseCase = new ListAllEmployeesUseCase(employeeService);
+        
+        //RevisionEmployee use case section
+
+        CreateRevisionEmployeeUseCase createRevisionEmployeeUseCase = new CreateRevisionEmployeeUseCase(revisionEmployeeService);
+        
+        // revision use case section
+        
         ListAllRevisionsUseCase listAllRevisionsUseCase = new ListAllRevisionsUseCase(revisionService);
-        // plane section
-        PlaneService planeService = new PlaneRepository();
+        CreateRevisionUseCase createRevisionUseCase = new  CreateRevisionUseCase(revisionService);
+        // plane use case section
         CreatePlaneUseCase createPlaneUseCase = new  CreatePlaneUseCase(planeService);
         FindPlaneByPlateUseCase findPlaneByPlateUseCase = new FindPlaneByPlateUseCase(planeService);
         UpdatePlaneByPlateUseCase updatePlaneByPlateUseCase = new UpdatePlaneByPlateUseCase(planeService);
         DeletePlaneByIdUseCase  deletePlaneByIdUseCase = new DeletePlaneByIdUseCase(planeService);
+        
+        // controller  section
+        RevisionController revisionController =  new RevisionController(findPlaneByPlateUseCase, listAllEmployeesUseCase, createRevisionUseCase, createRevisionEmployeeUseCase);
         PlaneController planeController  = new PlaneController(createPlaneUseCase,listAllAirlinesUseCase,listAllStatusUseCase,listAllModelsUseCase,findPlaneByPlateUseCase,updatePlaneByPlateUseCase,deletePlaneByIdUseCase,listAllRevisionsUseCase);
 
+
+
+
         String userRol = "ADMIN";
-        int[] holderAccess = {1,8,10,11,12,15,16,20,21};
+        int[] holderAccess = {1,4,8,10,11,12,15,16,20,21};
         List<String> useCases = Arrays.asList(
             "Register Plane",  // 1
             "Assign Crew to Route",  // 2
@@ -116,6 +143,12 @@ public class Main {
                     ConsoleUtils.cleanScreen();
                     System.out.println("----------------------------------------CREATE PLANE MENU----------------------------------------");
                     planeController.createPlaneLogic();
+                    ConsoleUtils.pause();
+                    break;
+                case "Register Maintenance Review"://4
+                ConsoleUtils.cleanScreen();
+                    System.out.println("----------------------------------------CREATE MAINTENANCE MENU-------------------------------------");
+                    revisionController.createRevisionLogic();
                     ConsoleUtils.pause();
                     break;
                 case "Consult Plane Information"://8
