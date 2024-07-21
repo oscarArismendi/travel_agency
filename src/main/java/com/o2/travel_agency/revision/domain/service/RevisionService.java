@@ -7,4 +7,5 @@ import com.o2.travel_agency.revision.domain.entity.Revision;
 public interface RevisionService {
     List<Revision> listAllRevisions();
     Revision createRevision(Revision revision); 
+    Boolean deleteRevision(Integer id);
 }

@@ -21,6 +21,7 @@ import com.o2.travel_agency.plane.domain.service.PlaneService;
 import com.o2.travel_agency.plane.infrastructure.in.PlaneController;
 import com.o2.travel_agency.plane.infrastructure.out.PlaneRepository;
 import com.o2.travel_agency.revision.application.CreateRevisionUseCase;
+import com.o2.travel_agency.revision.application.DeleteRevisionUseCase;
 import com.o2.travel_agency.revision.application.ListAllRevisionsUseCase;
 import com.o2.travel_agency.revision.domain.service.RevisionService;
 import com.o2.travel_agency.revision.infrastructure.in.RevisionController;
@@ -62,9 +63,9 @@ public class Main {
         CreateRevisionEmployeeUseCase createRevisionEmployeeUseCase = new CreateRevisionEmployeeUseCase(revisionEmployeeService);
         
         // revision use case section
-        
         ListAllRevisionsUseCase listAllRevisionsUseCase = new ListAllRevisionsUseCase(revisionService);
         CreateRevisionUseCase createRevisionUseCase = new  CreateRevisionUseCase(revisionService);
+        DeleteRevisionUseCase deleteRevisionUseCase = new DeleteRevisionUseCase(revisionService);
         // plane use case section
         CreatePlaneUseCase createPlaneUseCase = new  CreatePlaneUseCase(planeService);
         FindPlaneByPlateUseCase findPlaneByPlateUseCase = new FindPlaneByPlateUseCase(planeService);
@@ -72,14 +73,14 @@ public class Main {
         DeletePlaneByIdUseCase  deletePlaneByIdUseCase = new DeletePlaneByIdUseCase(planeService);
         
         // controller  section
-        RevisionController revisionController =  new RevisionController(findPlaneByPlateUseCase, listAllEmployeesUseCase, createRevisionUseCase, createRevisionEmployeeUseCase);
+        RevisionController revisionController =  new RevisionController(findPlaneByPlateUseCase, listAllEmployeesUseCase, createRevisionUseCase, createRevisionEmployeeUseCase, listAllRevisionsUseCase, deleteRevisionUseCase);
         PlaneController planeController  = new PlaneController(createPlaneUseCase,listAllAirlinesUseCase,listAllStatusUseCase,listAllModelsUseCase,findPlaneByPlateUseCase,updatePlaneByPlateUseCase,deletePlaneByIdUseCase,listAllRevisionsUseCase);
 
 
 
 
         String userRol = "ADMIN";
-        int[] holderAccess = {1,4,8,10,11,12,15,16,20,21};
+        int[] holderAccess = {1,4,8,10,11,12,15,16,20,21,25};
         List<String> useCases = Arrays.asList(
             "Register Plane",  // 1
             "Assign Crew to Route",  // 2
@@ -193,6 +194,12 @@ public class Main {
                 case "Delete Airport"://21
                     ConsoleUtils.cleanScreen();
                     System.out.println("----------------------------------------DELETE AIRPORT MENU-----------------------------------------");
+                    ConsoleUtils.pause();
+                    break;
+                case "Delete Maintenance Review"://25
+                    ConsoleUtils.cleanScreen();
+                    System.out.println("----------------------------------------DELETE MAINTENANCE MENU-------------------------------------");
+                    revisionController.deletedRevisionLogic();
                     ConsoleUtils.pause();
                     break;
                 case "Exit":
