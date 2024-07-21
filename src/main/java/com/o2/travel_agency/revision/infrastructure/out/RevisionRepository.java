@@ -74,4 +74,31 @@ public class RevisionRepository implements RevisionService {
         }
         return false;
     }
+
+    @Override
+    public Boolean updateRevisionById(String updateColumns,Integer id){
+
+        String sql = "CALL UpdateRowByColumnValue(?,?,?,?)";
+
+        try (Connection connection = DatabaseConfig.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sql,
+                PreparedStatement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, "revision");//table name
+            statement.setString(2, updateColumns);//UpdateColumns
+            statement.setString(3, "id");// ColumnName
+            statement.setInt(4, id);// SearchValue
+            // uncomment if you need debugin
+            // System.out.println("Executing SQL: " + sql);
+            // System.out.println("Table: revision");
+            // System.out.println("UpdateColumns: " + updateColumns);
+            // System.out.println("ColumnName: id");
+            // System.out.println("SearchValue: " + id);
+            statement.executeUpdate();
+            System.out.println("Revision updated successfully!");            
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
