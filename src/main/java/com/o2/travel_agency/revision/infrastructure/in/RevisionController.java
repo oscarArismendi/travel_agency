@@ -8,6 +8,8 @@ import com.o2.travel_agency.employee.domain.entity.Employee;
 import com.o2.travel_agency.plane.application.FindPlaneByPlateUseCase;
 import com.o2.travel_agency.plane.domain.entity.Plane;
 import com.o2.travel_agency.revision.application.CreateRevisionUseCase;
+import com.o2.travel_agency.revision.application.DeleteRevisionUseCase;
+import com.o2.travel_agency.revision.application.ListAllRevisionsUseCase;
 import com.o2.travel_agency.revision.domain.entity.Revision;
 import com.o2.travel_agency.revisionEmployee.application.CreateRevisionEmployeeUseCase;
 import com.o2.travel_agency.revisionEmployee.domain.entity.RevisionEmployee;
@@ -20,14 +22,20 @@ public class RevisionController {
     private ListAllEmployeesUseCase listAllEmployeesUseCase;
     private CreateRevisionUseCase createRevisionUseCase;
     private CreateRevisionEmployeeUseCase createRevisionEmployeeUseCase;
+    private ListAllRevisionsUseCase listAllRevisionsUseCase;
+    private DeleteRevisionUseCase deleteRevisionUseCase;
+
 
     public RevisionController(FindPlaneByPlateUseCase findPlaneByPlateUseCase,
             ListAllEmployeesUseCase listAllEmployeesUseCase, CreateRevisionUseCase createRevisionUseCase,
-            CreateRevisionEmployeeUseCase createRevisionEmployeeUseCase) {
+            CreateRevisionEmployeeUseCase createRevisionEmployeeUseCase,
+            ListAllRevisionsUseCase listAllRevisionsUseCase, DeleteRevisionUseCase deleteRevisionUseCase) {
         this.findPlaneByPlateUseCase = findPlaneByPlateUseCase;
         this.listAllEmployeesUseCase = listAllEmployeesUseCase;
         this.createRevisionUseCase = createRevisionUseCase;
         this.createRevisionEmployeeUseCase = createRevisionEmployeeUseCase;
+        this.listAllRevisionsUseCase = listAllRevisionsUseCase;
+        this.deleteRevisionUseCase = deleteRevisionUseCase;
     }
 
     public void createRevisionLogic() {
@@ -74,6 +82,28 @@ public class RevisionController {
 
         } catch (Exception e) {
             System.out.println("Error at creating a maintenance: " + e.getMessage());
+        }
+    }
+
+    public void deletedRevisionLogic(){
+        try {
+            // revision show all of them in a list
+            List<Revision> revisions =  listAllRevisionsUseCase.execute();
+            if (revisions.size() == 0) {
+                throw new Exception("There is not revisions in the database! contact service.");
+            }
+            // input a validad revision
+            int revisionPos = Menus.listMenu(revisions, "Choose an revision:");
+            Revision revisionUser  =  revisions.get(revisionPos);
+            int revisionId = revisionUser.getId();
+            int op =  ConsoleUtils.yesOrNo("Are you sure that you want to remove: " + revisionUser.toString() + " ?");
+            if(op == 1){
+                deleteRevisionUseCase.execute(revisionId);
+            }else{
+                System.out.println("You have choose to not remove it.");
+            }
+        } catch (Exception e) {
+            System.out.println("Invalid plate.");
         }
     }
 }

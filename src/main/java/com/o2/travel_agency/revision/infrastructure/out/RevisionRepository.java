@@ -57,4 +57,21 @@ public class RevisionRepository implements RevisionService {
         }
         return null;
     }
+
+    @Override
+    public Boolean deleteRevision(Integer id){
+        String sql = "CALL DeleteFromTableById(?,?)";
+        try(Connection connection = DatabaseConfig.getConnection();
+        PreparedStatement statement = connection.prepareStatement(sql,
+        PreparedStatement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, "revision");//table name
+            statement.setInt(2, id);//searchValue
+            statement.executeUpdate();
+            System.out.println("Revision deleted successfully!");   
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
