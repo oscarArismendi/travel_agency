@@ -84,12 +84,23 @@ public class AirportController {
         System.out.println("5. Go back");
     }
 
-    private void deleteAirportLogic() {
+    public void deleteAirportLogic() {
         try {
             System.out.print("Enter airport id to delete: ");
-            int id = Integer.parseInt(MyScanner.scanLine());
-            deleteAirportByIdUseCase.execute(id);
-            System.out.println("Airport deleted successfully!");
+            int id = MyScanner.scanInt();
+            Airport airport = findAirportByIdUseCase.execute(id);
+            if(airport == null){
+                throw new Exception("There is no airport with this id.");
+            }
+            int op =  ConsoleUtils.yesOrNo("Are you sure that you want to remove: " + airport.toString() + " ?");
+            if(op == 1){
+                if(!deleteAirportByIdUseCase.execute(id)){
+                    throw new Exception("Couldn't delete the airport.");
+                }
+            }else{
+                System.out.println("You have choose to not remove it.");
+            }
+            
         } catch (Exception e) {
             System.out.println("Error deleting airport: " + e.getMessage());
         }

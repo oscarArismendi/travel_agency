@@ -244,6 +244,7 @@ public class Main {
                 case "Delete Airport"://21
                     ConsoleUtils.cleanScreen();
                     System.out.println("----------------------------------------DELETE AIRPORT MENU-----------------------------------------");
+                    airportController.deleteAirportLogic();
                     ConsoleUtils.pause();
                     break;
                 case "Update Maintenance Review Information"://24
