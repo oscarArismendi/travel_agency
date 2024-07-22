@@ -1,10 +1,16 @@
 package com.o2.travel_agency.airport.infrastructure.in;
 
+import java.util.List;
+
 import com.o2.travel_agency.airport.application.CreateAirportUseCase;
 import com.o2.travel_agency.airport.application.DeleteAirportByIdCase;
 import com.o2.travel_agency.airport.application.FindAirportByIdCase;
 import com.o2.travel_agency.airport.application.UpdateAirportByIdCase;
 import com.o2.travel_agency.airport.domain.entity.Airport;
+import com.o2.travel_agency.city.application.ListAllCitiesUseCase;
+import com.o2.travel_agency.city.domain.entity.City;
+import com.o2.travel_agency.country.application.ListAllCountriesUseCase;
+import com.o2.travel_agency.country.domain.entity.Country;
 import com.o2.travel_agency.utils.ConsoleUtils;
 import com.o2.travel_agency.utils.Menus;
 import com.o2.travel_agency.utils.MyScanner;
@@ -15,15 +21,20 @@ public class AirportController {
     private final FindAirportByIdCase findAirportByIdUseCase;
     private final DeleteAirportByIdCase deleteAirportByIdUseCase;
     private final UpdateAirportByIdCase updateAirportByIdUseCase;
+    private final ListAllCitiesUseCase listAllCitiesUseCase;
+    private final ListAllCountriesUseCase listAllCountriesUseCase;
 
 
 
     public AirportController(CreateAirportUseCase createAirportUseCase, FindAirportByIdCase findAirportByIdUseCase,
-            DeleteAirportByIdCase deleteAirportByIdUseCase, UpdateAirportByIdCase updateAirportByIdUseCase) {
+            DeleteAirportByIdCase deleteAirportByIdUseCase, UpdateAirportByIdCase updateAirportByIdUseCase,
+            ListAllCitiesUseCase listAllCitiesUseCase, ListAllCountriesUseCase listAllCountriesUseCase) {
         this.createAirportUseCase = createAirportUseCase;
         this.findAirportByIdUseCase = findAirportByIdUseCase;
         this.deleteAirportByIdUseCase = deleteAirportByIdUseCase;
         this.updateAirportByIdUseCase = updateAirportByIdUseCase;
+        this.listAllCitiesUseCase = listAllCitiesUseCase;
+        this.listAllCountriesUseCase = listAllCountriesUseCase;
     }
 
     public void start() {
@@ -87,20 +98,43 @@ public class AirportController {
     public void createAirportLogic() {
         try {
             System.out.print("Type the airport id: ");
-            int id = Integer.parseInt(MyScanner.scanLine());
+            int id = MyScanner.scanInt();
+            if(findAirportByIdUseCase.execute(id) != null){
+                throw new Exception("There is already a airport with this id");
+            }
+            if(id <= 0){
+                throw new Exception("The id must be greater than 0");
+            }
             System.out.print("Type the airport name: ");
             String name = MyScanner.scanLine();
             if (name.isEmpty()) {
                 throw new Exception("You didn't put a name");
             }
-            System.out.print("Type the airport city: ");
-            Integer idCity = MyScanner.scanInt();
-            if (idCity <= 0) {
-                throw new Exception("You didn't put a city");
+            // Countries show all countries, return a list
+            List<Country> countries =  listAllCountriesUseCase.execute();
+            if(countries.size() ==  0){
+                throw new Exception("There are not countries in the database! contact service.");
+            }
+            //  input a valid country
+            int countryPos =  Menus.listMenu(countries,"Choose a country:");
+            Country country = countries.get(countryPos);
+            int countryId = country.getId();
+
+            // Cities show all cities, return a list
+            List<City> cities =  listAllCitiesUseCase.execute();
+            if(cities.size() ==  0){
+                throw new Exception("There are not cities in the database! contact service.");
             }
 
-            createAirportUseCase.execute(new Airport(id, name, idCity));
-            System.out.println("Airport created successfully!");
+            cities.removeIf(obj -> obj.getIdCountry() != countryId);
+            if(cities.size() ==  0){
+                throw new Exception("There are not cities related to "+ country.toString() + " in the database! contact service.");
+            }
+            //  input a valid city
+            int cityPos =  Menus.listMenu(cities,"Choose a city:");
+            int cityId = cities.get(cityPos).getId();
+
+            createAirportUseCase.execute(new Airport(id, name, cityId));
         } catch (Exception e) {
             System.out.println("Error at creating an airport: " + e.getMessage());
         }

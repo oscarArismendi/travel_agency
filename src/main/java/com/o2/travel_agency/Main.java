@@ -14,6 +14,12 @@ import com.o2.travel_agency.airport.application.UpdateAirportByIdCase;
 import com.o2.travel_agency.airport.domain.service.AirportService;
 import com.o2.travel_agency.airport.infrastructure.in.AirportController;
 import com.o2.travel_agency.airport.infrastructure.out.AirportRepository;
+import com.o2.travel_agency.city.application.ListAllCitiesUseCase;
+import com.o2.travel_agency.city.domain.service.CityService;
+import com.o2.travel_agency.city.infrastructure.out.CityRepository;
+import com.o2.travel_agency.country.application.ListAllCountriesUseCase;
+import com.o2.travel_agency.country.domain.service.CountryService;
+import com.o2.travel_agency.country.infrastructure.out.CountryRepository;
 import com.o2.travel_agency.customer.application.FindCustomerByNroIdcUseCase;
 import com.o2.travel_agency.customer.domain.service.CustomerService;
 import com.o2.travel_agency.customer.infrastructure.in.CustomerController;
@@ -65,6 +71,8 @@ public class Main {
         DocumentTypeService documentTypeService = new DocumentTypeRepository();
         CustomerService customerService = new CustomerRepository();
         AirportService airportService = new AirportRepository();
+        CityService cityService = new CityRepository();
+        CountryService countryService = new CountryRepository();
         //airline use case setion
         ListAllAirlinesUseCase listAllAirlinesUseCase = new ListAllAirlinesUseCase(airlineService);
 
@@ -102,11 +110,15 @@ public class Main {
         CreateAirportUseCase createAirportUseCase = new CreateAirportUseCase(airportService);
         DeleteAirportByIdCase deleteAirportByIdCase = new DeleteAirportByIdCase(airportService);
         UpdateAirportByIdCase updateAirportByIdCase = new UpdateAirportByIdCase(airportService);
+        // country use case section
+        ListAllCountriesUseCase listAllCountriesUseCase = new ListAllCountriesUseCase(countryService);
+        // city use case section
+        ListAllCitiesUseCase listAllCitiesUseCase = new ListAllCitiesUseCase(cityService);
         // controller  section
         RevisionController revisionController =  new RevisionController(findPlaneByPlateUseCase, listAllEmployeesUseCase, createRevisionUseCase, createRevisionEmployeeUseCase, listAllRevisionsUseCase, deleteRevisionUseCase, listAllRevisionEmployeeUseCase, updateRevisionByIdUseCase, updateRevisionEmployeeByRevisionIdUseCase);
         PlaneController planeController  = new PlaneController(createPlaneUseCase,listAllAirlinesUseCase,listAllStatusUseCase,listAllModelsUseCase,findPlaneByPlateUseCase,updatePlaneByPlateUseCase,deletePlaneByIdUseCase,listAllRevisionsUseCase);
         CustomerController customerController = new CustomerController(findCustomerByNroIdcUseCase);
-        AirportController airportController = new AirportController(createAirportUseCase, findAirportByIdCase, deleteAirportByIdCase, updateAirportByIdCase);
+        AirportController airportController = new AirportController(createAirportUseCase, findAirportByIdCase, deleteAirportByIdCase, updateAirportByIdCase, listAllCitiesUseCase, listAllCountriesUseCase);
 
 
         String userRol = "ADMIN";
@@ -197,6 +209,7 @@ public class Main {
                 case "Register Airport"://10
                     ConsoleUtils.cleanScreen();
                     System.out.println("-------------------------------------------CREATE AIRPORT MENU--------------------------------------");
+                    airportController.createAirportLogic();
                     ConsoleUtils.pause();
                     break;
                 case "Consult Airport Information"://11
