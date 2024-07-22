@@ -6,12 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.o2.travel_agency.airport.domain.entity.Airport;
+import com.o2.travel_agency.airport.domain.service.AirportService;
 import com.o2.travel_agency.resources.DatabaseConfig;
 
-public class AirportRepository {
-
+public class AirportRepository implements AirportService {
+    @Override
     public void createAirport(Airport airport) {
-        String query = "INSERT INTO airport (id, name, id_city) VALUES (?, ?, ?)";
+        String query = "INSERT INTO airport (id, name, idCity) VALUES (?, ?, ?)";
 
         try (Connection connection = DatabaseConfig.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -27,7 +28,7 @@ public class AirportRepository {
             System.out.println("Error at creating an airport: " + e.getMessage());
         }
     }
-
+    @Override
     public Airport findAirportById(Integer id) {
         String query = "SELECT * FROM airport WHERE id = ?";
 
@@ -40,7 +41,7 @@ public class AirportRepository {
             if (resultSet.next()) {
                 int airportId = resultSet.getInt("id");
                 String name = resultSet.getString("name");
-                int idCity = resultSet.getInt("id_city");
+                int idCity = resultSet.getInt("idCity");
 
                 return new Airport(airportId, name, idCity);
             }
@@ -50,8 +51,8 @@ public class AirportRepository {
         }
         return null;
     }
-
-    public boolean updateAirportById(String updateColumns, int id) {
+    @Override
+    public Boolean updateAirportById(String updateColumns, int id) {
         String query = "UPDATE airport SET " + updateColumns + " WHERE id = ?";
 
         try (Connection connection = DatabaseConfig.getConnection();
@@ -70,8 +71,8 @@ public class AirportRepository {
         }
         return false;
     }
-
-    public boolean deleteAirportById(Integer id) {
+    @Override
+    public Boolean deleteAirportById(Integer id) {
         String query = "DELETE FROM airport WHERE id = ?";
 
         try (Connection connection = DatabaseConfig.getConnection();

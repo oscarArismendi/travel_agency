@@ -14,15 +14,16 @@ public class AirportController {
     private final CreateAirportUseCase createAirportUseCase;
     private final FindAirportByIdCase findAirportByIdUseCase;
     private final DeleteAirportByIdCase deleteAirportByIdUseCase;
-    private Integer idcity;
+    private final UpdateAirportByIdCase updateAirportByIdUseCase;
 
-    public AirportController(CreateAirportUseCase createAirportUseCase,
-                             FindAirportByIdCase findAirportByIdUseCase, 
-                             UpdateAirportByIdCase updateAirportByIdUseCase,
-                             DeleteAirportByIdCase deleteAirportByIdUseCase) {
+
+
+    public AirportController(CreateAirportUseCase createAirportUseCase, FindAirportByIdCase findAirportByIdUseCase,
+            DeleteAirportByIdCase deleteAirportByIdUseCase, UpdateAirportByIdCase updateAirportByIdUseCase) {
         this.createAirportUseCase = createAirportUseCase;
         this.findAirportByIdUseCase = findAirportByIdUseCase;
         this.deleteAirportByIdUseCase = deleteAirportByIdUseCase;
+        this.updateAirportByIdUseCase = updateAirportByIdUseCase;
     }
 
     public void start() {
@@ -93,17 +94,12 @@ public class AirportController {
                 throw new Exception("You didn't put a name");
             }
             System.out.print("Type the airport city: ");
-            String city = MyScanner.scanLine();
-            if (city.isEmpty()) {
+            Integer idCity = MyScanner.scanInt();
+            if (idCity <= 0) {
                 throw new Exception("You didn't put a city");
             }
-            System.out.print("Type the airport country: ");
-            String country = MyScanner.scanLine();
-            if (country.isEmpty()) {
-                throw new Exception("You didn't put a country");
-            }
 
-            createAirportUseCase.execute(new Airport(id, name, idcity));
+            createAirportUseCase.execute(new Airport(id, name, idCity));
             System.out.println("Airport created successfully!");
         } catch (Exception e) {
             System.out.println("Error at creating an airport: " + e.getMessage());
@@ -130,7 +126,7 @@ public class AirportController {
                         throw new Exception("There is already an airport with this id");
                     }
                     updateColumns = "id = " + newId;
-                    UpdateAirportByIdCase.execute(updateColumns, airport.getId());
+                    updateAirportByIdUseCase.execute(updateColumns, airport.getId());
                     break;
                 case 1: // name
                     System.out.print("Type the new airport name (current: " + airport.getName() + "): ");
@@ -139,16 +135,16 @@ public class AirportController {
                         throw new Exception("You didn't put a name");
                     }
                     updateColumns = "name = '" + newName + "'";
-                    UpdateAirportByIdCase.execute(updateColumns, airport.getId());
+                    updateAirportByIdUseCase.execute(updateColumns, airport.getId());
                     break;
                 case 2: // city
-                    System.out.print("Type the new airport city (current: " + airport.getCity() + "): ");
+                    System.out.print("Type the new airport city (current: " + airport.getIdCity() + "): ");
                     String newCity = MyScanner.scanLine();
                     if (newCity.isEmpty()) {
                         throw new Exception("You didn't put a city");
                     }
                     updateColumns = "city = '" + newCity + "'";
-                    UpdateAirportByIdCase.execute(updateColumns, airport.getId());
+                    updateAirportByIdUseCase.execute(updateColumns, airport.getId());
                     break;
             }
         } catch (Exception e) {
@@ -159,7 +155,7 @@ public class AirportController {
     public void findAirportLogic() {
         try {
             System.out.print("Enter airport id: ");
-            int id = Integer.parseInt(MyScanner.scanLine());
+            int id = MyScanner.scanInt();
             Airport airport = findAirportByIdUseCase.execute(id);
             if (airport == null) {
                 throw new Exception("Invalid airport id.");
@@ -173,7 +169,7 @@ public class AirportController {
     public void displayAirportDetails(Airport airport) {
         System.out.println("Airport id: " + airport.getId());
         System.out.println("Airport name: " + airport.getName());
-        System.out.println("Airport city: " + airport.getCity());
+        System.out.println("Airport city: " + airport.getIdCity());
         System.out.println("------------------------------------------------------------------------------------------------");
     }
 }
