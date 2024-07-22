@@ -133,7 +133,7 @@ public class Main {
             "Delete Route",  // 19
             "Update Airport Information",  // 20
             "Delete Airport",  // 21
-            "Update Customer Information",  // 22
+            "List All Customers",  // 22
             "Consult Flight Information",  // 23
             "Update Maintenance Review Information",  // 24
             "Delete Maintenance Review",  // 25
