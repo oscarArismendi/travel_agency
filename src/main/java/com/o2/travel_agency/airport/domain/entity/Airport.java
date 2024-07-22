@@ -3,15 +3,15 @@ package com.o2.travel_agency.airport.domain.entity;
 public class Airport {
     private int id;
     private String name;
-    private String city;
-    private String country;
+    private int idcity;
+    
 
     // Constructor, getters, and setters
-    public Airport(int id, String name, String city, String country) {
+    public Airport(int id, String name, Integer idcity) {
         this.id = id;
         this.name = name;
-        this.city = city;
-        this.country = country;
+        this.idcity = idcity;
+        
     }
 
     public int getId() {
@@ -30,25 +30,27 @@ public class Airport {
         this.name = name;
     }
 
-    public String getCity() {
-        return city;
+    public int getCity() {
+        return idcity;
     }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
+    public void setCity(int city) {
+        this.idcity = city;
     }
 
     @Override
     public String toString() {
         return " id: " + id + " | name: " + name;
+    }
+
+    public long getidCity() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getidCity'");
+    }
+
+    public long getIdCity() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getIdCity'");
     }
 }
 

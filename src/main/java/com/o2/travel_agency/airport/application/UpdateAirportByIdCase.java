@@ -11,7 +11,7 @@ public class UpdateAirportByIdCase {
         this.airportService = airportService;
     }
 
-    public static Boolean execute(String updateColumns, int i) {
-        return AirportService.updateAirportById(updateColumns, i);
+    public static Boolean execute(String updateColumns, int id) {
+        return AirportService.updateAirportById(updateColumns, id);
     }
 }

@@ -14,6 +14,7 @@ public class AirportController {
     private final CreateAirportUseCase createAirportUseCase;
     private final FindAirportByIdCase findAirportByIdUseCase;
     private final DeleteAirportByIdCase deleteAirportByIdUseCase;
+    private Integer idcity;
 
     public AirportController(CreateAirportUseCase createAirportUseCase,
                              FindAirportByIdCase findAirportByIdUseCase, 
@@ -102,7 +103,7 @@ public class AirportController {
                 throw new Exception("You didn't put a country");
             }
 
-            createAirportUseCase.execute(new Airport(id, name, city, country));
+            createAirportUseCase.execute(new Airport(id, name, idcity));
             System.out.println("Airport created successfully!");
         } catch (Exception e) {
             System.out.println("Error at creating an airport: " + e.getMessage());
@@ -149,18 +150,6 @@ public class AirportController {
                     updateColumns = "city = '" + newCity + "'";
                     UpdateAirportByIdCase.execute(updateColumns, airport.getId());
                     break;
-                case 3: // country
-                    System.out.print("Type the new airport country (current: " + airport.getCountry() + "): ");
-                    String newCountry = MyScanner.scanLine();
-                    if (newCountry.isEmpty()) {
-                        throw new Exception("You didn't put a country");
-                    }
-                    updateColumns = "country = '" + newCountry + "'";
-                    UpdateAirportByIdCase.execute(updateColumns, airport.getId());
-                    break;
-                default:
-
-                    break;
             }
         } catch (Exception e) {
             System.out.println("Error at updating the airport: " + e.getMessage());
@@ -185,7 +174,6 @@ public class AirportController {
         System.out.println("Airport id: " + airport.getId());
         System.out.println("Airport name: " + airport.getName());
         System.out.println("Airport city: " + airport.getCity());
-        System.out.println("Airport country: " + airport.getCountry());
         System.out.println("------------------------------------------------------------------------------------------------");
     }
 }
