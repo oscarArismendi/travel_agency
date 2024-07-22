@@ -7,6 +7,13 @@ import java.util.List;
 import com.o2.travel_agency.airline.application.ListAllAirlinesUseCase;
 import com.o2.travel_agency.airline.domain.service.AirlineService;
 import com.o2.travel_agency.airline.infrastructure.out.AirlineRepository;
+import com.o2.travel_agency.customer.application.FindCustomerByNroIdcUseCase;
+import com.o2.travel_agency.customer.domain.service.CustomerService;
+import com.o2.travel_agency.customer.infrastructure.in.CustomerController;
+import com.o2.travel_agency.customer.infrastructure.out.CustomerRepository;
+import com.o2.travel_agency.documentType.application.ListAllDocumentTypeUseCase;
+import com.o2.travel_agency.documentType.domain.service.DocumentTypeService;
+import com.o2.travel_agency.documentType.infrastructure.out.DocumentTypeRepository;
 import com.o2.travel_agency.employee.application.ListAllEmployeesUseCase;
 import com.o2.travel_agency.employee.domain.service.EmployeeService;
 import com.o2.travel_agency.employee.infrastructure.out.EmployeeRepository;
@@ -48,6 +55,8 @@ public class Main {
         RevisionEmployeeService revisionEmployeeService = new RevisionEmployeeRepository();
         RevisionService revisionService = new RevisionRepository();
         PlaneService planeService = new PlaneRepository();
+        DocumentTypeService documentTypeService = new DocumentTypeRepository();
+        CustomerService customerService = new CustomerRepository();
         //airline use case setion
         ListAllAirlinesUseCase listAllAirlinesUseCase = new ListAllAirlinesUseCase(airlineService);
 
@@ -76,16 +85,19 @@ public class Main {
         FindPlaneByPlateUseCase findPlaneByPlateUseCase = new FindPlaneByPlateUseCase(planeService);
         UpdatePlaneByPlateUseCase updatePlaneByPlateUseCase = new UpdatePlaneByPlateUseCase(planeService);
         DeletePlaneByIdUseCase  deletePlaneByIdUseCase = new DeletePlaneByIdUseCase(planeService);
-        
+        // document type use case section
+        ListAllDocumentTypeUseCase listAllDocumentTypeUseCase = new ListAllDocumentTypeUseCase(documentTypeService);
+        // Customer use case section
+        FindCustomerByNroIdcUseCase findCustomerByNroIdcUseCase = new FindCustomerByNroIdcUseCase(customerService);
         // controller  section
         RevisionController revisionController =  new RevisionController(findPlaneByPlateUseCase, listAllEmployeesUseCase, createRevisionUseCase, createRevisionEmployeeUseCase, listAllRevisionsUseCase, deleteRevisionUseCase, listAllRevisionEmployeeUseCase, updateRevisionByIdUseCase, updateRevisionEmployeeByRevisionIdUseCase);
         PlaneController planeController  = new PlaneController(createPlaneUseCase,listAllAirlinesUseCase,listAllStatusUseCase,listAllModelsUseCase,findPlaneByPlateUseCase,updatePlaneByPlateUseCase,deletePlaneByIdUseCase,listAllRevisionsUseCase);
-
+        CustomerController customerController = new CustomerController(findCustomerByNroIdcUseCase);
 
 
 
         String userRol = "ADMIN";
-        int[] holderAccess = {1,4,8,10,11,12,15,16,20,21,24,25};
+        int[] holderAccess = {1,4,5,8,10,11,12,15,16,20,21,24,25};
         List<String> useCases = Arrays.asList(
             "Register Plane",  // 1
             "Assign Crew to Route",  // 2
@@ -152,9 +164,15 @@ public class Main {
                     ConsoleUtils.pause();
                     break;
                 case "Register Maintenance Review"://4
-                ConsoleUtils.cleanScreen();
+                    ConsoleUtils.cleanScreen();
                     System.out.println("----------------------------------------CREATE MAINTENANCE MENU-------------------------------------");
                     revisionController.createRevisionLogic();
+                    ConsoleUtils.pause();
+                    break;
+                case "Consult Customer Information"://5
+                    ConsoleUtils.cleanScreen();
+                    System.out.println("----------------------------------------CREATE CUSTOMER MENU----------------------------------------");
+                    customerController.FindCustomerLogic();
                     ConsoleUtils.pause();
                     break;
                 case "Consult Plane Information"://8
