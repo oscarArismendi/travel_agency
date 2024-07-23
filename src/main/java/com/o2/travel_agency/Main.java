@@ -24,8 +24,12 @@ import com.o2.travel_agency.customer.application.FindCustomerByNroIdcUseCase;
 import com.o2.travel_agency.customer.domain.service.CustomerService;
 import com.o2.travel_agency.customer.infrastructure.in.CustomerController;
 import com.o2.travel_agency.customer.infrastructure.out.CustomerRepository;
+import com.o2.travel_agency.documentType.application.DeleteDocumentTypeByIdUseCase;
 import com.o2.travel_agency.documentType.application.ListAllDocumentTypeUseCase;
+import com.o2.travel_agency.documentType.application.RegisterDocumentTypeUseCase;
+import com.o2.travel_agency.documentType.application.UpdateDocumentTypeByIdUseCase;
 import com.o2.travel_agency.documentType.domain.service.DocumentTypeService;
+import com.o2.travel_agency.documentType.infrastructure.in.DocumentTypeController;
 import com.o2.travel_agency.documentType.infrastructure.out.DocumentTypeRepository;
 import com.o2.travel_agency.employee.application.ListAllEmployeesUseCase;
 import com.o2.travel_agency.employee.domain.service.EmployeeService;
@@ -103,6 +107,9 @@ public class Main {
         DeletePlaneByIdUseCase  deletePlaneByIdUseCase = new DeletePlaneByIdUseCase(planeService);
         // document type use case section
         ListAllDocumentTypeUseCase listAllDocumentTypeUseCase = new ListAllDocumentTypeUseCase(documentTypeService);
+        RegisterDocumentTypeUseCase registerDocumentTypeUseCase = new RegisterDocumentTypeUseCase(documentTypeService);
+        UpdateDocumentTypeByIdUseCase updateDocumentTypeByIdUseCase = new UpdateDocumentTypeByIdUseCase(documentTypeService);
+        DeleteDocumentTypeByIdUseCase deleteDocumentTypeByIdCase = new DeleteDocumentTypeByIdUseCase(documentTypeService);
         // Customer use case section
         FindCustomerByNroIdcUseCase findCustomerByNroIdcUseCase = new FindCustomerByNroIdcUseCase(customerService);
         // Airport use case section
@@ -119,10 +126,10 @@ public class Main {
         PlaneController planeController  = new PlaneController(createPlaneUseCase,listAllAirlinesUseCase,listAllStatusUseCase,listAllModelsUseCase,findPlaneByPlateUseCase,updatePlaneByPlateUseCase,deletePlaneByIdUseCase,listAllRevisionsUseCase);
         CustomerController customerController = new CustomerController(findCustomerByNroIdcUseCase);
         AirportController airportController = new AirportController(createAirportUseCase, findAirportByIdCase, deleteAirportByIdCase, updateAirportByIdCase, listAllCitiesUseCase, listAllCountriesUseCase);
-
+        DocumentTypeController documentTypeController = new DocumentTypeController(registerDocumentTypeUseCase, updateDocumentTypeByIdUseCase, deleteDocumentTypeByIdCase, listAllDocumentTypeUseCase);
 
         String userRol = "ADMIN";
-        int[] holderAccess = {1,4,5,8,10,11,12,15,16,20,21,24,25};
+        int[] holderAccess = {1,4,5,8,10,11,12,15,16,20,21,24,25,36};
         List<String> useCases = Arrays.asList(
             "Register Plane",  // 1
             "Assign Crew to Route",  // 2
@@ -257,6 +264,12 @@ public class Main {
                     ConsoleUtils.cleanScreen();
                     System.out.println("----------------------------------------DELETE MAINTENANCE MENU-------------------------------------");
                     revisionController.deletedRevisionLogic();
+                    ConsoleUtils.pause();
+                    break;
+                case "Delete Document Type": //36
+                    ConsoleUtils.cleanScreen();
+                    System.out.println("--------------------------------------DELETE DOCUMENT TYPE MENU-------------------------------------");
+                    documentTypeController.deleteDocumentTypeLogic();
                     ConsoleUtils.pause();
                     break;
                 case "Exit":

@@ -46,7 +46,22 @@ public class DocumentTypeRepository implements DocumentTypeService {
 
     @Override
     public Boolean deleteDocumentTypeById(Integer id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteDocumentTypeById'");
+        String query = "DELETE FROM documenttype WHERE id = ?";
+
+        try (Connection connection = DatabaseConfig.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, id);
+            int rowsDeleted = preparedStatement.executeUpdate();
+
+            if (rowsDeleted > 0) {
+                System.out.println("document type deleted successfully!");
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error at deleting the document type: " + e.getMessage());
+        }
+        return false;
     }
 }
