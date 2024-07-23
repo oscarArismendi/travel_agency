@@ -87,22 +87,26 @@ public class FlightFareController {
 
     public void registerFlightFareLogic() {
         try {
-            System.out.print("Type the Flightfare id: ");
-            int id = Integer.parseInt(MyScanner.scanLine());
-            System.out.print("Type the Flightfare description: ");
+            System.out.print("Type the Flight fare description: ");
             String description = MyScanner.scanLine();
             if (description.isEmpty()) {
-                throw new Exception("You didn't put a description");
+                throw new Exception("You didn't put a description.");
             }
-            System.out.print("Type the Flightfare details: ");
+            System.out.print("Type the Flight fare details: ");
             String details = MyScanner.scanLine();
-            System.out.print("Type the Flightfare value: ");
-            double value = MyScanner.scanInt();
-
-            registerFlightFareUseCase.execute(new FlightFare(id, description, details, value));
-            System.out.println("Flightfare created successfully!");
+            if (details.isEmpty()) {
+                throw new Exception("You didn't put details.");
+            }
+            System.out.print("Type the Flight fare value: ");
+            double value = MyScanner.scanDouble();
+            if(value < 0){
+                throw new Exception("There can't be negative values!");
+            }
+            if(registerFlightFareUseCase.execute(new FlightFare(0, description, details, value)) == null){
+                throw new Exception("There was an error at creating the flight fare in the database.");
+            }
         } catch (Exception e) {
-            System.out.println("Error at creating a Flightfare: " + e.getMessage());
+            System.out.println("Error at creating a Flight fare: " + e.getMessage());
         }
     }
 

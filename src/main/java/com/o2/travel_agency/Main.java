@@ -142,7 +142,7 @@ public class Main {
         DocumentTypeController documentTypeController = new DocumentTypeController(registerDocumentTypeUseCase, updateDocumentTypeByIdUseCase, deleteDocumentTypeByIdCase, listAllDocumentTypeUseCase);
         FlightFareController flightFareController = new FlightFareController(registerFlightFareUseCase, updateFlightFareByIdUseCase, deleteFlightFareByIdUseCase, listAllFlightFareUseCase);
         String userRol = "ADMIN";
-        int[] holderAccess = {1,4,5,8,10,11,12,15,16,20,21,24,25,33,34,36,35,37};
+        int[] holderAccess = {1,4,5,8,10,11,12,15,16,20,21,24,25,30,33,34,36,35,37};
         List<String> useCases = Arrays.asList(
             "Register Plane",  // 1
             "Assign Crew to Route",  // 2
@@ -278,6 +278,12 @@ public class Main {
                     ConsoleUtils.cleanScreen();
                     System.out.println("----------------------------------------DELETE MAINTENANCE MENU-------------------------------------");
                     revisionController.deletedRevisionLogic();
+                    ConsoleUtils.pause();
+                    break;
+                case "Register Flight Fare"://30
+                    ConsoleUtils.cleanScreen();
+                    System.out.println("---------------------------------------REGISTER FLIGHT FARE MENU------------------------------------");
+                    flightFareController.registerFlightFareLogic();
                     ConsoleUtils.pause();
                     break;
                 case "Consult Flight Fare":// 33

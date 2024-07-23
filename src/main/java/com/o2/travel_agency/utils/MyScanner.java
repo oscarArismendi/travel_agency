@@ -28,6 +28,22 @@ public class MyScanner {
         return rta;
     }
 
+    public static double scanDouble(){
+        Double rta = 0.0;
+        while(true){
+            try {
+                scan.useLocale(java.util.Locale.US);
+                rta = scan.nextDouble();
+                scan.nextLine();
+                break;
+            } catch (Exception e) {
+                System.out.print("Error! Insert a valid number(ex: 100.5): ");
+                scan.nextLine();
+            }
+        }
+        return rta;
+    }
+
     public static Long scanLong(){
         return scan.nextLong();
     }
