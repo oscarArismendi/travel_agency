@@ -4,35 +4,44 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.o2.travel_agency.flightfare.domain.entity.FlightFare;
 
-import com.o2.travel_agency.flightfare.domain.service.FlightfareService;
+import com.o2.travel_agency.flightfare.domain.service.FlightFareService;
 import com.o2.travel_agency.resources.DatabaseConfig;
 
-public class FlightFareRepository implements FlightfareService {
-
-    public void createFlightfare(FlightFare flightFare) {
-        String query = "INSERT INTO flightfare (id, description, details, value) VALUES (?, ?, ?, ?)";
+public class FlightFareRepository implements FlightFareService {
+    @Override
+    public FlightFare createFlightfare(FlightFare flightFare) {
+        String sql = "INSERT INTO flightfare (id, description, details, value) VALUES (?, ?, ?, ?)";
 
         try (Connection connection = DatabaseConfig.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        PreparedStatement statement = connection.prepareStatement(sql,
+                PreparedStatement.RETURN_GENERATED_KEYS)) {
 
-            preparedStatement.setInt(1, flightFare.getId());
-            preparedStatement.setString(2, flightFare.getDescription());
-            preparedStatement.setString(3, flightFare.getDetails());
-            preparedStatement.setDouble(4, flightFare.getValue());
+            statement.setInt(1, flightFare.getId());
+            statement.setString(2, flightFare.getDescription());
+            statement.setString(3, flightFare.getDetails());
+            statement.setDouble(4, flightFare.getValue());
 
-            preparedStatement.executeUpdate();
-            System.out.println("Flightfare created successfully!");
+            statement.executeUpdate();
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    flightFare.setId(generatedKeys.getInt(1));
+                }
+                System.out.println("Flightfare created successfully!");
+                return flightFare;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Error at creating a flightfare: " + e.getMessage());
         }
+        return null;
     }
 
-
+    @Override
     public FlightFare findFlightfareById(Integer id) {
         String query = "SELECT * FROM flightfare WHERE id = ?";
 
@@ -57,7 +66,7 @@ public class FlightFareRepository implements FlightfareService {
         return null;
     }
 
-
+    @Override
     public Boolean updateFlightfareById(String updateColumns, int id) {
         String query = "UPDATE flightfare SET " + updateColumns + " WHERE id = ?";
 
@@ -78,7 +87,7 @@ public class FlightFareRepository implements FlightfareService {
         return false;
     }
 
-    
+    @Override
     public Boolean deleteFlightFareById(Integer id) {
         String query = "DELETE FROM flightfare WHERE id = ?";
 
@@ -100,28 +109,24 @@ public class FlightFareRepository implements FlightfareService {
     }
 
     @Override
-    public String toString() {
-        return "FlightFareRepository []";
+    public List<FlightFare> listAllFlightFareUseCase() {
+        String sql = "SELECT id, description, details,value FROM flightfare";
+        List<FlightFare> objects = new ArrayList<>();
+
+        try (Connection connection = DatabaseConfig.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sql,
+                        PreparedStatement.RETURN_GENERATED_KEYS)) {
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                FlightFare flightFare = new FlightFare(resultSet.getInt("id"), resultSet.getString("description"),resultSet.getString("details"),resultSet.getDouble("value"));
+                objects.add(flightFare);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return objects;
     }
 
-
-    @Override
-    public void RegisterDocument(FlightFare flightFare) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'RegisterDocument'");
-    }
-
-
-    @Override
-    public Boolean deleteFlightFareTypeById(Integer id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteFlightFareTypeById'");
-    }
-
-
-    @Override
-    public List<FlightFare> ListAllFlightFareUseCase() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'ListAllFlightFareUseCase'");
-    }
 }

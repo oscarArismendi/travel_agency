@@ -34,6 +34,13 @@ import com.o2.travel_agency.documentType.infrastructure.out.DocumentTypeReposito
 import com.o2.travel_agency.employee.application.ListAllEmployeesUseCase;
 import com.o2.travel_agency.employee.domain.service.EmployeeService;
 import com.o2.travel_agency.employee.infrastructure.out.EmployeeRepository;
+import com.o2.travel_agency.flightfare.application.DeleteFlightFareByIdUseCase;
+import com.o2.travel_agency.flightfare.application.ListAllFlightFareUseCase;
+import com.o2.travel_agency.flightfare.application.RegisterFlightFareUseCase;
+import com.o2.travel_agency.flightfare.application.UpdateFlightFareByIdUseCase;
+import com.o2.travel_agency.flightfare.domain.service.FlightFareService;
+import com.o2.travel_agency.flightfare.infrastructure.in.FlightFareController;
+import com.o2.travel_agency.flightfare.infrastructure.out.FlightFareRepository;
 import com.o2.travel_agency.model.application.ListAllModelsUseCase;
 import com.o2.travel_agency.model.domain.service.ModelService;
 import com.o2.travel_agency.model.infrastructure.out.ModelRepository;
@@ -77,6 +84,7 @@ public class Main {
         AirportService airportService = new AirportRepository();
         CityService cityService = new CityRepository();
         CountryService countryService = new CountryRepository();
+        FlightFareService flightFareService = new FlightFareRepository(); 
         //airline use case setion
         ListAllAirlinesUseCase listAllAirlinesUseCase = new ListAllAirlinesUseCase(airlineService);
 
@@ -121,15 +129,20 @@ public class Main {
         ListAllCountriesUseCase listAllCountriesUseCase = new ListAllCountriesUseCase(countryService);
         // city use case section
         ListAllCitiesUseCase listAllCitiesUseCase = new ListAllCitiesUseCase(cityService);
+        // flightfare use case section
+        DeleteFlightFareByIdUseCase deleteFlightFareByIdUseCase = new DeleteFlightFareByIdUseCase(flightFareService);
+        ListAllFlightFareUseCase listAllFlightFareUseCase = new ListAllFlightFareUseCase(flightFareService);
+        RegisterFlightFareUseCase registerFlightFareUseCase = new RegisterFlightFareUseCase(flightFareService);
+        UpdateFlightFareByIdUseCase updateFlightFareByIdUseCase = new UpdateFlightFareByIdUseCase(flightFareService);
         // controller  section
         RevisionController revisionController =  new RevisionController(findPlaneByPlateUseCase, listAllEmployeesUseCase, createRevisionUseCase, createRevisionEmployeeUseCase, listAllRevisionsUseCase, deleteRevisionUseCase, listAllRevisionEmployeeUseCase, updateRevisionByIdUseCase, updateRevisionEmployeeByRevisionIdUseCase);
         PlaneController planeController  = new PlaneController(createPlaneUseCase,listAllAirlinesUseCase,listAllStatusUseCase,listAllModelsUseCase,findPlaneByPlateUseCase,updatePlaneByPlateUseCase,deletePlaneByIdUseCase,listAllRevisionsUseCase);
         CustomerController customerController = new CustomerController(findCustomerByNroIdcUseCase);
         AirportController airportController = new AirportController(createAirportUseCase, findAirportByIdCase, deleteAirportByIdCase, updateAirportByIdCase, listAllCitiesUseCase, listAllCountriesUseCase);
         DocumentTypeController documentTypeController = new DocumentTypeController(registerDocumentTypeUseCase, updateDocumentTypeByIdUseCase, deleteDocumentTypeByIdCase, listAllDocumentTypeUseCase);
-
+        FlightFareController flightFareController = new FlightFareController(registerFlightFareUseCase, updateFlightFareByIdUseCase, deleteFlightFareByIdUseCase, listAllFlightFareUseCase);
         String userRol = "ADMIN";
-        int[] holderAccess = {1,4,5,8,10,11,12,15,16,20,21,24,25,34,36,35,37};
+        int[] holderAccess = {1,4,5,8,10,11,12,15,16,20,21,24,25,33,34,36,35,37};
         List<String> useCases = Arrays.asList(
             "Register Plane",  // 1
             "Assign Crew to Route",  // 2
@@ -265,6 +278,12 @@ public class Main {
                     ConsoleUtils.cleanScreen();
                     System.out.println("----------------------------------------DELETE MAINTENANCE MENU-------------------------------------");
                     revisionController.deletedRevisionLogic();
+                    ConsoleUtils.pause();
+                    break;
+                case "Consult Flight Fare":// 33
+                    ConsoleUtils.cleanScreen();
+                    System.out.println("---------------------------------------CONSULT FLIGHT FARE MENU-------------------------------------");
+                    flightFareController.consultFlightFareLogic();
                     ConsoleUtils.pause();
                     break;
                 case "Register Document Type"://34

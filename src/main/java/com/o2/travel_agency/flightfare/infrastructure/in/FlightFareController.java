@@ -48,13 +48,13 @@ public class FlightFareController {
                 case 3:
                     ConsoleUtils.cleanScreen();
                     System.out.println("----------------------------------------FIND FLIGHTFARE MENU----------------------------------------");
-                    listAllFlightFareLogic();
+                    consultFlightFareLogic();
                     ConsoleUtils.pause();
                     break;
                 case 4:
                     ConsoleUtils.cleanScreen();
                     System.out.println("----------------------------------------DELETE FLIGHTFARE MENU----------------------------------------");
-                    deleteFlightfareLogic();
+                    deleteFlightFareLogic();
                     ConsoleUtils.pause();
                     break;
                 case 5:
@@ -63,23 +63,6 @@ public class FlightFareController {
                     break;
             }
         }
-    }
-
-    private void deleteFlightfareLogic() {
-        throw new UnsupportedOperationException("Unimplemented method 'deleteFlightfareLogic'");
-    }
-
-    private void listAllFlightFareLogic() {
-        throw new UnsupportedOperationException("Unimplemented method 'listAllFlightFareLogic'");
-    }
-
-    private void updateFlightFareLogic() {
-        throw new UnsupportedOperationException("Unimplemented method 'updateFlightFareLogic'");
-    }
-
-    private void registerFlightFareLogic() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'registerFlightFareLogic'");
     }
 
     private void displayMenu() {
@@ -91,7 +74,7 @@ public class FlightFareController {
         System.out.println("5. Go back");
     }
 
-    public void DeleteFlightfareLogic() {
+    public void deleteFlightFareLogic() {
         try {
             System.out.print("Enter Flightfare id to delete: ");
             int id = Integer.parseInt(MyScanner.scanLine());
@@ -102,7 +85,7 @@ public class FlightFareController {
         }
     }
 
-    public void registerFlightfareLogic() {
+    public void registerFlightFareLogic() {
         try {
             System.out.print("Type the Flightfare id: ");
             int id = Integer.parseInt(MyScanner.scanLine());
@@ -123,7 +106,7 @@ public class FlightFareController {
         }
     }
 
-    public void updateFlightfareLogic() {
+    public void updateFlightFareLogic() {
         try {
             System.out.print("Type the Flightfare id: ");
             int id = Integer.parseInt(MyScanner.scanLine());
@@ -150,7 +133,7 @@ public class FlightFareController {
                     System.out.print("Type the new Flightfare id (current: " + userFlightfare.getId() + "): ");
                     int newId = Integer.parseInt(MyScanner.scanLine());
                     updateColumns = "id = " + newId;
-                    updateFlightFareByIdUseCase.execute();
+                    updateFlightFareByIdUseCase.execute(updateColumns,id);
                     break;
                 case 1: // description
                     System.out.print("Type the new Flightfare description (current: " + userFlightfare.getDescription() + "): ");
@@ -159,19 +142,19 @@ public class FlightFareController {
                         throw new Exception("You didn't put a description");
                     }
                     updateColumns = "description = '" + newDescription + "'";
-                    updateFlightFareByIdUseCase.execute();
+                    updateFlightFareByIdUseCase.execute(updateColumns,id);
                     break;
                 case 2: // details
                     System.out.print("Type the new Flightfare details (current: " + userFlightfare.getDetails() + "): ");
                     String newDetails = MyScanner.scanLine();
                     updateColumns = "details = '" + newDetails + "'";
-                    updateFlightFareByIdUseCase.execute();
+                    updateFlightFareByIdUseCase.execute(updateColumns,id);
                     break;
                 case 3: // value
                     System.out.print("Type the new Flightfare value (current: " + userFlightfare.getValue() + "): ");
                     double newValue = MyScanner.scanInt();
                     updateColumns = "value = " + newValue;
-                    updateFlightFareByIdUseCase.execute();
+                    updateFlightFareByIdUseCase.execute(updateColumns,id);
                     break;
                 default:
                     break;
@@ -181,21 +164,18 @@ public class FlightFareController {
         }
     }
 
-    public void listAllFlightfareLogic() {
+    public void consultFlightFareLogic() {
         try {
-            System.out.print("Enter Flightfare id: ");
-            int id = MyScanner.scanInt();
             List<FlightFare> flightfareList = listAllFlightFareUseCase.execute();
             if (flightfareList == null) {
-                throw new Exception("Invalid Flightfare id.");
+                throw new Exception("There are no flight fares in the database!Contact service.");
             }
-            for (FlightFare flightFare : flightfareList) {
-                if (flightFare.getId() == id) {
-                    displayFlightfareDetails(flightFare);
-                    return;
-                }
-            }
-            System.out.println("There is no FlightFare with the id: " + id);
+            // input a valid flightFare 
+            int flightFarePos = Menus.listMenu(flightfareList,"Choose a flightfare to see the details:");
+            FlightFare flightFare = flightfareList.get(flightFarePos);
+            System.out.println("FlightFare info: ");
+            System.out.println("------------------------------------------------------------------------------------------------");
+            displayFlightfareDetails(flightFare);
         } catch (Exception e) {
             System.out.println("Error finding FlightFare: " + e.getMessage());
         }
