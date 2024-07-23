@@ -239,6 +239,7 @@ public class Main {
                 case "Update Airport Information"://20
                     ConsoleUtils.cleanScreen();
                     System.out.println("----------------------------------------UPDATE AIRPORT MENU-----------------------------------------");
+                    airportController.updateAirportLogic();
                     ConsoleUtils.pause();
                     break;
                 case "Delete Airport"://21
