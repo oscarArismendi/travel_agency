@@ -56,9 +56,25 @@ public class DocumentTypeRepository implements DocumentTypeService {
     }
 
     @Override
-    public void updateDocumentById(String updateColumns, int id) {
+    public Boolean updateDocumentById(String updateColumns, int id) {
         
-        throw new UnsupportedOperationException("Unimplemented method 'updateDocumentById'");
+        String query = "UPDATE documenttype SET " + updateColumns + " WHERE id = ?";
+
+        try (Connection connection = DatabaseConfig.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, id);
+            int rowsUpdated = preparedStatement.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                System.out.println("Document type updated successfully!");
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error at updating the airport: " + e.getMessage());
+        }
+        return false;
     }
 
     @Override

@@ -130,50 +130,33 @@ public class DocumentTypeController {
 
     public void updateDocumentTypeLogic() {
         try {
-            System.out.print("Type the airport id: ");
-            int id = Integer.parseInt(MyScanner.scanLine());
             List<DocumentType> documentTypeList = listAllDocumentTypeUseCase.execute();
             if (documentTypeList == null) {
                 throw new Exception("There aren't documents in this database! Contact service");
             }
-            DocumentType userDocumentType = null;
-            for (DocumentType documentType : documentTypeList){
-                if(documentType.getId() == id){
-                    userDocumentType = documentType;
-                    break;
-                }
-            }
-            if(userDocumentType == null){
-                throw new Exception("There is no document type with this id");
-            }
-            System.out.println("userDocumentType info: ");
-            displayDocumentTypeDetails(userDocumentType);
-            int op = Menus.classAttributeMenu(userDocumentType.getClass(), "Choose an attribute to update: ");
+            // input a valid document type
+            int documentTypePos = Menus.listMenu(documentTypeList,"Choose a document type:");
+            DocumentType documentType = documentTypeList.get(documentTypePos);
+            int documentTypeId = documentType.getId();
+            System.out.println("Document type info: ");
+            displayDocumentTypeDetails(documentType);
+            int op = Menus.classAttributeMenu(documentType.getClass(), "Choose an attribute to update: ");
             String updateColumns = "";
             switch (op) {
-                case 0: // id
-                    System.out.print("Type the new airport id (current: " + userDocumentType.getId() + "): ");
-                    int newId = Integer.parseInt(MyScanner.scanLine());
-                    if (listAllDocumentTypeUseCase.execute() != null) {
-                        throw new Exception("There is already an airport with this id");
-                    }
-                    updateColumns = "id = " + newId;
-                    updateDocumentTypeByIdUseCase.execute(updateColumns, userDocumentType.getId());
-                    break;
-                case 1: // name
-                    System.out.print("Type the new airport name (current: " + userDocumentType.getName() + "): ");
+                case 0: // name
+                    System.out.print("Type the new document type name (current: " + documentType.getName() + "): ");
                     String newName = MyScanner.scanLine();
                     if (newName.isEmpty()) {
                         throw new Exception("You didn't put a name");
                     }
                     updateColumns = "name = '" + newName + "'";
-                    updateDocumentTypeByIdUseCase.execute(updateColumns, userDocumentType.getId());
+                    updateDocumentTypeByIdUseCase.execute(updateColumns, documentTypeId);
                     break;
                 default:
                     break;
             }
         } catch (Exception e) {
-            System.out.println("Error at updating the airport: " + e.getMessage());
+            System.out.println("Error at updating the document type: " + e.getMessage());
         }
     }
 
