@@ -10,7 +10,7 @@ public class RegisterDocumentTypeUseCase {
         this.documentTypeService = documentTypeService;
     }
 
-   public void execute(DocumentType documentType) {
-        documentTypeService.RegisterDocument(documentType);
+   public DocumentType execute(DocumentType documentType) {
+        return documentTypeService.RegisterDocument(documentType);
     }
 }

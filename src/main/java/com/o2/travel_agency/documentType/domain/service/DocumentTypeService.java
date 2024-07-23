@@ -7,7 +7,7 @@ import com.o2.travel_agency.documentType.domain.entity.DocumentType;
 public interface DocumentTypeService {
     List<DocumentType>  listAllDocumentTypes();
 
-    void RegisterDocument(DocumentType documentType);
+    DocumentType RegisterDocument(DocumentType documentType);
 
     void updateDocumentById(String updateColumns, int id);
 
