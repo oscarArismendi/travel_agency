@@ -154,7 +154,7 @@ public class AirportController {
     public void updateAirportLogic() {
         try {
             System.out.print("Type the airport id: ");
-            int id = Integer.parseInt(MyScanner.scanLine());
+            int id = MyScanner.scanInt();
             Airport airport = findAirportByIdUseCase.execute(id);
             if (airport == null) {
                 throw new Exception("There is no airport with this id");
@@ -164,16 +164,7 @@ public class AirportController {
             int op = Menus.classAttributeMenu(airport.getClass(), "Choose an attribute to update: ");
             String updateColumns = "";
             switch (op) {
-                case 0: // id
-                    System.out.print("Type the new airport id (current: " + airport.getId() + "): ");
-                    int newId = Integer.parseInt(MyScanner.scanLine());
-                    if (findAirportByIdUseCase.execute(newId) != null) {
-                        throw new Exception("There is already an airport with this id");
-                    }
-                    updateColumns = "id = " + newId;
-                    updateAirportByIdUseCase.execute(updateColumns, airport.getId());
-                    break;
-                case 1: // name
+                case 0: // name
                     System.out.print("Type the new airport name (current: " + airport.getName() + "): ");
                     String newName = MyScanner.scanLine();
                     if (newName.isEmpty()) {
@@ -182,13 +173,32 @@ public class AirportController {
                     updateColumns = "name = '" + newName + "'";
                     updateAirportByIdUseCase.execute(updateColumns, airport.getId());
                     break;
-                case 2: // city
-                    System.out.print("Type the new airport city (current: " + airport.getIdCity() + "): ");
-                    String newCity = MyScanner.scanLine();
-                    if (newCity.isEmpty()) {
-                        throw new Exception("You didn't put a city");
+                case 1: // idCity
+                    System.out.print("Type the new airport id of city(current: " + airport.getIdCity() + "): ");
+                    // Countries show all countries, return a list
+                    List<Country> countries =  listAllCountriesUseCase.execute();
+                    if(countries.size() ==  0){
+                        throw new Exception("There are not countries in the database! contact service.");
                     }
-                    updateColumns = "city = '" + newCity + "'";
+                    //  input a valid country
+                    int countryPos =  Menus.listMenu(countries,"Choose a country:");
+                    Country country = countries.get(countryPos);
+                    int countryId = country.getId();
+
+                    // Cities show all cities, return a list
+                    List<City> cities =  listAllCitiesUseCase.execute();
+                    if(cities.size() ==  0){
+                        throw new Exception("There are not cities in the database! contact service.");
+                    }
+
+                    cities.removeIf(obj -> obj.getIdCountry() != countryId);
+                    if(cities.size() ==  0){
+                        throw new Exception("There are not cities related to "+ country.toString() + " in the database! contact service.");
+                    }
+                    //  input a valid city
+                    int cityPos =  Menus.listMenu(cities,"Choose a city:");
+                    int cityId = cities.get(cityPos).getId();
+                    updateColumns = "idCity = " + cityId;
                     updateAirportByIdUseCase.execute(updateColumns, airport.getId());
                     break;
             }
