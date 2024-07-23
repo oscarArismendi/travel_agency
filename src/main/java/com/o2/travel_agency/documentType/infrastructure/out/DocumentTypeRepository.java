@@ -34,8 +34,25 @@ public class DocumentTypeRepository implements DocumentTypeService {
     }
 
     @Override
-    public void RegisterDocument(DocumentType documentType) {
-        
+    public DocumentType RegisterDocument(DocumentType documentType) {
+        String sql = "INSERT INTO documenttype (name) VALUES (?)";
+
+        try (Connection connection = DatabaseConfig.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sql,
+                        PreparedStatement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, documentType.getName());
+            statement.executeUpdate();
+
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    documentType.setId(generatedKeys.getInt(1));
+                }
+                return documentType;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override

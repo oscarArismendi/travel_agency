@@ -39,7 +39,7 @@ public class DocumentTypeController {
                 case 1:
                     ConsoleUtils.cleanScreen();
                     System.out.println("----------------------------------------REGISTER DOCUMENTTYPE MENU----------------------------------------");
-                    RegisterDocumentTypeLogic();
+                    registerDocumentTypeLogic();
                     ConsoleUtils.pause();
                     break;
                 case 2:
@@ -108,25 +108,23 @@ public class DocumentTypeController {
         }
     }
 
-    public void RegisterDocumentTypeLogic() {
+    public void registerDocumentTypeLogic() {
         try {
-            System.out.print("Type the DocumentType id: ");
-            int id = Integer.parseInt(MyScanner.scanLine());
             System.out.print("Type the DocumentType name: ");
             String name = MyScanner.scanLine();
             if (name.isEmpty()) {
                 throw new Exception("You didn't put a name");
             }
-            System.out.print("Type the airport city: ");
-            Integer idCity = MyScanner.scanInt();
-            if (idCity <= 0) {
-                throw new Exception("You didn't put a city");
-            }
 
-            registerDocumentTypeUseCase.execute(new DocumentType(id, name));
-            System.out.println("DocumentType created successfully!");
+            DocumentType documentType = registerDocumentTypeUseCase.execute(new DocumentType(0,name));
+            if(documentType == null){
+                throw new Exception("There was an error creating the document");
+            }
+            System.out.println("------------------------------------------------------------------------------------------------");
+            displayDocumentTypeDetails(documentType);
+            System.out.println("Document type created successfully!");
         } catch (Exception e) {
-            System.out.println("Error at creating an airport: " + e.getMessage());
+            System.out.println("Error at creating a document type: " + e.getMessage());
         }
     }
 
@@ -204,8 +202,8 @@ public class DocumentTypeController {
     }
 
     public void displayDocumentTypeDetails(DocumentType documentType) {
-        System.out.println("DocumentType  id: " + documentType.getId());
-        System.out.println("DocumentType  name: " + documentType.getName());
+        System.out.println("Document type  id: " + documentType.getId());
+        System.out.println("Document type  name: " + documentType.getName());
         System.out.println("------------------------------------------------------------------------------------------------");
     }
 
