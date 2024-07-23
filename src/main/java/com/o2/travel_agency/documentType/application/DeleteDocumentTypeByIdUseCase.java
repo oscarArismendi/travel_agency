@@ -2,10 +2,10 @@ package com.o2.travel_agency.documentType.application;
 
 import com.o2.travel_agency.documentType.domain.service.DocumentTypeService;
 
-public class DeleteDocumentTypeByIdCase {
+public class DeleteDocumentTypeByIdUseCase {
     private final DocumentTypeService documentTypeService;
 
-    public  DeleteDocumentTypeByIdCase(DocumentTypeService  documentTypeService) {
+    public  DeleteDocumentTypeByIdUseCase(DocumentTypeService  documentTypeService) {
         this.documentTypeService = documentTypeService;
     }
 

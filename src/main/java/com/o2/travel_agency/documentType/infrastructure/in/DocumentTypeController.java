@@ -3,7 +3,7 @@ package com.o2.travel_agency.documentType.infrastructure.in;
 
 import java.util.List;
 
-import com.o2.travel_agency.documentType.application.DeleteDocumentTypeByIdCase;
+import com.o2.travel_agency.documentType.application.DeleteDocumentTypeByIdUseCase;
 import com.o2.travel_agency.documentType.application.ListAllDocumentTypeUseCase;
 import com.o2.travel_agency.documentType.application.RegisterDocumentTypeUseCase;
 import com.o2.travel_agency.documentType.application.UpdateDocumentTypeByIdUseCase;
@@ -13,20 +13,20 @@ import com.o2.travel_agency.utils.Menus;
 import com.o2.travel_agency.utils.MyScanner;
 
 public class DocumentTypeController {
-     private final RegisterDocumentTypeUseCase registerDocumentTypeUseCase;
+    private final RegisterDocumentTypeUseCase registerDocumentTypeUseCase;
     private final UpdateDocumentTypeByIdUseCase updateDocumentTypeByIdUseCase;
-    private DeleteDocumentTypeByIdCase deleteDocumentTypeByIdCase;
+    private final DeleteDocumentTypeByIdUseCase deleteDocumentTypeByIdUseCase;
     private final ListAllDocumentTypeUseCase listAllDocumentTypeUseCase;
 
 
 
     public DocumentTypeController(RegisterDocumentTypeUseCase registerDocumentTypeUseCase,
             UpdateDocumentTypeByIdUseCase updateDocumentTypeByIdUseCase,
-            DeleteDocumentTypeByIdCase deleteDocumentTypeByIdCase,
+            DeleteDocumentTypeByIdUseCase deleteDocumentTypeByIdUseCase,
             ListAllDocumentTypeUseCase listAllDocumentTypeUseCase) {
         this.registerDocumentTypeUseCase = registerDocumentTypeUseCase;
         this.updateDocumentTypeByIdUseCase = updateDocumentTypeByIdUseCase;
-        this.deleteDocumentTypeByIdCase = deleteDocumentTypeByIdCase;
+        this.deleteDocumentTypeByIdUseCase = deleteDocumentTypeByIdUseCase;
         this.listAllDocumentTypeUseCase = listAllDocumentTypeUseCase;
     }
 
@@ -80,9 +80,29 @@ public class DocumentTypeController {
     public void deleteDocumentTypeLogic() {
         try {
             System.out.print("Enter DocumentType id to delete: ");
-            int id = Integer.parseInt(MyScanner.scanLine());
-            deleteDocumentTypeByIdCase.execute(id);
-            System.out.println("DocumentType deleted successfully!");
+            int id = MyScanner.scanInt();
+            List<DocumentType> documentTypeList = listAllDocumentTypeUseCase.execute();
+            if (documentTypeList == null) {
+                throw new Exception("There aren't documents in this database! Contact service");
+            }
+            DocumentType userDocumentType = null;
+            for (DocumentType documentType : documentTypeList){
+                if(documentType.getId() == id){
+                    userDocumentType = documentType;
+                    break;
+                }
+            }
+            if(userDocumentType == null){
+                throw new Exception("There is no document type with this id");
+            }
+            int op =  ConsoleUtils.yesOrNo("Are you sure that you want to remove: " + userDocumentType.toString() + " ?");
+            if(op == 1){
+                if(!deleteDocumentTypeByIdUseCase.execute(id)){
+                    throw new Exception("Couldn't find a document type with the id " + id);
+                }
+            }else{
+                System.out.println("You have choose to not remove it.");
+            }
         } catch (Exception e) {
             System.out.println("Error deleting DocumentType: " + e.getMessage());
         }
@@ -116,7 +136,7 @@ public class DocumentTypeController {
             int id = Integer.parseInt(MyScanner.scanLine());
             List<DocumentType> documentTypeList = listAllDocumentTypeUseCase.execute();
             if (documentTypeList == null) {
-                throw new Exception("There is no airport with this id");
+                throw new Exception("There aren't documents in this database! Contact service");
             }
             DocumentType userDocumentType = null;
             for (DocumentType documentType : documentTypeList){
