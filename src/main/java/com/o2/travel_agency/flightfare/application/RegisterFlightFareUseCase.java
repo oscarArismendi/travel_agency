@@ -2,13 +2,14 @@ package com.o2.travel_agency.flightfare.application;
 
 
 import com.o2.travel_agency.flightfare.domain.entity.FlightFare;
-import com.o2.travel_agency.flightfare.domain.service.FlightFareService;
+
+import com.o2.travel_agency.flightfare.domain.service.FlightfareService;
 
 
 public class RegisterFlightFareUseCase {
-     private final FlightFareService flightFareService;
+    private final FlightfareService flightFareService;
 
-    public RegisterFlightFareUseCase(FlightFareService flightFareService) {
+    public RegisterFlightFareUseCase(FlightfareService flightFareService) {
         this.flightFareService = flightFareService;
     }
 

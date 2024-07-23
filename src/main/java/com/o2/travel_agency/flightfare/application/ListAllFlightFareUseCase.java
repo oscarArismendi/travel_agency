@@ -4,12 +4,12 @@ import java.util.List;
 
 
 import com.o2.travel_agency.flightfare.domain.entity.FlightFare;
-import com.o2.travel_agency.flightfare.domain.service.FlightFareService;
+import com.o2.travel_agency.flightfare.domain.service.FlightfareService;
 
 public class ListAllFlightFareUseCase {
-      private final FlightFareService flightFareService;
+      private final FlightfareService flightFareService;
 
-    public ListAllFlightFareUseCase(FlightFareService flightFareService) {
+    public ListAllFlightFareUseCase(FlightfareService flightFareService) {
         this.flightFareService = flightFareService;
     }
     

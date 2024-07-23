@@ -8,16 +8,16 @@ import java.util.List;
 
 import com.o2.travel_agency.flightfare.domain.entity.FlightFare;
 
-import com.o2.travel_agency.flightfare.domain.service.FlightFareService;
+import com.o2.travel_agency.flightfare.domain.service.FlightfareService;
 import com.o2.travel_agency.resources.DatabaseConfig;
 
-public class FlightFareRepository implements FlightFareService {
-   
+public class FlightFareRepository implements FlightfareService {
+
     public void createFlightfare(FlightFare flightFare) {
         String query = "INSERT INTO flightfare (id, description, details, value) VALUES (?, ?, ?, ?)";
 
         try (Connection connection = DatabaseConfig.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, flightFare.getId());
             preparedStatement.setString(2, flightFare.getDescription());
@@ -32,12 +32,12 @@ public class FlightFareRepository implements FlightFareService {
         }
     }
 
-   
+
     public FlightFare findFlightfareById(Integer id) {
         String query = "SELECT * FROM flightfare WHERE id = ?";
 
         try (Connection connection = DatabaseConfig.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -57,12 +57,12 @@ public class FlightFareRepository implements FlightFareService {
         return null;
     }
 
-   
+
     public Boolean updateFlightfareById(String updateColumns, int id) {
         String query = "UPDATE flightfare SET " + updateColumns + " WHERE id = ?";
 
         try (Connection connection = DatabaseConfig.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, id);
             int rowsUpdated = preparedStatement.executeUpdate();
@@ -83,7 +83,7 @@ public class FlightFareRepository implements FlightFareService {
         String query = "DELETE FROM flightfare WHERE id = ?";
 
         try (Connection connection = DatabaseConfig.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, id);
             int rowsDeleted = preparedStatement.executeUpdate();
