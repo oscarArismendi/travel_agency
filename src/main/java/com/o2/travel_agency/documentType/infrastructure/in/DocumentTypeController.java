@@ -51,7 +51,7 @@ public class DocumentTypeController {
                 case 3:
                     ConsoleUtils.cleanScreen();
                     System.out.println("----------------------------------------FIND DOCUMENTTYPE MENU----------------------------------------");
-                    listAllDocumentTypeLogic();
+                    findDocumentTypeByIdLogic();
                     ConsoleUtils.pause();
                     break;
                 case 4:
@@ -179,13 +179,16 @@ public class DocumentTypeController {
         }
     }
 
-    public void listAllDocumentTypeLogic() {
+    public void findDocumentTypeByIdLogic() {
         try {
             System.out.print("Enter documentType id: ");
             int id = MyScanner.scanInt();
+            if(id <= 0){
+                throw new Exception("There cant be a id that is equal or less than 0");
+            }
             List<DocumentType>  listDocumentType = listAllDocumentTypeUseCase.execute();
             if (listDocumentType == null) {
-                throw new Exception("Invalid documentType id.");
+                throw new Exception("The are not document types in the database. Call service.");
             }
             for (DocumentType documentType : listDocumentType){
                 if(documentType.getId() == id){

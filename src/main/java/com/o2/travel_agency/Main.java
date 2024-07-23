@@ -129,7 +129,7 @@ public class Main {
         DocumentTypeController documentTypeController = new DocumentTypeController(registerDocumentTypeUseCase, updateDocumentTypeByIdUseCase, deleteDocumentTypeByIdCase, listAllDocumentTypeUseCase);
 
         String userRol = "ADMIN";
-        int[] holderAccess = {1,4,5,8,10,11,12,15,16,20,21,24,25,36};
+        int[] holderAccess = {1,4,5,8,10,11,12,15,16,20,21,24,25,36,37};
         List<String> useCases = Arrays.asList(
             "Register Plane",  // 1
             "Assign Crew to Route",  // 2
@@ -271,6 +271,12 @@ public class Main {
                     ConsoleUtils.cleanScreen();
                     System.out.println("--------------------------------------DELETE DOCUMENT TYPE MENU-------------------------------------");
                     documentTypeController.deleteDocumentTypeLogic();
+                    ConsoleUtils.pause();
+                    break;
+                case "Consult Document Type"://37
+                    ConsoleUtils.cleanScreen();
+                    System.out.println("--------------------------------------CONSULT DOCUMENT TYPE MENU------------------------------------");
+                    documentTypeController.findDocumentTypeByIdLogic();
                     ConsoleUtils.pause();
                     break;
                 case "Exit":
