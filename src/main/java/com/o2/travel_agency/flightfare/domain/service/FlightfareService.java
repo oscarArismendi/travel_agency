@@ -1,5 +1,6 @@
 package com.o2.travel_agency.flightfare.domain.service;
 
+
 import java.util.List;
 
 
@@ -11,5 +12,5 @@ public interface FlightFareService {
         Boolean deleteFlightFareTypeById(Integer id); 
         List<FlightFare> ListAllFlightFareUseCase();
         
-    }
+}
 
