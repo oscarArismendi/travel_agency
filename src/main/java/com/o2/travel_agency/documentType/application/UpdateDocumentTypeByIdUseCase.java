@@ -11,7 +11,6 @@ public class UpdateDocumentTypeByIdUseCase {
     }
 
     public Boolean execute(String updateColumns, Integer id) {
-        documentTypeService.updateDocumentById(updateColumns, id);
-        return null;
+        return documentTypeService.updateDocumentById(updateColumns, id);
     }
 }

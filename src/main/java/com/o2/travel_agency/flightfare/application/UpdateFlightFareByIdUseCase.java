@@ -1,10 +1,17 @@
 package com.o2.travel_agency.flightfare.application;
 
-public class UpdateFlightFareByIdUseCase {
 
-    public void execute() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'execute'");
+import com.o2.travel_agency.flightfare.domain.service.FlightFareService;
+
+public class UpdateFlightFareByIdUseCase {
+    private final FlightFareService flightFareService;
+
+    public UpdateFlightFareByIdUseCase (FlightFareService flightFareService) {
+        this.flightFareService = flightFareService;
+    }
+
+    public Boolean execute(String updateColumns, Integer id) {
+        return flightFareService.updateFlightfareById(updateColumns, id);
     }
     
 }

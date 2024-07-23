@@ -48,6 +48,6 @@ public class FlightFare {
 
     @Override
     public String toString() {
-        return "Flightfare [id=" + id + ", description=" + description + ", details=" + details + ", value=" + value + "]";
+        return " id: " + id + " | description:" + description;
     }
 }
