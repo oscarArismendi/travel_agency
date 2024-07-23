@@ -13,8 +13,7 @@ public class RegisterFlightFareUseCase {
         this.flightFareService = flightFareService;
     }
 
-   public void execute(FlightFare flightFare) {
-    flightFareService.createFlightfare(flightFare);
-
+   public FlightFare execute(FlightFare flightFare) {
+        return flightFareService.createFlightfare(flightFare);
     }
 }
