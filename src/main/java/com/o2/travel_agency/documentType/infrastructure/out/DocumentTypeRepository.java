@@ -40,12 +40,13 @@ public class DocumentTypeRepository implements DocumentTypeService {
 
     @Override
     public void updateDocumentById(String updateColumns, int id) {
-        // TODO Auto-generated method stub
+        
         throw new UnsupportedOperationException("Unimplemented method 'updateDocumentById'");
     }
 
     @Override
     public Boolean deleteDocumentTypeById(Integer id) {
+
         String query = "DELETE FROM documenttype WHERE id = ?";
 
         try (Connection connection = DatabaseConfig.getConnection();
@@ -63,5 +64,6 @@ public class DocumentTypeRepository implements DocumentTypeService {
             System.out.println("Error at deleting the document type: " + e.getMessage());
         }
         return false;
+
     }
 }
