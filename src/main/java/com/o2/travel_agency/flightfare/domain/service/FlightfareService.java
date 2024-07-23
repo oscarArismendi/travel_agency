@@ -1,12 +1,15 @@
 package com.o2.travel_agency.flightfare.domain.service;
 
-import com.o2.travel_agency.flightfare.domain.entity.Flightfare;
+import java.util.List;
 
-public class FlightfareService {
 
-    public void RegisterDocument(Flightfare flightfare) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'RegisterDocument'");
+import com.o2.travel_agency.flightfare.domain.entity.FlightFare;
+
+public interface FlightFareService {
+
+        void RegisterDocument(FlightFare flightFare);
+        Boolean deleteFlightFareTypeById(Integer id); 
+        List<FlightFare> ListAllFlightFareUseCase();
+        
     }
-    
-}
+

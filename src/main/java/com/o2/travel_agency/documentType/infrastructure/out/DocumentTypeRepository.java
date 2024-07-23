@@ -40,13 +40,13 @@ public class DocumentTypeRepository implements DocumentTypeService {
 
     @Override
     public void updateDocumentById(String updateColumns, int id) {
-        // TODO Auto-generated method stub
+        
         throw new UnsupportedOperationException("Unimplemented method 'updateDocumentById'");
     }
 
     @Override
     public Boolean deleteDocumentTypeById(Integer id) {
-        // TODO Auto-generated method stub
+    
         throw new UnsupportedOperationException("Unimplemented method 'deleteDocumentTypeById'");
     }
 }
