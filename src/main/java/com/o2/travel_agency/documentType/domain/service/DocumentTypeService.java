@@ -9,7 +9,7 @@ public interface DocumentTypeService {
 
     DocumentType RegisterDocument(DocumentType documentType);
 
-    void updateDocumentById(String updateColumns, int id);
+    Boolean updateDocumentById(String updateColumns, int id);
 
     Boolean deleteDocumentTypeById(Integer id);
 }
