@@ -60,7 +60,6 @@ public class FlightConnection {
 
     @Override
     public String toString() {
-        return "FlightConnection [id=" + id + ", connectionNumber=" + connectionNumber + 
-                ", idTrip=" + idTrip + ", idPlane=" + idPlane + ", idAirport=" + idAirport + "]";
+        return " id:  " + id + "  | connectionNumber:  " + connectionNumber;
     }
 }

@@ -62,12 +62,6 @@ public class Trip {
 
     @Override
     public String toString() {
-        return "Trip{" +
-                "id=" + id +
-                ", tripDate=" + tripDate +
-                ", priceTrip=" + priceTrip +
-                ", idOrigin=" + idOrigin +
-                ", idDestination=" + idDestination +
-                '}';
+        return " id: " + id + " |tripDate: " + tripDate;
     }
 }
