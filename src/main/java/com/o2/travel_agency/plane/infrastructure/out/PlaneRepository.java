@@ -4,8 +4,10 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import com.o2.travel_agency.plane.domain.entity.Plane;
+import com.o2.travel_agency.plane.domain.entity.PlaneStMdDTO;
 import com.o2.travel_agency.plane.domain.service.PlaneService;
 import com.o2.travel_agency.resources.DatabaseConfig;
 
@@ -112,5 +114,27 @@ public class PlaneRepository implements PlaneService {
             e.printStackTrace();
         }
         return false;
+    }
+
+    @Override
+    public PlaneStMdDTO findPlaneStMdById(int id) {
+        String sql = "SELECT p.id, p.plates, p.capacity, p.fabricationDate, ai.name AS 'airline', s.name AS 'status', m.name AS 'model' FROM plane p INNER JOIN statusA s ON  s.id = p.idStatus INNER JOIN model m ON m.id = p.idModel INNER JOIN airline ai ON ai.id = p.idAirline WHERE p.id = ?";
+        try(Connection connection = DatabaseConfig.getConnection();
+        PreparedStatement statement = connection.prepareStatement(sql,
+        PreparedStatement.RETURN_GENERATED_KEYS)){
+
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()){
+                PlaneStMdDTO plane = new PlaneStMdDTO(resultSet.getInt("id"), resultSet.getString("plates"),
+                        resultSet.getInt("capacity"), resultSet.getDate("fabricationDate"), resultSet.getString("airline"),
+                        resultSet.getString("status"), resultSet.getString("model"));
+            return plane;
+                
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
     }
 }

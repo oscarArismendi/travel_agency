@@ -52,6 +52,7 @@ import com.o2.travel_agency.model.infrastructure.out.ModelRepository;
 import com.o2.travel_agency.plane.application.CreatePlaneUseCase;
 import com.o2.travel_agency.plane.application.DeletePlaneByIdUseCase;
 import com.o2.travel_agency.plane.application.FindPlaneByPlateUseCase;
+import com.o2.travel_agency.plane.application.FindPlaneStMdByIdUseCase;
 import com.o2.travel_agency.plane.application.UpdatePlaneByPlateUseCase;
 import com.o2.travel_agency.plane.domain.service.PlaneService;
 import com.o2.travel_agency.plane.infrastructure.in.PlaneController;
@@ -141,6 +142,7 @@ public class Main {
         FindPlaneByPlateUseCase findPlaneByPlateUseCase = new FindPlaneByPlateUseCase(planeService);
         UpdatePlaneByPlateUseCase updatePlaneByPlateUseCase = new UpdatePlaneByPlateUseCase(planeService);
         DeletePlaneByIdUseCase  deletePlaneByIdUseCase = new DeletePlaneByIdUseCase(planeService);
+        FindPlaneStMdByIdUseCase findPlaneStMdByIdUseCase = new FindPlaneStMdByIdUseCase(planeService);
         // document type use case section
         ListAllDocumentTypeUseCase listAllDocumentTypeUseCase = new ListAllDocumentTypeUseCase(documentTypeService);
         RegisterDocumentTypeUseCase registerDocumentTypeUseCase = new RegisterDocumentTypeUseCase(documentTypeService);
@@ -177,7 +179,7 @@ public class Main {
         ListAllTripCrewUseCase listAllTripCrewUseCase = new ListAllTripCrewUseCase(tripCrewService);
         // controller  section
         RevisionController revisionController =  new RevisionController(findPlaneByPlateUseCase, listAllEmployeesUseCase, createRevisionUseCase, createRevisionEmployeeUseCase, listAllRevisionsUseCase, deleteRevisionUseCase, listAllRevisionEmployeeUseCase, updateRevisionByIdUseCase, updateRevisionEmployeeByRevisionIdUseCase);
-        PlaneController planeController  = new PlaneController(createPlaneUseCase,listAllAirlinesUseCase,listAllStatusUseCase,listAllModelsUseCase,findPlaneByPlateUseCase,updatePlaneByPlateUseCase,deletePlaneByIdUseCase,listAllRevisionsUseCase);
+        PlaneController planeController  = new PlaneController(createPlaneUseCase, listAllAirlinesUseCase, listAllStatusUseCase, listAllModelsUseCase, findPlaneByPlateUseCase, updatePlaneByPlateUseCase, deletePlaneByIdUseCase, listAllRevisionsUseCase, findPlaneStMdByIdUseCase);
         CustomerController customerController = new CustomerController(findCustomerByNroIdcUseCase, createCustomerUseCase, listAllDocumentTypeUseCase);
         AirportController airportController = new AirportController(createAirportUseCase, findAirportByIdCase, deleteAirportByIdCase, updateAirportByIdCase, listAllCitiesUseCase, listAllCountriesUseCase);
         DocumentTypeController documentTypeController = new DocumentTypeController(registerDocumentTypeUseCase, updateDocumentTypeByIdUseCase, deleteDocumentTypeByIdCase, listAllDocumentTypeUseCase);
@@ -190,37 +192,44 @@ public class Main {
             String email = MyScanner.scanLine();
             System.out.println("Type  your password:");
             String  password = MyScanner.scanPassword();
-            List<Employee>  employees = listAllEmployeesUseCase.execute();
             String nameRol = "";
             int userRolId = 0;
-            for(Employee employee : employees){
-                if(employee.getEmail().equals(email) && employee.getPassword().equals(password)){
-                    List<Roles> listRoles = listAllRolesUseCase.execute();
-                    for(Roles  holderRol : listRoles){
-                        // System.out.println(holderRol.getId());
-                        if(holderRol.getId() == employee.getIdUserRole()){
-                            // userRol = holderRol.getName_role();
-                            
-                            userRolId =  holderRol.getId();
-                            nameRol = holderRol.getName_role();
-                            break;
+            ArrayList<Integer> holderAccess = new ArrayList<>();
+            try {
+            
+                List<Employee>  employees = listAllEmployeesUseCase.execute();
+                for(Employee employee : employees){
+                    if(employee.getEmail().equals(email) && employee.getPassword().equals(password)){
+                        List<Roles> listRoles = listAllRolesUseCase.execute();
+                        for(Roles  holderRol : listRoles){
+                            // System.out.println(holderRol.getId());
+                            if(holderRol.getId() == employee.getIdUserRole()){
+                                // userRol = holderRol.getName_role();
+                                
+                                userRolId =  holderRol.getId();
+                                nameRol = holderRol.getName_role();
+                                break;
+                            }
                         }
                     }
                 }
-            }
-            ArrayList<Integer> holderAccess = new ArrayList<>();
-            List<RolePermissions>  listRolePermissions = listAllRolePermissionsUseCase.execute();
-            // System.out.println(userRolId);
-            for(RolePermissions rolePermissions : listRolePermissions){
-                if(rolePermissions.getRole_id()  == userRolId){
-                    holderAccess.add(rolePermissions.getPermissions_id());
-                    // System.out.println(rolePermissions.getPermissions_id());
+
+                List<RolePermissions>  listRolePermissions = listAllRolePermissionsUseCase.execute();
+                // System.out.println(userRolId);
+                for(RolePermissions rolePermissions : listRolePermissions){
+                    if(rolePermissions.getRole_id()  == userRolId){
+                        holderAccess.add(rolePermissions.getPermissions_id());
+                        // System.out.println(rolePermissions.getPermissions_id());
+                    }
                 }
+                if(holderAccess.size() ==  0){
+                    System.out.println("Email or password incorrect.");
+                    ConsoleUtils.pause();
+                }
+            } catch (Exception e) {
+                System.out.println("Invalid atempt to connect with the database");
             }
-            if(holderAccess.size() ==  0){
-                System.out.println("Email or password incorrect.");
-                ConsoleUtils.pause();
-            }
+            
             // 1,4,5,7,8,10,11,12,15,16,20,21,24,25,30,31,32,33,34,36,35,37
             List<String> useCases = Arrays.asList(
                 "Register Plane",  // 1

@@ -10,8 +10,10 @@ import com.o2.travel_agency.model.domain.entity.Model;
 import com.o2.travel_agency.plane.application.CreatePlaneUseCase;
 import com.o2.travel_agency.plane.application.DeletePlaneByIdUseCase;
 import com.o2.travel_agency.plane.application.FindPlaneByPlateUseCase;
+import com.o2.travel_agency.plane.application.FindPlaneStMdByIdUseCase;
 import com.o2.travel_agency.plane.application.UpdatePlaneByPlateUseCase;
 import com.o2.travel_agency.plane.domain.entity.Plane;
+import com.o2.travel_agency.plane.domain.entity.PlaneStMdDTO;
 import com.o2.travel_agency.revision.application.ListAllRevisionsUseCase;
 import com.o2.travel_agency.revision.domain.entity.Revision;
 import com.o2.travel_agency.status.application.ListAllStatusUseCase;
@@ -30,13 +32,16 @@ public class PlaneController {
     private UpdatePlaneByPlateUseCase updatePlaneByPlate;
     private DeletePlaneByIdUseCase deletePlaneByIdUseCase;
     private ListAllRevisionsUseCase  listAllRevisionsUseCase;
+    private FindPlaneStMdByIdUseCase findPlaneStMdByIdUseCase;
+
 
 
 
     public PlaneController(CreatePlaneUseCase createPlaneUseCase, ListAllAirlinesUseCase listAllAirlinesUseCase,
             ListAllStatusUseCase listAllStatusUseCase, ListAllModelsUseCase listAllModelsUseCase,
             FindPlaneByPlateUseCase findPlaneByPlateUseCase, UpdatePlaneByPlateUseCase updatePlaneByPlate,
-            DeletePlaneByIdUseCase deletePlaneByIdUseCase, ListAllRevisionsUseCase listAllRevisionsUseCase) {
+            DeletePlaneByIdUseCase deletePlaneByIdUseCase, ListAllRevisionsUseCase listAllRevisionsUseCase,
+            FindPlaneStMdByIdUseCase findPlaneStMdByIdUseCase) {
         this.createPlaneUseCase = createPlaneUseCase;
         this.listAllAirlinesUseCase = listAllAirlinesUseCase;
         this.listAllStatusUseCase = listAllStatusUseCase;
@@ -45,6 +50,7 @@ public class PlaneController {
         this.updatePlaneByPlate = updatePlaneByPlate;
         this.deletePlaneByIdUseCase = deletePlaneByIdUseCase;
         this.listAllRevisionsUseCase = listAllRevisionsUseCase;
+        this.findPlaneStMdByIdUseCase = findPlaneStMdByIdUseCase;
     }
 
     public void start() {
@@ -178,7 +184,7 @@ public class PlaneController {
             System.out.println("Enter plate: ");
             String plate = MyScanner.scanLine();
             Plane plane = findPlaneByPlateUseCase.execute(plate);
-            displayPlaneDetails(plane);
+            displayPlaneFullDetails(plane);
         } catch (Exception e) {
             System.out.println("Invalid plate.");
         }
@@ -207,7 +213,7 @@ public class PlaneController {
                 throw new Exception("There no plane with this plates");
             }
             System.out.println("Plane info: ");
-            displayPlaneDetails(plane);
+            displayPlaneFullDetails(plane);
             int op = Menus.classAttributeMenu(plane.getClass(),"Choose a attribute to update: ");
             String updateColumns = "plates = " ;
             switch(op){
@@ -307,6 +313,18 @@ public class PlaneController {
         System.out.println("Plane id airline: "+ plane.getIdAirline() );
         System.out.println("Plane id status: "+ plane.getIdStatus());
         System.out.println("Plane id model: "+ plane.getIdModel());
+        System.out.println("------------------------------------------------------------------------------------------------");
+    }
+
+    public void displayPlaneFullDetails(Plane plane){
+        PlaneStMdDTO planeStMdDTO = findPlaneStMdByIdUseCase.execute(plane.getId());
+        System.out.println("Plane id: " + planeStMdDTO.getId());
+        System.out.println("Plane plates: " + planeStMdDTO.getPlates());
+        System.out.println("Plane capacity: " + planeStMdDTO.getCapacity());
+        System.out.println("Plane fabrication date: " + planeStMdDTO.getFabricationDate());
+        System.out.println("Plane airline: "+ planeStMdDTO.getNameAirline() );
+        System.out.println("Plane status: "+ planeStMdDTO.getNameStatus());
+        System.out.println("Plane model: "+ planeStMdDTO.getNameModel());
         System.out.println("------------------------------------------------------------------------------------------------");
     }
 
