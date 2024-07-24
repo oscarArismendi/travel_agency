@@ -20,6 +20,7 @@ import com.o2.travel_agency.city.infrastructure.out.CityRepository;
 import com.o2.travel_agency.country.application.ListAllCountriesUseCase;
 import com.o2.travel_agency.country.domain.service.CountryService;
 import com.o2.travel_agency.country.infrastructure.out.CountryRepository;
+import com.o2.travel_agency.customer.application.CreateCustomerUseCase;
 import com.o2.travel_agency.customer.application.FindCustomerByNroIdcUseCase;
 import com.o2.travel_agency.customer.domain.service.CustomerService;
 import com.o2.travel_agency.customer.infrastructure.in.CustomerController;
@@ -120,6 +121,7 @@ public class Main {
         DeleteDocumentTypeByIdUseCase deleteDocumentTypeByIdCase = new DeleteDocumentTypeByIdUseCase(documentTypeService);
         // Customer use case section
         FindCustomerByNroIdcUseCase findCustomerByNroIdcUseCase = new FindCustomerByNroIdcUseCase(customerService);
+        CreateCustomerUseCase createCustomerUseCase = new CreateCustomerUseCase(customerService);
         // Airport use case section
         FindAirportByIdCase findAirportByIdCase = new FindAirportByIdCase(airportService);
         CreateAirportUseCase createAirportUseCase = new CreateAirportUseCase(airportService);
@@ -137,12 +139,12 @@ public class Main {
         // controller  section
         RevisionController revisionController =  new RevisionController(findPlaneByPlateUseCase, listAllEmployeesUseCase, createRevisionUseCase, createRevisionEmployeeUseCase, listAllRevisionsUseCase, deleteRevisionUseCase, listAllRevisionEmployeeUseCase, updateRevisionByIdUseCase, updateRevisionEmployeeByRevisionIdUseCase);
         PlaneController planeController  = new PlaneController(createPlaneUseCase,listAllAirlinesUseCase,listAllStatusUseCase,listAllModelsUseCase,findPlaneByPlateUseCase,updatePlaneByPlateUseCase,deletePlaneByIdUseCase,listAllRevisionsUseCase);
-        CustomerController customerController = new CustomerController(findCustomerByNroIdcUseCase);
+        CustomerController customerController = new CustomerController(findCustomerByNroIdcUseCase, createCustomerUseCase, listAllDocumentTypeUseCase);
         AirportController airportController = new AirportController(createAirportUseCase, findAirportByIdCase, deleteAirportByIdCase, updateAirportByIdCase, listAllCitiesUseCase, listAllCountriesUseCase);
         DocumentTypeController documentTypeController = new DocumentTypeController(registerDocumentTypeUseCase, updateDocumentTypeByIdUseCase, deleteDocumentTypeByIdCase, listAllDocumentTypeUseCase);
         FlightFareController flightFareController = new FlightFareController(registerFlightFareUseCase, updateFlightFareByIdUseCase, deleteFlightFareByIdUseCase, listAllFlightFareUseCase);
         String userRol = "ADMIN";
-        int[] holderAccess = {1,4,5,8,10,11,12,15,16,20,21,24,25,30,31,32,33,34,36,35,37};
+        int[] holderAccess = {1,4,5,7,8,10,11,12,15,16,20,21,24,25,30,31,32,33,34,36,35,37};
         List<String> useCases = Arrays.asList(
             "Register Plane",  // 1
             "Assign Crew to Route",  // 2
@@ -216,8 +218,14 @@ public class Main {
                     break;
                 case "Consult Customer Information"://5
                     ConsoleUtils.cleanScreen();
-                    System.out.println("----------------------------------------CREATE CUSTOMER MENU----------------------------------------");
+                    System.out.println("----------------------------------------FIND CUSTOMER MENU------------------------------------------");
                     customerController.FindCustomerLogic();
+                    ConsoleUtils.pause();
+                    break;
+                case "Register Customer"://7
+                    ConsoleUtils.cleanScreen();
+                    System.out.println("----------------------------------------CREATE CUSTOMER MENU----------------------------------------");
+                    customerController.createCustomerLogic();
                     ConsoleUtils.pause();
                     break;
                 case "Consult Plane Information"://8
