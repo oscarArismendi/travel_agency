@@ -50,7 +50,7 @@
 
 #### Caso de Uso 26: Consultar Asignación de Tripulación
 
-- Role: Administrador del Sistema
+- Role: Técnico de Mantenimiento, Administrador del Sistema
 
 ### Cliente
 
