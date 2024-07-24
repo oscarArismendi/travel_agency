@@ -36,6 +36,9 @@ import com.o2.travel_agency.employee.application.ListAllEmployeesUseCase;
 import com.o2.travel_agency.employee.domain.entity.Employee;
 import com.o2.travel_agency.employee.domain.service.EmployeeService;
 import com.o2.travel_agency.employee.infrastructure.out.EmployeeRepository;
+import com.o2.travel_agency.flightconnection.application.ListAllFlightConnectionUseCase;
+import com.o2.travel_agency.flightconnection.domain.service.FlightConectionService;
+import com.o2.travel_agency.flightconnection.infrastructure.out.FlightConnectionRepository;
 import com.o2.travel_agency.flightfare.application.DeleteFlightFareByIdUseCase;
 import com.o2.travel_agency.flightfare.application.ListAllFlightFareUseCase;
 import com.o2.travel_agency.flightfare.application.RegisterFlightFareUseCase;
@@ -76,6 +79,15 @@ import com.o2.travel_agency.roles.infrastructure.out.RolesRepository;
 import com.o2.travel_agency.status.application.ListAllStatusUseCase;
 import com.o2.travel_agency.status.domain.service.StatusService;
 import com.o2.travel_agency.status.infrastructure.out.StatusRepository;
+import com.o2.travel_agency.trip.application.DeleteTripByIdUseCase;
+import com.o2.travel_agency.trip.application.ListAllTripUseCase;
+import com.o2.travel_agency.trip.application.UpdateTripByIdUseCase;
+import com.o2.travel_agency.trip.domain.service.TripService;
+import com.o2.travel_agency.trip.infrastructure.in.TripController;
+import com.o2.travel_agency.trip.infrastructure.out.TripRepository;
+import com.o2.travel_agency.tripcrew.application.ListAllTripCrewUseCase;
+import com.o2.travel_agency.tripcrew.domain.service.TripCrewService;
+import com.o2.travel_agency.tripcrew.infrastructure.TripCrewRepository;
 import com.o2.travel_agency.utils.ConsoleUtils;
 import com.o2.travel_agency.utils.Menus;
 import com.o2.travel_agency.utils.MyScanner;
@@ -98,6 +110,9 @@ public class Main {
         FlightFareService flightFareService = new FlightFareRepository();
         RolesService rolesService  =  new  RolesRepository();
         RolePermissionsService rolePermissionsService  = new RolePermissionsRepository();
+        TripService tripService = new TripRepository();
+        FlightConectionService flightConectionService = new FlightConnectionRepository();
+        TripCrewService tripCrewService =  new TripCrewRepository();
         //airline use case setion
         ListAllAirlinesUseCase listAllAirlinesUseCase = new ListAllAirlinesUseCase(airlineService);
 
@@ -152,6 +167,14 @@ public class Main {
         ListAllRolesUseCase listAllRolesUseCase = new ListAllRolesUseCase(rolesService);
         // role_permissions use case section
         ListAllRolePermissionsUseCase  listAllRolePermissionsUseCase =  new ListAllRolePermissionsUseCase(rolePermissionsService);
+        // trip use case section
+        UpdateTripByIdUseCase updateTripByIdUseCase = new UpdateTripByIdUseCase(tripService);
+        DeleteTripByIdUseCase  deleteTripByIdUseCase = new  DeleteTripByIdUseCase(tripService);
+        ListAllTripUseCase listAllTripUseCase = new ListAllTripUseCase(tripService);
+        // flight connection use  case section
+        ListAllFlightConnectionUseCase listAllFlightConnectionUseCase = new ListAllFlightConnectionUseCase(flightConectionService);
+        // trip crew use case section
+        ListAllTripCrewUseCase listAllTripCrewUseCase = new ListAllTripCrewUseCase(tripCrewService);
         // controller  section
         RevisionController revisionController =  new RevisionController(findPlaneByPlateUseCase, listAllEmployeesUseCase, createRevisionUseCase, createRevisionEmployeeUseCase, listAllRevisionsUseCase, deleteRevisionUseCase, listAllRevisionEmployeeUseCase, updateRevisionByIdUseCase, updateRevisionEmployeeByRevisionIdUseCase);
         PlaneController planeController  = new PlaneController(createPlaneUseCase,listAllAirlinesUseCase,listAllStatusUseCase,listAllModelsUseCase,findPlaneByPlateUseCase,updatePlaneByPlateUseCase,deletePlaneByIdUseCase,listAllRevisionsUseCase);
@@ -159,6 +182,7 @@ public class Main {
         AirportController airportController = new AirportController(createAirportUseCase, findAirportByIdCase, deleteAirportByIdCase, updateAirportByIdCase, listAllCitiesUseCase, listAllCountriesUseCase);
         DocumentTypeController documentTypeController = new DocumentTypeController(registerDocumentTypeUseCase, updateDocumentTypeByIdUseCase, deleteDocumentTypeByIdCase, listAllDocumentTypeUseCase);
         FlightFareController flightFareController = new FlightFareController(registerFlightFareUseCase, updateFlightFareByIdUseCase, deleteFlightFareByIdUseCase, listAllFlightFareUseCase);
+        TripController tripController = new TripController(updateTripByIdUseCase, deleteTripByIdUseCase, listAllTripUseCase, listAllFlightConnectionUseCase, listAllTripCrewUseCase, listAllEmployeesUseCase);
         while(true){
             ConsoleUtils.cleanScreen();
             System.out.println("login as an admin,tech,sales or customer");
@@ -424,6 +448,7 @@ public class Main {
                     case "Consult Crew Assignment": // 26
                         ConsoleUtils.cleanScreen();
                         System.out.println("----------------------------------------CONSULT CREW ASSIGNMENT MENU------------------------------------");
+                        tripController.ConsultTripLCrewAssingmentLogic();
                         ConsoleUtils.pause();
                         break;
                     case "Consult Route Stops": // 27
