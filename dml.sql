@@ -179,13 +179,13 @@ INSERT INTO revemployee (idRevision, idEmployee) VALUES (3, 3);
 INSERT INTO revemployee (idRevision, idEmployee) VALUES (4, 4);
 INSERT INTO revemployee (idRevision, idEmployee) VALUES (5, 5);
 
--- Tabla tripcrew
- -- ALTER TABLE tripcrew  AUTO_INCREMENT = 1;
-INSERT INTO tripcrew (idEmployees, idConection) VALUES (1, 1);
-INSERT INTO tripcrew (idEmployees, idConection) VALUES (2, 2);
-INSERT INTO tripcrew (idEmployees, idConection) VALUES (3, 3);
-INSERT INTO tripcrew (idEmployees, idConection) VALUES (4, 4);
-INSERT INTO tripcrew (idEmployees, idConection) VALUES (5, 5);
+-- -- Tabla tripcrew
+--  -- ALTER TABLE tripcrew  AUTO_INCREMENT = 1;
+-- INSERT INTO tripcrew (idEmployees, idConection) VALUES (1, 1);
+-- INSERT INTO tripcrew (idEmployees, idConection) VALUES (2, 2);
+-- INSERT INTO tripcrew (idEmployees, idConection) VALUES (3, 3);
+-- INSERT INTO tripcrew (idEmployees, idConection) VALUES (4, 4);
+-- INSERT INTO tripcrew (idEmployees, idConection) VALUES (5, 5);
 
 -- tabla permissions
 INSERT INTO permissions (permissions_name) VALUES ('Register Plane');
@@ -253,7 +253,8 @@ INSERT INTO role_permissions (role_id, permissions_id) VALUES (1, 21); -- Delete
 
 -- Tripulación
 INSERT INTO role_permissions (role_id, permissions_id) VALUES (1, 2); -- Assign Crew to Route
-INSERT INTO role_permissions (role_id, permissions_id) VALUES (1, 26); -- Consult Crew Assignment
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (1, 26); -- admin Consult Crew Assignment
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (3, 26); -- sales Consult Crew Assignment  
 
 -- Cliente
 INSERT INTO role_permissions (role_id, permissions_id) VALUES (3, 5); -- Consult Customer Information
@@ -298,3 +299,11 @@ INSERT INTO role_permissions (role_id, permissions_id) VALUES (1, 34); -- Regist
 INSERT INTO role_permissions (role_id, permissions_id) VALUES (1, 35); -- Update Document Type
 INSERT INTO role_permissions (role_id, permissions_id) VALUES (1, 36); -- Delete Document Type
 INSERT INTO role_permissions (role_id, permissions_id) VALUES (1, 37); -- Consult Document Type
+
+
+-- tabla Tripcrew
+INSERT INTO tripcrew (idEmployees,idConection) VALUES(1,1); --  Assigning the pilot
+INSERT INTO tripcrew (idEmployees,idConection) VALUES(1,2); --  Assigning the pilot
+INSERT INTO tripcrew (idEmployees,idConection) VALUES(1,3); --  Assigning the pilot
+INSERT INTO tripcrew (idEmployees,idConection) VALUES(1,4); --  Assigning the pilot
+INSERT INTO tripcrew (idEmployees,idConection) VALUES(1,5); --  Assigning the pilot
