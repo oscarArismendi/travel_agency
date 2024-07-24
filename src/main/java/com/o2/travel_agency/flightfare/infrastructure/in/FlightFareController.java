@@ -76,10 +76,26 @@ public class FlightFareController {
 
     public void deleteFlightFareLogic() {
         try {
-            System.out.print("Enter Flightfare id to delete: ");
-            int id = Integer.parseInt(MyScanner.scanLine());
-            deleteFlightFareByIdUseCase.execute(id);
-            System.out.println("Flightfare deleted successfully!");
+            List<FlightFare> flightfareList = listAllFlightFareUseCase.execute();
+            if (flightfareList == null) {
+                throw new Exception("There is no Flightfare with this id");
+            }
+            // input a valid flightFare 
+            int flightFarePos = Menus.listMenu(flightfareList,"Choose a flightfare to see the delete:");
+            FlightFare userFlightfare = flightfareList.get(flightFarePos);
+            int id = userFlightfare.getId();
+            System.out.println("FlightFare info: ");
+            System.out.println("------------------------------------------------------------------------------------------------");
+            displayFlightfareDetails(userFlightfare);
+            int op =  ConsoleUtils.yesOrNo("Are you sure that you want to remove: " + userFlightfare.toString() + " ?");
+            if(op == 1){
+                if(!deleteFlightFareByIdUseCase.execute(id)){
+                    throw new Exception("Couldn't delete it from the database.");
+                }
+            }else{
+                System.out.println("You have choose to not remove it.");
+            }
+
         } catch (Exception e) {
             System.out.println("Error deleting Flightfare: " + e.getMessage());
         }
