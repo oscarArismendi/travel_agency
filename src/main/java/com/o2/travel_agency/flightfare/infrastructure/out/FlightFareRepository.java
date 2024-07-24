@@ -98,7 +98,7 @@ public class FlightFareRepository implements FlightFareService {
             int rowsDeleted = preparedStatement.executeUpdate();
 
             if (rowsDeleted > 0) {
-                System.out.println("Flightfare deleted successfully!");
+                System.out.println("Flight fare deleted successfully!");
                 return true;
             }
         } catch (SQLException e) {
