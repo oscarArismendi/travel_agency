@@ -143,9 +143,12 @@ public class PlaneController {
 
 
             Plane plane = new Plane(modelId, plates, capacity, date, airlineId, statusId, modelId);
+            if(createPlaneUseCase.execute(plane) != null){
 
-            createPlaneUseCase.execute(plane);
-            System.out.println("Plane created successfully!");
+                System.out.println("Plane created successfully!");
+            }else{
+                throw new Exception("Error at inserting plane in the database");
+            }
 
         }catch (Exception e) {
             System.out.println("Error at creating a plane: " + e.getMessage());

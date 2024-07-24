@@ -15,16 +15,16 @@ public class PlaneRepository implements PlaneService {
 
     @Override
     public Plane createPlane(Plane plane) {
-        String sql = "INSERT INTO plane (plates,capacity,fabricationDate,idAirline,idStatus,idModel) VALUES (?,?,?,?,?,?)";
+        String query = "INSERT INTO plane (plates,capacity,fabricationDate,idAirline,idStatus,idModel) VALUES (?,?,?,?,?,?)";
 
         try (Connection connection = DatabaseConfig.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql,
+                PreparedStatement statement = connection.prepareStatement(query,
                         PreparedStatement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, plane.getPlates());
             statement.setInt(2, plane.getCapacity());
             statement.setDate(3, plane.getFabricationDate());
             statement.setInt(4, plane.getIdAirline());
-            statement.setInt(5, plane.getIdModel());
+            statement.setInt(5, plane.getIdStatus());
             statement.setInt(6, plane.getIdModel());
             statement.executeUpdate();
 
@@ -137,4 +137,6 @@ public class PlaneRepository implements PlaneService {
         }
         return null;
     }
+
+  
 }

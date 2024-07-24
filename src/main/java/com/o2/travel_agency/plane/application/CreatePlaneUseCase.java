@@ -10,7 +10,7 @@ public class CreatePlaneUseCase {
         this.planeService = planeService;
     }
 
-    public void execute(Plane plane) {
-        planeService.createPlane(plane);
+    public Plane execute(Plane plane) {
+        return planeService.createPlane(plane);
     }
 }
