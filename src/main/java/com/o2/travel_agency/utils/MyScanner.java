@@ -1,9 +1,11 @@
 package com.o2.travel_agency.utils;
 
+import java.io.Console;
 import java.util.Scanner;
 
 public class MyScanner {
     static Scanner scan = new Scanner(System.in);
+    static Console console =  System.console();
 
     public static String scan() {
         return scan.next();
@@ -11,6 +13,10 @@ public class MyScanner {
 
     public static String scanLine() {
         return scan.nextLine();
+    }
+
+    public  static String scanPassword(){
+        return new String(console.readPassword());
     }
 
     public static int scanInt() {

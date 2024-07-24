@@ -154,18 +154,18 @@ INSERT INTO roles (name_role) VALUES ('sales agent');
 INSERT INTO roles (name_role) VALUES ('Customer');
 
 -- Tabla employee
- -- ALTER TABLE employee  AUTO_INCREMENT = 1;
+-- ALTER TABLE employee  AUTO_INCREMENT = 1;
 INSERT INTO employee (name, ingressDate, idRol, idUserRole, idAirline, idAirport, email, password) 
-VALUES ('Jorge', '2020-01-15', 1, 1, 1, 1, 'jorge@example.com', 'password123');
+VALUES ('Jorge', '2020-01-15', 1, 1, 1, 1, 'admin@example.com', 'password123');
 
 INSERT INTO employee (name, ingressDate, idRol, idUserRole, idAirline, idAirport, email, password) 
-VALUES ('Lucía', '2018-03-10', 2, 2, 2, 2, 'lucia@example.com', 'password123');
+VALUES ('Lucía', '2018-03-10', 2, 2, 2, 2, 'tech@example.com', 'password123');
 
 INSERT INTO employee (name, ingressDate, idRol, idUserRole, idAirline, idAirport, email, password) 
-VALUES ('Marcos', '2019-05-20', 3, 3, 3, 3, 'marcos@example.com', 'password123');
+VALUES ('Marcos', '2019-05-20', 3, 3, 3, 3, 'sales@example.com', 'password123');
 
 INSERT INTO employee (name, ingressDate, idRol, idUserRole, idAirline, idAirport, email, password) 
-VALUES ('Elena', '2021-07-25', 4, 4, 4, 4, 'elena@example.com', 'password123');
+VALUES ('Elena', '2021-07-25', 4, 4, 4, 4, 'customer@example.com', 'password123');
 
 INSERT INTO employee (name, ingressDate, idRol, idUserRole, idAirline, idAirport, email, password) 
 VALUES ('Fernando', '2017-09-30', 5, 1, 5, 5, 'fernando@example.com', 'password123');
@@ -187,3 +187,114 @@ INSERT INTO tripcrew (idEmployees, idConection) VALUES (3, 3);
 INSERT INTO tripcrew (idEmployees, idConection) VALUES (4, 4);
 INSERT INTO tripcrew (idEmployees, idConection) VALUES (5, 5);
 
+-- tabla permissions
+INSERT INTO permissions (permissions_name) VALUES ('Register Plane');
+INSERT INTO permissions (permissions_name) VALUES ('Assign Crew to Route');
+INSERT INTO permissions (permissions_name) VALUES ('Create Flight Reservation');
+INSERT INTO permissions (permissions_name) VALUES ('Register Maintenance Review');
+INSERT INTO permissions (permissions_name) VALUES ('Consult Customer Information');
+INSERT INTO permissions (permissions_name) VALUES ('Consult Flight Reservation');
+INSERT INTO permissions (permissions_name) VALUES ('Register Customer');
+INSERT INTO permissions (permissions_name) VALUES ('Consult Plane Information');
+INSERT INTO permissions (permissions_name) VALUES ('Consult Route Information');
+INSERT INTO permissions (permissions_name) VALUES ('Register Airport');
+INSERT INTO permissions (permissions_name) VALUES ('Consult Airport Information');
+INSERT INTO permissions (permissions_name) VALUES ('Consult Plane Maintenance History');
+INSERT INTO permissions (permissions_name) VALUES ('Update Customer Information');
+INSERT INTO permissions (permissions_name) VALUES ('Delete Flight Reservation');
+INSERT INTO permissions (permissions_name) VALUES ('Update Plane Information');
+INSERT INTO permissions (permissions_name) VALUES ('Delete Plane');
+INSERT INTO permissions (permissions_name) VALUES ('Assign Plane to Route');
+INSERT INTO permissions (permissions_name) VALUES ('Update Route Information');
+INSERT INTO permissions (permissions_name) VALUES ('Delete Route');
+INSERT INTO permissions (permissions_name) VALUES ('Update Airport Information');
+INSERT INTO permissions (permissions_name) VALUES ('Delete Airport');
+INSERT INTO permissions (permissions_name) VALUES ('List All Customers');
+INSERT INTO permissions (permissions_name) VALUES ('Consult Flight Information');
+INSERT INTO permissions (permissions_name) VALUES ('Update Maintenance Review Information');
+INSERT INTO permissions (permissions_name) VALUES ('Delete Maintenance Review');
+INSERT INTO permissions (permissions_name) VALUES ('Consult Crew Assignment');
+INSERT INTO permissions (permissions_name) VALUES ('Consult Route Stops');
+INSERT INTO permissions (permissions_name) VALUES ('Update Stop Information');
+INSERT INTO permissions (permissions_name) VALUES ('Delete Stop');
+INSERT INTO permissions (permissions_name) VALUES ('Register Flight Fare');
+INSERT INTO permissions (permissions_name) VALUES ('Update Flight Fare Information');
+INSERT INTO permissions (permissions_name) VALUES ('Delete Flight Fare');
+INSERT INTO permissions (permissions_name) VALUES ('Consult Flight Fare');
+INSERT INTO permissions (permissions_name) VALUES ('Register Document Type');
+INSERT INTO permissions (permissions_name) VALUES ('Update Document Type');
+INSERT INTO permissions (permissions_name) VALUES ('Delete Document Type');
+INSERT INTO permissions (permissions_name) VALUES ('Consult Document Type');
+INSERT INTO permissions (permissions_name) VALUES ('Search Flights');
+INSERT INTO permissions (permissions_name) VALUES ('Select Flight');
+INSERT INTO permissions (permissions_name) VALUES ('Add Passengers');
+INSERT INTO permissions (permissions_name) VALUES ('Select Seats');
+INSERT INTO permissions (permissions_name) VALUES ('Make Payment');
+INSERT INTO permissions (permissions_name) VALUES ('List Flight Reservation'); -- is repeat
+INSERT INTO permissions (permissions_name) VALUES ('Cancel Flight Reservation');
+INSERT INTO permissions (permissions_name) VALUES ('Modify Flight Reservation');
+
+
+-- Avión
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (1, 1); -- Register Plane
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (2, 8); -- Consult Plane Information
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (1, 8); -- Consult Plane Information
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (2, 12); -- Consult Plane Maintenance History
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (1, 12); -- Consult Plane Maintenance History
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (2, 15); -- Update Plane Information
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (1, 15); -- Update Plane Information
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (1, 16); -- Delete Plane
+
+-- Aeropuerto
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (1, 10); -- Register Airport
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (1, 11); -- Consult Airport Information
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (1, 20); -- Update Airport Information
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (1, 21); -- Delete Airport
+
+-- Tripulación
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (1, 2); -- Assign Crew to Route
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (1, 26); -- Consult Crew Assignment
+
+-- Cliente
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (3, 5); -- Consult Customer Information
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (3, 7); -- Register Customer
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (3, 13); -- Update Customer Information
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (3, 22); -- List All Customers
+
+-- Vuelo y Reserva
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (3, 3); -- Create Flight Reservation
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (3, 6); -- Consult Flight Reservation
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (3, 14); -- Delete Flight Reservation
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (3, 23); -- Consult Flight Information
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (4, 38); -- Search Flights
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (4, 39); -- Select Flight
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (4, 40); -- Add Passengers
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (4, 41); -- Select Seats
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (4, 42); -- Make Payment
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (4, 43); -- List Flight Reservation 
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (4, 44); -- Cancel Flight Reservation
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (4, 45); -- Modify Flight Reservation
+
+-- Mantenimiento
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (2, 4); -- Register Maintenance Review
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (2, 24); -- Update Maintenance Review Information
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (2, 25); -- Delete Maintenance Review
+
+-- Trayecto
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (1, 9); -- Consult Route Information
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (1, 17); -- Assign Plane to Route
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (1, 18); -- Update Route Information
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (1, 19); -- Delete Route
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (1, 27); -- Consult Route Stops
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (1, 28); -- Update Stop Information
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (1, 29); -- Delete Stop
+
+-- Tarifas y Documentos
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (1, 30); -- Register Flight Fare
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (1, 31); -- Update Flight Fare Information
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (1, 32); -- Delete Flight Fare
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (1, 33); -- Consult Flight Fare
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (1, 34); -- Register Document Type
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (1, 35); -- Update Document Type
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (1, 36); -- Delete Document Type
+INSERT INTO role_permissions (role_id, permissions_id) VALUES (1, 37); -- Consult Document Type
