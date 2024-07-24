@@ -4,4 +4,5 @@ import com.o2.travel_agency.customer.domain.entity.Customer;
 
 public interface CustomerService {
     Customer findCustomerByNroIdc(Integer nroIdc);
+    Customer createCustomer(Customer customer);
 }
