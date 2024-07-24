@@ -15,7 +15,7 @@ public class FlightConnectionRepository implements FlightConectionService {
 
     @Override
     public List<FlightConnection> listAllFlightConnection() {
-        String sql = "SELECT id, name FROM flightconnection";
+        String sql = "SELECT id, connectionNumber,idTrip,idPlane,idAirport FROM flightconnection";
         List<FlightConnection> objects = new ArrayList<>();
 
         try (Connection connection = DatabaseConfig.getConnection();
@@ -24,7 +24,8 @@ public class FlightConnectionRepository implements FlightConectionService {
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                FlightConnection flightConnection = new FlightConnection(resultSet.getInt("id"), resultSet.getString("name"), null, null, null);
+                FlightConnection flightConnection = new FlightConnection(resultSet.getInt("id"), resultSet.getString("connectionNumber"),
+                resultSet.getInt("idTrip"), resultSet.getInt("idPlane"),  resultSet.getInt("idAirport"));
                 objects.add(flightConnection);
             }
 
@@ -39,7 +40,7 @@ public class FlightConnectionRepository implements FlightConectionService {
         String query = "DELETE FROM documenttype WHERE id = ?";
 
         try (Connection connection = DatabaseConfig.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, id);
             int rowsDeleted = preparedStatement.executeUpdate();

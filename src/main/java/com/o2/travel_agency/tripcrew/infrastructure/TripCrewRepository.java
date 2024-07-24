@@ -15,7 +15,7 @@ public class TripCrewRepository implements TripCrewService {
 
     @Override
     public List<TripCrew> listAllTripCrew() {
-        String sql = "SELECT id, name FROM tripcrew";
+        String sql = "SELECT idEmployees, idConection FROM tripcrew";
         List<TripCrew> objects = new ArrayList<>();
 
         try (Connection connection = DatabaseConfig.getConnection();
@@ -24,7 +24,7 @@ public class TripCrewRepository implements TripCrewService {
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                TripCrew tripCrew = new TripCrew(resultSet.getInt("id"), resultSet.getString("name"));
+                TripCrew tripCrew = new TripCrew(resultSet.getInt("idEmployees"), resultSet.getInt("idConection"));
                 objects.add(tripCrew);
             }
 
