@@ -77,7 +77,7 @@ public class FlightFareRepository implements FlightFareService {
             int rowsUpdated = preparedStatement.executeUpdate();
 
             if (rowsUpdated > 0) {
-                System.out.println("Flightfare updated successfully!");
+                System.out.println("Flight fare updated successfully!");
                 return true;
             }
         } catch (SQLException e) {
