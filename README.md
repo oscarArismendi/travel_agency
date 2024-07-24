@@ -14,10 +14,10 @@ Vuelos Globales opera vuelos a nivel internacional y cuenta con una flota de avi
 
 Requerimientos de la base de datos suministrada:
 
-1.Registrar avión
-2.Tripulación  y trayecto
-3.Crear Reserva de vuelo
-4.Registrar revisón de mantenimiento
+1. Registrar avión
+2. Tripulación  y trayecto
+3. Crear Reserva de vuelo
+4. Registrar revisón de mantenimiento
 5. Consultar información de cliente
 6. Consultar reserva de vuelo
 7. Registrar cliente
