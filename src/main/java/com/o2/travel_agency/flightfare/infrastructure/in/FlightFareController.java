@@ -112,34 +112,21 @@ public class FlightFareController {
 
     public void updateFlightFareLogic() {
         try {
-            System.out.print("Type the Flightfare id: ");
-            int id = Integer.parseInt(MyScanner.scanLine());
             List<FlightFare> flightfareList = listAllFlightFareUseCase.execute();
             if (flightfareList == null) {
                 throw new Exception("There is no Flightfare with this id");
             }
-            FlightFare userFlightfare = null;
-            for (FlightFare flightfare : flightfareList) {
-                if (flightfare.getId() == id) {
-                    userFlightfare = flightfare;
-                    break;
-                }
-            }
-            if (userFlightfare == null) {
-                throw new Exception("There is no Flightfare with this id");
-            }
-            System.out.println("userFlightfare info: ");
+            // input a valid flightFare 
+            int flightFarePos = Menus.listMenu(flightfareList,"Choose a flightfare to see the details:");
+            FlightFare userFlightfare = flightfareList.get(flightFarePos);
+            int id = userFlightfare.getId();
+            System.out.println("FlightFare info: ");
+            System.out.println("------------------------------------------------------------------------------------------------");
             displayFlightfareDetails(userFlightfare);
             int op = Menus.classAttributeMenu(userFlightfare.getClass(), "Choose an attribute to update: ");
             String updateColumns = "";
             switch (op) {
-                case 0: // id
-                    System.out.print("Type the new Flightfare id (current: " + userFlightfare.getId() + "): ");
-                    int newId = Integer.parseInt(MyScanner.scanLine());
-                    updateColumns = "id = " + newId;
-                    updateFlightFareByIdUseCase.execute(updateColumns,id);
-                    break;
-                case 1: // description
+                case 0: // description
                     System.out.print("Type the new Flightfare description (current: " + userFlightfare.getDescription() + "): ");
                     String newDescription = MyScanner.scanLine();
                     if (newDescription.isEmpty()) {
@@ -148,15 +135,21 @@ public class FlightFareController {
                     updateColumns = "description = '" + newDescription + "'";
                     updateFlightFareByIdUseCase.execute(updateColumns,id);
                     break;
-                case 2: // details
+                case 1: // details
                     System.out.print("Type the new Flightfare details (current: " + userFlightfare.getDetails() + "): ");
                     String newDetails = MyScanner.scanLine();
+                    if (newDetails.isEmpty()) {
+                        throw new Exception("You didn't put details");
+                    }
                     updateColumns = "details = '" + newDetails + "'";
                     updateFlightFareByIdUseCase.execute(updateColumns,id);
                     break;
-                case 3: // value
+                case 2: // value
                     System.out.print("Type the new Flightfare value (current: " + userFlightfare.getValue() + "): ");
-                    double newValue = MyScanner.scanInt();
+                    double newValue = MyScanner.scanDouble();
+                    if(newValue < 0){
+                        throw new Exception("There can't be negative values!");
+                    }
                     updateColumns = "value = " + newValue;
                     updateFlightFareByIdUseCase.execute(updateColumns,id);
                     break;
@@ -164,7 +157,7 @@ public class FlightFareController {
                     break;
             }
         } catch (Exception e) {
-            System.out.println("Error at updating the Flightfare: " + e.getMessage());
+            System.out.println("Error at updating the Flight fare: " + e.getMessage());
         }
     }
 
